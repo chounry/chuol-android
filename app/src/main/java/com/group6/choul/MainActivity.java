@@ -29,34 +29,10 @@ public class MainActivity extends AppCompatActivity {
         toggle.syncState();
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
-        loadfragment(new fragment1());
         navigationViewHome.setNavigationItemSelectedListener(new NavigationView.OnNavigationItemSelectedListener() {
             @Override
             public boolean onNavigationItemSelected(@NonNull MenuItem menuItem) {
                 int id = menuItem.getItemId();
-                switch (id){
-                    case R.id.item_home:
-                        loadfragment(new list_fragement());
-                        drawerLayoutHome.closeDrawers();
-                        return true;
-                    case R.id.item_favorite:
-                        loadfragment(new fragment2());
-                        drawerLayoutHome.closeDrawers();
-                        return true;
-                    case R.id.item_chat:
-                        loadfragment(new fragment3());
-                        drawerLayoutHome.closeDrawers();
-                        return true;
-                    case R.id.item_setting:
-                        loadfragment(new fragment3());
-                        drawerLayoutHome.closeDrawers();
-                        return true;
-                    case R.id.item_aboutus:
-                        loadfragment(new fragment3());
-                        drawerLayoutHome.closeDrawers();
-                        return true;
-
-                }
                 return false;
             }
         });
