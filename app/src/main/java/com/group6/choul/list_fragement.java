@@ -16,27 +16,26 @@ import java.util.List;
 
 public class list_fragement extends Fragment {
     private ListView listView ;
-    private List<radio_model> radioModelList;
+    private List<HomeModel> HomeModelist;
     private list_adapter adapter;
 
     @RequiresApi(api = Build.VERSION_CODES.M)
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        View v = inflater.inflate(R.layout.listview,container,false);
+        View v = inflater.inflate(R.layout.home,container,false);
         listView = v.findViewById(R.id.item_id);
-        radioModelList = new ArrayList<>();
+        HomeModelist = new ArrayList<>();
 
-        radio_model model = new radio_model("វិទ្យុអេប៊ីសុី",R.drawable.photo6118543855524620535);
-        radio_model model1 = new radio_model("វិទ្យុវីអូអេ",R.drawable.photo6118543855524620535);
-        radio_model model2 = new radio_model("វិទ្យុអអាយហ្វេស",R.drawable.photo6118543855524620537);
-        radio_model model3 = new radio_model("វិទ្យុអហ្វេសអេ",R.drawable.photo6118543855524620536);
-        radioModelList.add(model);
-        radioModelList.add(model1);
-        radioModelList.add(model2);
-        radioModelList.add(model3);
+        HomeModel model = new HomeModel("Luxury", "#2000", "Toul Kork, Phnom Penh", "Phnom Penh", "Villa", R.drawable.house1);
+        HomeModel model1 = new HomeModel("Luxury", "#2000", "Toul Kork, Phnom Penh", "Phnom Penh", "Villa", R.drawable.house1);
+        HomeModel model2 = new HomeModel("Luxury", "#2000", "Toul Kork, Phnom Penh", "Phnom Penh", "Villa", R.drawable.house1);
 
-        adapter = new list_adapter(getContext(),radioModelList);
+        HomeModelist.add(model);
+        HomeModelist.add(model1);
+        HomeModelist.add(model2);
+
+        adapter = new list_adapter(getContext(),HomeModelist);
         listView.setAdapter(adapter);
         return v;
     }
