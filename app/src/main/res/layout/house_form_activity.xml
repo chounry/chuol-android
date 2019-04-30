@@ -1,0 +1,245 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="vertical">
+
+        <!-- back btn-->
+        <LinearLayout
+
+            android:layout_marginTop="15dp"
+            android:layout_marginBottom="15dp"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:gravity="center_vertical">
+
+            <ImageView
+                android:layout_width="23dp"
+                android:layout_height="23dp"
+                android:src="@drawable/ic_keyboard_arrow_left_black_24dp"/>
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Back"
+                android:textColor="#000"/>
+        </LinearLayout>
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="House Information"
+            android:gravity="center"
+            android:textSize="18sp"
+            android:textColor="#000"/>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:paddingHorizontal="15dp"
+            android:layout_marginTop="15dp"
+            android:layout_marginBottom="15dp">
+
+            <EditText
+                android:id="@+id/title_et"
+                android:layout_marginBottom="10dp"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:hint="Title"/>
+
+            <Spinner
+                android:id="@+id/house_type_spinner"
+                android:layout_marginBottom="10dp"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:prompt="@string/house_type_promt"
+                android:entries="@array/house_type">
+            </Spinner>
+
+            <EditText
+                android:inputType="number"
+                android:layout_marginBottom="10dp"
+                android:id="@+id/bathroom_et"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:hint="# of Bedroom"/>
+
+            <EditText
+                android:inputType="number"
+                android:layout_marginBottom="10dp"
+                android:id="@+id/bedroom_et"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:hint="# of Bathroom"/>
+
+            <EditText
+                android:inputType="number"
+                android:layout_marginBottom="10dp"
+                android:id="@+id/kitchen_et"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:hint="# of Kitchen"/>
+
+            <EditText
+                android:inputType="number"
+                android:layout_marginBottom="10dp"
+                android:id="@+id/floor_et"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:hint="# of Floor"/>
+
+            <EditText
+                android:id="@+id/size_et"
+                android:layout_marginBottom="10dp"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:hint="House Size : eg 10m x 6m" />
+
+            <EditText
+                android:id="@+id/address_et"
+                android:layout_marginBottom="10dp"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:hint="Address : eg Preah Monivong Blvd, Sangkat                                Srah Chork, Khan Daun Penh #6"/>
+
+            <Spinner
+                android:id="@+id/city_spinner"
+                android:layout_marginBottom="10dp"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:prompt="@string/city_promt"
+
+                android:entries="@array/cities">
+            </Spinner>
+
+            <Spinner
+                android:id="@+id/for_what_spinner"
+                android:layout_marginBottom="10dp"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:prompt="@string/sale_rent_promt"
+
+                android:entries="@array/for_sale_rent">
+            </Spinner>
+
+            <LinearLayout
+                android:layout_marginBottom="10dp"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal">
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Contact for Price"/>
+                <Switch
+                    android:layout_weight="1"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content" />
+            </LinearLayout>
+
+
+
+            <EditText
+                android:layout_marginBottom="10dp"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:hint="Price"/>
+
+            <Spinner
+                android:layout_marginBottom="10dp"
+                android:id="@+id/currency_spinner"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:prompt="@string/currency_promt"
+
+                android:entries="@array/currencies">
+            </Spinner>
+
+            <Spinner
+                android:layout_marginBottom="10dp"
+                android:id="@+id/duration_spinner"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:prompt="@string/duration_promt"
+                android:entries="@array/duration">
+            </Spinner>
+
+            <EditText
+                android:layout_marginBottom="10dp"
+                android:id="@+id/description_et"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:hint="Description" />
+
+            <!-- Image upload -->
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+
+            </RelativeLayout>
+
+            <!--Google Map-->
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical">
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="Location"/>
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal">
+                <CheckBox
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Agree of Term &amp; Condition"/>
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textColor="#BC8E00"
+                    android:textSize="11sp"
+                    android:text="Read More"
+                    android:layout_marginLeft="15dp"/>
+            </LinearLayout>
+            <LinearLayout
+                android:layout_marginBottom="10dp"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal">
+                <CheckBox
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Agree of Private Policy"/>
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textColor="#BC8E00"
+                    android:textSize="11sp"
+                    android:text="Read More"
+                    android:layout_marginLeft="15dp"/>
+            </LinearLayout>
+
+        </LinearLayout>
+
+        <Button
+            android:layout_width="match_parent"
+            android:layout_height="50dp"
+            android:background="#48C0E8"
+            android:text="Save"
+            android:textColor="#fff"/>
+    </LinearLayout>
+
+</ScrollView>

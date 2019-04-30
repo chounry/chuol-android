@@ -3,6 +3,7 @@ package com.group6.choul;
 import android.app.Fragment;
 import android.app.FragmentManager;
 import android.app.FragmentTransaction;
+import android.content.Intent;
 import android.support.annotation.NonNull;
 import android.support.design.widget.NavigationView;
 import android.support.v4.widget.DrawerLayout;
@@ -33,6 +34,12 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public boolean onNavigationItemSelected(@NonNull MenuItem menuItem) {
                 int id = menuItem.getItemId();
+                switch (id){
+                    case R.id.item_favorite:
+                        Intent intent = new Intent(getApplicationContext(), HouseFormActivity.class);
+                        startActivity(intent);
+                        return true;
+                }
                 return false;
             }
         });
@@ -43,8 +50,10 @@ public class MainActivity extends AppCompatActivity {
     public boolean onOptionsItemSelected(MenuItem item) {
         if (toggle.onOptionsItemSelected(item))
             return true;
+        
         return super.onOptionsItemSelected(item);
     }
+
     private void loadfragment(Fragment fragment){
         FragmentManager fm = getFragmentManager();
         FragmentTransaction tr = fm.beginTransaction();
