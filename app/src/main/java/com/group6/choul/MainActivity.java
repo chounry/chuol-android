@@ -39,6 +39,11 @@ public class MainActivity extends AppCompatActivity {
                         Intent intent = new Intent(getApplicationContext(), HouseFormActivity.class);
                         startActivity(intent);
                         return true;
+
+                    case R.id.item_chat:
+                        Intent intent1 = new Intent(getApplicationContext(), RoomFormActivity.class);
+                        startActivity(intent1);
+                        return true;
                 }
                 return false;
             }

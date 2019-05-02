@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name"></string>
+    <string name="app_name">ជួល</string>
     <string name="opened_menu">Opened</string>
     <string name="closed_menu">Closed</string>
 
@@ -35,4 +35,7 @@
         <item>For Sale</item>
         <item>For Rent</item>
     </string-array>
+
+
+    <string name="editTextFontSize">14sp</string>
 </resources>

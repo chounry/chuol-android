@@ -33,12 +33,13 @@
         <TextView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="House Information"
+            android:text="Room Information"
             android:gravity="center"
             android:textSize="18sp"
             android:textColor="#000"/>
 
         <LinearLayout
+
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="vertical"
@@ -51,22 +52,52 @@
                 android:layout_marginBottom="10dp"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:hint="Title"/>
+                android:hint="Title"
+                android:textSize="14sp"/>
+
+            <EditText
+                android:layout_marginBottom="10dp"
+                android:id="@+id/description_et"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:hint="Description (Optional)"
+                android:textSize="14sp"/>
 
 
             <EditText
+
                 android:id="@+id/size_et"
                 android:layout_marginBottom="10dp"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:hint="Room Size : eg 10m x 6m" />
+                android:hint="Room Size : eg 10m x 6m"
+                android:textSize="14sp"/>
+
+            <EditText
+                android:id="@+id/phone_et"
+                android:inputType="phone"
+                android:layout_marginBottom="10dp"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:hint="Phone Number #1"
+                android:textSize="14sp"/>
+
+            <EditText
+                android:id="@+id/phone_opt_et"
+                android:inputType="phone"
+                android:layout_marginBottom="10dp"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:hint="Phone Number #2 (Optional)"
+                android:textSize="14sp"/>
 
             <EditText
                 android:id="@+id/address_et"
                 android:layout_marginBottom="10dp"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:hint="Address : eg Preah Monivong Blvd, Sangkat Srah Chork, Khan Daun Penh #6"/>
+                android:hint="Address : eg Preah Monivong Blvd, Sangkat Srah Chork, Khan Daun Penh #6"
+                android:textSize="14sp"/>
 
 
             <Spinner
@@ -101,7 +132,8 @@
                 android:layout_marginBottom="10dp"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:hint="Price"/>
+                android:hint="Price"
+                android:textSize="14sp"/>
 
             <Spinner
                 android:layout_marginBottom="10dp"
@@ -121,13 +153,6 @@
                 android:prompt="@string/duration_promt"
                 android:entries="@array/duration">
             </Spinner>
-
-            <EditText
-                android:layout_marginBottom="10dp"
-                android:id="@+id/description_et"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:hint="Description" />
 
             <!-- Image upload -->
             <RelativeLayout
@@ -153,6 +178,7 @@
                 android:layout_height="wrap_content"
                 android:orientation="horizontal">
                 <CheckBox
+                    android:textSize="14sp"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="Agree of Term &amp; Condition"/>
@@ -171,6 +197,7 @@
                 android:layout_height="wrap_content"
                 android:orientation="horizontal">
                 <CheckBox
+                    android:textSize="14sp"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="Agree of Private Policy"/>
