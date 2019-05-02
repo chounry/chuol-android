@@ -5,6 +5,7 @@
     android:layout_height="match_parent">
 
     <LinearLayout
+        android:background="#fff"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:orientation="vertical">
@@ -73,6 +74,19 @@
                 android:hint="Room Size : eg 10m x 6m"
                 android:textSize="14sp"/>
 
+            <Button
+                android:id="@+id/select_service_btn"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Select Services Available"
+                android:padding="5dp"
+                android:textAlignment="textStart"
+                android:background="@drawable/message_edit_text_shape"
+                android:layout_marginBottom="10dp"
+                android:textSize="12sp"
+                android:textColor="#8D8D8D"
+                android:drawableRight="@drawable/ic_keyboard_arrow_down_black_24dp"/>
+
             <EditText
                 android:id="@+id/phone_et"
                 android:inputType="phone"
@@ -123,7 +137,8 @@
                 <Switch
                     android:layout_weight="1"
                     android:layout_width="0dp"
-                    android:layout_height="wrap_content" />
+                    android:layout_height="wrap_content"
+                    android:theme="@style/SCBSwitch"/>
             </LinearLayout>
 
 
