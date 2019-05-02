@@ -6,7 +6,7 @@
     <item
         android:id="@+id/item_home"
         android:title="Home"
-        android:icon="@drawable/house">
+        android:icon="@drawable/ic_home_black_24dp">
 
     </item>
     </group>
@@ -28,7 +28,7 @@
     <item
         android:id="@+id/item_chat"
         android:title="Chat"
-        android:icon="@drawable/love">
+        android:icon="@drawable/ic_message_black_24dp">
 
     </item>
     </group>
@@ -42,15 +42,4 @@
 
         </item>
     </group>
-    <group
-        android:checkableBehavior="single"
-        android:id="@+id/g5">
-        <item
-            android:id="@+id/item_aboutus"
-            android:title="About us"
-            android:icon="@drawable/question">
-
-        </item>
-    </group>
-
 </menu>
