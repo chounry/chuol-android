@@ -3,25 +3,29 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:orientation="vertical">
 
     <android.support.design.widget.TabLayout
         android:id="@+id/ta_h"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:background="#CEB2B2">
+        android:layout_height="40dp"
+        app:tabTextColor="#8F8F8F"
+        app:tabSelectedTextColor="#fff"
+
+        app:tabBackground="@drawable/tab_color_selector">
 
         <android.support.design.widget.TabItem
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="Home"
-            android:id="@+id/home"/>
+            android:id="@+id/home" />
 
         <android.support.design.widget.TabItem
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="Room"
-            android:id="@+id/room"/>
+            android:id="@+id/room" />
 
     </android.support.design.widget.TabLayout>
 

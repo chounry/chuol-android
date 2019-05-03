@@ -15,6 +15,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class list_fragement extends Fragment {
+
     private ListView listView ;
     private List<HomeModel> HomeModelist;
     private list_adapter adapter;
@@ -27,9 +28,9 @@ public class list_fragement extends Fragment {
         listView = v.findViewById(R.id.item_id);
         HomeModelist = new ArrayList<>();
 
-        HomeModel model = new HomeModel("Luxury", "#2000", "Toul Kork, Phnom Penh", "Phnom Penh", "Villa", R.drawable.house1);
-        HomeModel model1 = new HomeModel("Luxury", "#2000", "Toul Kork, Phnom Penh", "Phnom Penh", "Villa", R.drawable.house1);
-        HomeModel model2 = new HomeModel("Luxury", "#2000", "Toul Kork, Phnom Penh", "Phnom Penh", "Villa", R.drawable.house1);
+        HomeModel model = new HomeModel("Luxury", "$2000", "445 Mount Eden Road, Mount Eden, Auckland", "Phnom Penh", "Villa", R.drawable.house1);
+        HomeModel model1 = new HomeModel("Luxury", "$2000", "Toul Kork, Phnom Penh", "Phnom Penh", "Villa", R.drawable.house1);
+        HomeModel model2 = new HomeModel("Luxury", "$2000", "Toul Kork, Phnom Penh", "Phnom Penh", "Villa", R.drawable.house1);
 
         HomeModelist.add(model);
         HomeModelist.add(model1);
@@ -39,4 +40,5 @@ public class list_fragement extends Fragment {
         listView.setAdapter(adapter);
         return v;
     }
+
 }

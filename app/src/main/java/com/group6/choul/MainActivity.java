@@ -3,6 +3,7 @@ package com.group6.choul;
 import android.app.Fragment;
 import android.app.FragmentManager;
 import android.app.FragmentTransaction;
+import android.content.Intent;
 import android.support.annotation.NonNull;
 import android.support.design.widget.NavigationView;
 import android.support.v4.widget.DrawerLayout;
@@ -40,20 +41,13 @@ public class MainActivity extends AppCompatActivity {
                         drawerLayoutHome.closeDrawers();
                         return true;
                     case R.id.item_favorite:
-                        loadfragment(new setting());
-                        drawerLayoutHome.closeDrawers();
+                        Intent intent = new Intent(getApplicationContext(),HouseFormActivity.class);
+                        startActivity(intent);
                         return true;
+
                     case R.id.item_chat:
-                        loadfragment(new PersonalInfo());
-                        drawerLayoutHome.closeDrawers();
-                        return true;
-                    case R.id.item_setting:
-                        loadfragment(new PersonalInfo());
-                        drawerLayoutHome.closeDrawers();
-                        return true;
-                    case R.id.item_aboutus:
-                        loadfragment(new PersonalInfo());
-                        drawerLayoutHome.closeDrawers();
+                        Intent intent1 = new Intent(getApplicationContext(),RoomFormActivity.class);
+                        startActivity(intent1);
                         return true;
 
                 }

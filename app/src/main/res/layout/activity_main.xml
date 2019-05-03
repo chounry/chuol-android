@@ -19,6 +19,7 @@
         android:textSize="50sp"
         android:textAlignment="center"
         android:orientation="vertical" />
+
     <android.support.design.widget.NavigationView
         android:id="@+id/nav_home"
         app:headerLayout="@layout/nav_head"
@@ -27,6 +28,8 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent">
     </android.support.design.widget.NavigationView>
+
+
     <android.support.design.widget.NavigationView
         android:id="@+id/nav_post"
         app:menu="@menu/post"
