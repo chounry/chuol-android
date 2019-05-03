@@ -40,19 +40,19 @@ public class MainActivity extends AppCompatActivity {
                         drawerLayoutHome.closeDrawers();
                         return true;
                     case R.id.item_favorite:
-                        loadfragment(new fragment2());
+                        loadfragment(new setting());
                         drawerLayoutHome.closeDrawers();
                         return true;
                     case R.id.item_chat:
-                        loadfragment(new fragment3());
+                        loadfragment(new PersonalInfo());
                         drawerLayoutHome.closeDrawers();
                         return true;
                     case R.id.item_setting:
-                        loadfragment(new fragment3());
+                        loadfragment(new PersonalInfo());
                         drawerLayoutHome.closeDrawers();
                         return true;
                     case R.id.item_aboutus:
-                        loadfragment(new fragment3());
+                        loadfragment(new PersonalInfo());
                         drawerLayoutHome.closeDrawers();
                         return true;
 
