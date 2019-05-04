@@ -11,9 +11,9 @@ import java.util.List;
 
 public class list_adapter extends BaseAdapter {
     private Context context;
-    private List <radio_model> modeList;
+    private List <HomeModel> modeList;
 
-    public list_adapter(Context context , List<radio_model> modeList){
+    public list_adapter(Context context , List<HomeModel> modeList){
         this.context = context;
         this.modeList = modeList;
     }
@@ -24,7 +24,7 @@ public class list_adapter extends BaseAdapter {
 
     @Override
     public Object getItem(int position) {
-        radio_model model = modeList.get(position);
+        HomeModel model = modeList.get(position);
         return modeList;
     }
 
@@ -35,16 +35,24 @@ public class list_adapter extends BaseAdapter {
 
     @Override
     public View getView(int position, View convertView, ViewGroup parent) {
-        View v =View.inflate(context,R.layout.custom_listview,null);
+        View v =View.inflate(context,R.layout.home1,null);
 
 
-        TextView textviewtitle = v.findViewById(R.id.tv_title);
-        ImageView imageView = v.findViewById(R.id.image_view);
+        TextView textviewTitle = v.findViewById(R.id.title_home);
+        TextView textviewPrice = v.findViewById(R.id.price);
+        TextView textviewAddress = v.findViewById(R.id.address);
+        TextView textviewLocation = v.findViewById(R.id.location);
+        TextView textviewType = v.findViewById(R.id.type);
+        ImageView imageView = v.findViewById(R.id.imgView);
 
-        radio_model obj = modeList.get(position);
+        HomeModel obj = modeList.get(position);
 
         imageView.setImageResource(obj.getImg_id());
-        textviewtitle.setText(obj.getTitle());
+        textviewTitle.setText(obj.getTitle());
+        textviewPrice.setText(obj.getPrice());
+        textviewAddress.setText(obj.getAddress());
+        textviewLocation.setText(obj.getLocation());
+        textviewType.setText(obj.getType());
         return v;
     }
 }

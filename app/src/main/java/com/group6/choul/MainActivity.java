@@ -6,6 +6,7 @@ import android.app.FragmentManager;
 import android.app.FragmentTransaction;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
+import android.content.Intent;
 import android.support.annotation.NonNull;
 import android.support.design.widget.NavigationView;
 import android.support.v4.view.ViewPager;
@@ -47,33 +48,22 @@ public class MainActivity extends AppCompatActivity {
         toggle.syncState();
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
-        loadfragment(new fragment1());
+        loadfragment(new list_fragement());
+
         navigationViewHome.setNavigationItemSelectedListener(new NavigationView.OnNavigationItemSelectedListener() {
             @Override
             public boolean onNavigationItemSelected(@NonNull MenuItem menuItem) {
                 int id = menuItem.getItemId();
                 switch (id){
-                    case R.id.item_home:
-                        loadfragment(new list_fragement());
-                        drawerLayoutHome.closeDrawers();
-                        return true;
                     case R.id.item_favorite:
-                        loadfragment(new fragment2());
-                        drawerLayoutHome.closeDrawers();
-                        return true;
-                    case R.id.item_chat:
-                        loadfragment(new fragment3());
-                        drawerLayoutHome.closeDrawers();
-                        return true;
-                    case R.id.item_setting:
-                        loadfragment(new fragment3());
-                        drawerLayoutHome.closeDrawers();
-                        return true;
-                    case R.id.item_aboutus:
-                        loadfragment(new fragment3());
-                        drawerLayoutHome.closeDrawers();
+                        Intent intent = new Intent(getApplicationContext(), HouseFormActivity.class);
+                        startActivity(intent);
                         return true;
 
+                    case R.id.item_chat:
+                        Intent intent1 = new Intent(getApplicationContext(), RoomFormActivity.class);
+                        startActivity(intent1);
+                        return true;
                 }
                 return false;
             }
@@ -93,8 +83,10 @@ public class MainActivity extends AppCompatActivity {
                 return true;
         }
 
+
         return super.onOptionsItemSelected(item);
     }
+
     private void loadfragment(Fragment fragment){
         FragmentManager fm = getFragmentManager();
         FragmentTransaction tr = fm.beginTransaction();
