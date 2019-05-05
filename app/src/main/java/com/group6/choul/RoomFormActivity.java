@@ -1,14 +1,20 @@
 package com.group6.choul;
 
+import android.content.Context;
 import android.content.DialogInterface;
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
+import android.support.v7.app.ActionBar;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
+import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.Button;
 import android.widget.FrameLayout;
+import android.widget.ImageButton;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.google.android.gms.maps.CameraUpdateFactory;
@@ -20,31 +26,29 @@ import com.google.android.gms.maps.model.MarkerOptions;
 
 import java.util.ArrayList;
 
-public class RoomFormActivity extends AppCompatActivity implements OnMapReadyCallback {
+public class RoomFormActivity extends AppCompatActivity{
     Button service_btn;
 //    TextView mItemSelected;
     String[] listItems = {"Free Wifi","Available Parking Space"};
     boolean[] checkedItems;
     ArrayList<Integer> mUserItems = new ArrayList<>();
-    private FrameLayout map;
 
-    private GoogleMap mMap;
+    private ImageButton map_imgBtn;
+
+
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.room_form_activity);
-
-        SupportMapFragment mapFragment = (SupportMapFragment) getSupportFragmentManager()
-                .findFragmentById(R.id.map);
-        mapFragment.getMapAsync(this);
+        showActionBar();
 
         service_btn = findViewById(R.id.select_service_btn);
-//        mItemSelected = findViewById(R.id.tvItemSelected);
-        map = findViewById(R.id.map);
 
+        map_imgBtn = findViewById(R.id.map_imgBtn);
         checkedItems = new boolean[listItems.length]; // var for multiple select
 
+        // handle multiple select services
         service_btn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -102,25 +106,23 @@ public class RoomFormActivity extends AppCompatActivity implements OnMapReadyCal
             }
         });
 
-        map.setOnClickListener(new View.OnClickListener() {
+        map_imgBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-
+                Intent intent = new Intent(getApplicationContext(), MapFormActivity.class);
+                startActivity(intent);
             }
         });
-
-
-
-
     }
 
-    @Override
-    public void onMapReady(GoogleMap googleMap) {
-        mMap = googleMap;
-
-        // Add a marker in Sydney, Australia, and move the camera.
-        LatLng sydney = new LatLng(11.585439, 104.916806);
-        mMap.addMarker(new MarkerOptions().position(sydney).title("Marker in Phnom Penh"));
-        mMap.moveCamera(CameraUpdateFactory.newLatLng(sydney));
+    private void showActionBar() {
+        LayoutInflater inflator = (LayoutInflater) this.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+        View v = inflator.inflate(R.layout.custom_action_bar, null);
+        ActionBar actionBar = getSupportActionBar();
+        actionBar.setDisplayHomeAsUpEnabled(false);
+        actionBar.setDisplayShowHomeEnabled (false);
+        actionBar.setDisplayShowCustomEnabled(true);
+        actionBar.setDisplayShowTitleEnabled(false);
+        actionBar.setCustomView(v);
     }
 }

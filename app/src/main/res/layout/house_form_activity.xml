@@ -6,28 +6,8 @@
     <LinearLayout
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:orientation="vertical">
-
-        <!-- back btn-->
-        <LinearLayout
-
-            android:layout_marginTop="15dp"
-            android:layout_marginBottom="15dp"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="horizontal"
-            android:gravity="center_vertical">
-
-            <ImageView
-                android:layout_width="23dp"
-                android:layout_height="23dp"
-                android:src="@drawable/ic_keyboard_arrow_left_black_24dp"/>
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="Back"
-                android:textColor="#000"/>
-        </LinearLayout>
+        android:orientation="vertical"
+        android:layout_marginTop="15dp">
 
         <TextView
             android:layout_width="match_parent"
@@ -48,7 +28,7 @@
 
             <EditText
                 android:id="@+id/title_et"
-                android:layout_marginBottom="10dp"
+                android:layout_marginBottom="15dp"
                 android:textSize="14sp"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -220,6 +200,12 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:text="Location"/>
+
+                <ImageButton
+                    android:id="@+id/map_imgBtn"
+                    android:layout_width="match_parent"
+                    android:layout_height="150dp"
+                    android:src="@drawable/map_sample"/>
 
             </LinearLayout>
 

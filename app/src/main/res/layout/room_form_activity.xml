@@ -10,27 +10,6 @@
         android:layout_height="wrap_content"
         android:orientation="vertical">
 
-        <!-- back btn-->
-        <LinearLayout
-
-            android:layout_marginTop="15dp"
-            android:layout_marginBottom="15dp"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="horizontal"
-            android:gravity="center_vertical">
-
-            <ImageView
-                android:layout_width="23dp"
-                android:layout_height="23dp"
-                android:src="@drawable/ic_keyboard_arrow_left_black_24dp"/>
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="Back"
-                android:textColor="#000"/>
-        </LinearLayout>
-
         <TextView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -185,14 +164,12 @@
                     android:layout_height="wrap_content"
                     android:text="Location"/>
 
-                <fragment
-                    xmlns:android="http://schemas.android.com/apk/res/android"
-                    xmlns:tools="http://schemas.android.com/tools"
+                <ImageButton
+                    android:id="@+id/map_imgBtn"
                     android:layout_width="match_parent"
                     android:layout_height="150dp"
-                    android:id="@+id/map"
-                    tools:context=".MapsActivity"
-                    android:name="com.google.android.gms.maps.SupportMapFragment" />
+                    android:src="@drawable/map_sample"/>
+
 
             </LinearLayout>
 
