@@ -13,8 +13,8 @@
     <de.hdodenhof.circleimageview.CircleImageView
         xmlns:app="http://schemas.android.com/apk/res-auto"
         android:id="@+id/profile_image"
-        android:layout_width="184dp"
-        android:layout_height="184dp"
+        android:layout_width="174dp"
+        android:layout_height="174dp"
         android:src="@drawable/rick"
         app:civ_border_color="#FF000000" />
 

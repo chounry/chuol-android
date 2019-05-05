@@ -170,7 +170,6 @@
                     android:layout_height="150dp"
                     android:src="@drawable/map_sample"/>
 
-
             </LinearLayout>
 
             <LinearLayout
