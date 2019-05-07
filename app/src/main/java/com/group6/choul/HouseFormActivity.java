@@ -20,7 +20,6 @@ public class HouseFormActivity extends AppCompatActivity {
 
         map_imgBtn = findViewById(R.id.map_imgBtn);
 
-
         map_imgBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {

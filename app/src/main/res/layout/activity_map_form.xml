@@ -12,7 +12,7 @@
         xmlns:tools="http://schemas.android.com/tools"
         android:layout_width="match_parent"
         android:layout_height="0dp"
-        android:layout_weight="0.8"
+        android:layout_weight="0.7"
         android:id="@+id/map"
         tools:context=".MapsActivity"
         android:name="com.google.android.gms.maps.SupportMapFragment"/>
@@ -22,7 +22,7 @@
         android:background="#F5F5F5"
         android:layout_width="match_parent"
         android:layout_height="0dp"
-        android:layout_weight="0.2"
+        android:layout_weight="0.3"
         android:orientation="vertical"
         android:paddingHorizontal="55dp"
         android:gravity="center">
@@ -32,6 +32,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginBottom="15dp"
+            android:textAllCaps="false"
             android:text="Mark My Current Location"
             android:textColor="@color/colorPrimary" />
 
@@ -44,5 +45,4 @@
             android:textColor="@color/white"/>
 
     </LinearLayout>
-
 </LinearLayout>
