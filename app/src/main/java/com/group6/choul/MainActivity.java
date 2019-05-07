@@ -9,17 +9,13 @@ import android.graphics.drawable.ColorDrawable;
 import android.content.Intent;
 import android.support.annotation.NonNull;
 import android.support.design.widget.NavigationView;
-import android.support.v4.view.ViewPager;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
-import android.view.View;
 import android.widget.Button;
-import android.widget.TextView;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -28,7 +24,6 @@ public class MainActivity extends AppCompatActivity {
     private ActionBarDrawerToggle toggle;
     Dialog getMydialog;
     Button btnhouse, btnroom;
-    ViewPager viewPager;
 
 
 
@@ -40,10 +35,6 @@ public class MainActivity extends AppCompatActivity {
         getMydialog = new Dialog(this);
         drawerLayoutHome = findViewById(R.id.drawer_home);
         navigationViewHome = findViewById(R.id.nav_home);
-//        viewPager = (ViewPager)findViewById(R.id.slide);
-//        slideadapter sladapter = new slideadapter(this);
-//        Log.e("Something ", viewPager+"");
-//        viewPager.setAdapter(sladapter);
         toggle = new ActionBarDrawerToggle(this,drawerLayoutHome,R.string.opened_menu,R.string.closed_menu);
         toggle.syncState();
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
@@ -56,7 +47,7 @@ public class MainActivity extends AppCompatActivity {
                 int id = menuItem.getItemId();
                 switch (id){
                     case R.id.item_favorite:
-                        Intent intent = new Intent(getApplicationContext(), HouseFormActivity.class);
+                        Intent intent = new Intent(getApplicationContext(), roomdetailactivity.class);
                         startActivity(intent);
                         return true;
 
@@ -64,6 +55,11 @@ public class MainActivity extends AppCompatActivity {
                         Intent intent1 = new Intent(getApplicationContext(), RoomFormActivity.class);
                         startActivity(intent1);
                         return true;
+                    case R.id.item_setting:
+                        Intent intent2 = new Intent(getApplicationContext(), housedetailactivity.class);
+                        startActivity(intent2);
+                        return true;
+
                 }
                 return false;
             }

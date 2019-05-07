@@ -13,7 +13,7 @@ import android.widget.ImageView;
 public class slideadapter extends PagerAdapter {
     private Context context;
     private LayoutInflater layoutInflater;
-    private Integer[] images = {R.drawable.slide1,R.drawable.slide2,R.drawable.slide2};
+    private Integer[] images = {R.drawable.room1,R.drawable.room2,R.drawable.room3};
 
     public slideadapter(Context context){
         this.context = context;
