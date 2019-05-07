@@ -1,4 +1,5 @@
 package com.group6.choul;
+
 import android.app.Fragment;
 import android.app.FragmentManager;
 import android.app.FragmentTransaction;
@@ -7,14 +8,11 @@ import android.content.Intent;
 import android.support.annotation.NonNull;
 import android.support.design.widget.NavigationView;
 import android.support.v4.widget.DrawerLayout;
-import android.support.v7.app.ActionBar;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
-import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
-import android.view.View;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -27,7 +25,6 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-
         drawerLayoutHome = findViewById(R.id.drawer_home);
         navigationViewHome = findViewById(R.id.nav_home);
         toggle = new ActionBarDrawerToggle(this,drawerLayoutHome,R.string.opened_menu,R.string.closed_menu);
@@ -37,7 +34,6 @@ public class MainActivity extends AppCompatActivity {
         FragmentManager fm = getFragmentManager();
 
         loadfragment(new list_fragement());
-
         navigationViewHome.setNavigationItemSelectedListener(new NavigationView.OnNavigationItemSelectedListener() {
             @Override
             public boolean onNavigationItemSelected(@NonNull MenuItem menuItem) {
@@ -47,11 +43,11 @@ public class MainActivity extends AppCompatActivity {
                         Intent intent = new Intent(getApplicationContext(), HouseFormActivity.class);
                         startActivity(intent);
                         return true;
-
                     case R.id.item_chat:
                         Intent intent1 = new Intent(getApplicationContext(), RoomFormActivity.class);
                         startActivity(intent1);
                         return true;
+
                 }
                 return false;
             }
@@ -61,13 +57,10 @@ public class MainActivity extends AppCompatActivity {
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
-
         if (toggle.onOptionsItemSelected(item))
             return true;
-
         return super.onOptionsItemSelected(item);
     }
-
     private void loadfragment(Fragment fragment){
         FragmentManager fm = getFragmentManager();
         FragmentTransaction tr = fm.beginTransaction();
@@ -80,6 +73,5 @@ public class MainActivity extends AppCompatActivity {
         getMenuInflater().inflate(R.menu.post,menu);
         return super.onCreateOptionsMenu(menu);
     }
-
 }
 

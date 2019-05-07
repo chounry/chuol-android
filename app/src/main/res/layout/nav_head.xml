@@ -19,7 +19,7 @@
         app:civ_border_color="#FF000000" />
 
     <TextView
-
+        android:layout_gravity="center"
         android:textAlignment="center"
         android:layout_width="match_parent"
         android:text="MaVin"
@@ -28,7 +28,7 @@
         android:textStyle="bold"
         android:layout_height="wrap_content" />
     <TextView
-
+        android:layout_gravity="center"
         android:textAlignment="center"
         android:layout_width="match_parent"
         android:text="koung.mavin@gmail.com"
@@ -36,6 +36,8 @@
         android:textSize="15sp"
         android:textStyle="bold"
         android:layout_height="wrap_content" />
+
+
 
 
 </LinearLayout>
