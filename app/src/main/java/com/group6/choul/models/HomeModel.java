@@ -1,6 +1,6 @@
-package com.group6.choul;
+package com.group6.choul.models;
 
-class HomeModel {
+public class HomeModel {
     private String title, price, address, location, type;
     private int img_id;
 

@@ -11,6 +11,8 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ListView;
 
+import com.group6.choul.models.HomeModel;
+
 import java.util.ArrayList;
 import java.util.List;
 

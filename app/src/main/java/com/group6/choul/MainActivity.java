@@ -39,6 +39,10 @@ public class MainActivity extends AppCompatActivity {
             public boolean onNavigationItemSelected(@NonNull MenuItem menuItem) {
                 int id = menuItem.getItemId();
                 switch (id){
+                    case R.id.item_home:
+                        loadfragment(new list_fragement());
+                        return true;
+
                     case R.id.item_favorite:
                         Intent intent = new Intent(getApplicationContext(), HouseFormActivity.class);
                         startActivity(intent);
@@ -48,13 +52,15 @@ public class MainActivity extends AppCompatActivity {
                         startActivity(intent1);
                         return true;
 
+                    case R.id.item_setting:
+                        Intent intent2 = new Intent(getApplicationContext(), ChatActivity.class);
+                        startActivity(intent2);
+                        return true;
                 }
                 return false;
             }
         });
     }
-
-
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         if (toggle.onOptionsItemSelected(item))
@@ -74,4 +80,3 @@ public class MainActivity extends AppCompatActivity {
         return super.onCreateOptionsMenu(menu);
     }
 }
-

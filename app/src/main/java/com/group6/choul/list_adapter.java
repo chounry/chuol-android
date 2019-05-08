@@ -7,6 +7,8 @@ import android.widget.BaseAdapter;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.group6.choul.models.HomeModel;
+
 import java.util.List;
 
 public class list_adapter extends BaseAdapter {

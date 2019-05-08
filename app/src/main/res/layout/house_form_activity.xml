@@ -35,6 +35,7 @@
                 android:hint="Title"/>
 
             <Spinner
+                android:background="@drawable/spinner_border"
                 android:id="@+id/house_type_spinner"
                 android:layout_marginBottom="10dp"
                 android:layout_width="match_parent"
@@ -60,15 +61,6 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:hint="# of Bathroom"/>
-
-            <EditText
-                android:inputType="number"
-                android:layout_marginBottom="10dp"
-                android:id="@+id/kitchen_et"
-                android:textSize="14sp"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:hint="# of Kitchen"/>
 
             <EditText
                 android:inputType="number"
@@ -114,6 +106,7 @@
                 android:hint="Phone Number #2 (Optional)" />
 
             <Spinner
+                android:background="@drawable/spinner_border"
                 android:id="@+id/city_spinner"
                 android:layout_marginBottom="10dp"
                 android:layout_width="match_parent"
@@ -123,6 +116,7 @@
             </Spinner>
 
             <Spinner
+                android:background="@drawable/spinner_border"
                 android:id="@+id/for_what_spinner"
                 android:layout_marginBottom="10dp"
                 android:layout_width="match_parent"
@@ -158,6 +152,7 @@
                 android:hint="Price"/>
 
             <Spinner
+                android:background="@drawable/spinner_border"
                 android:layout_marginBottom="10dp"
                 android:id="@+id/currency_spinner"
                 android:layout_width="match_parent"
@@ -168,6 +163,7 @@
             </Spinner>
 
             <Spinner
+                android:background="@drawable/spinner_border"
                 android:layout_marginBottom="10dp"
                 android:id="@+id/duration_spinner"
                 android:layout_width="match_parent"
@@ -185,11 +181,39 @@
                 android:textSize="14sp"/>
 
             <!-- Image upload -->
-            <RelativeLayout
+            <TextView
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content">
+                android:layout_height="wrap_content"
+                android:text="Upload Image"/>
+            <LinearLayout
+                android:background="@drawable/message_edit_text_shape"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:gravity="center"
+                android:paddingVertical="15dp"
+                android:layout_marginBottom="15dp">
 
-            </RelativeLayout>
+                <ImageView
+                    android:layout_width="60dp"
+                    android:layout_height="60dp"
+                    android:src="@drawable/ic_add_img"/>
+                <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal">
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Add Image"/>
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="(Max : 12)"
+                        android:textColor="#A5A5A5"/>
+                </LinearLayout>
+
+            </LinearLayout>
 
             <!--Google Map-->
             <LinearLayout
@@ -199,6 +223,7 @@
                 <TextView
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
+                    android:layout_marginBottom="10dp"
                     android:text="Location"/>
 
                 <ImageButton
