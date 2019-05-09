@@ -30,13 +30,5 @@
     </android.support.design.widget.NavigationView>
 
 
-    <android.support.design.widget.NavigationView
-        android:id="@+id/nav_post"
-        app:menu="@menu/post"
-        android:layout_gravity="end"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent">
-    </android.support.design.widget.NavigationView>
-
 
 </android.support.v4.widget.DrawerLayout>

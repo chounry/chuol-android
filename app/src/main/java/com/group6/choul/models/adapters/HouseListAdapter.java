@@ -1,4 +1,4 @@
-package com.group6.choul;
+package com.group6.choul.models.adapters;
 
 import android.content.Context;
 import android.view.View;
@@ -7,15 +7,16 @@ import android.widget.BaseAdapter;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.group6.choul.R;
 import com.group6.choul.models.HomeModel;
 
 import java.util.List;
 
-public class list_adapter extends BaseAdapter {
+public class HouseListAdapter extends BaseAdapter {
     private Context context;
     private List <HomeModel> modeList;
 
-    public list_adapter(Context context , List<HomeModel> modeList){
+    public HouseListAdapter(Context context , List<HomeModel> modeList){
         this.context = context;
         this.modeList = modeList;
     }
@@ -37,7 +38,7 @@ public class list_adapter extends BaseAdapter {
 
     @Override
     public View getView(int position, View convertView, ViewGroup parent) {
-        View v =View.inflate(context,R.layout.home1,null);
+        View v =View.inflate(context, R.layout.each_house_item,null);
 
 
         TextView textviewTitle = v.findViewById(R.id.title_home);

@@ -3,7 +3,6 @@ package com.group6.choul;
 import android.app.Fragment;
 import android.app.FragmentManager;
 import android.app.FragmentTransaction;
-import android.content.Context;
 import android.content.Intent;
 import android.support.annotation.NonNull;
 import android.support.design.widget.NavigationView;
@@ -33,28 +32,24 @@ public class MainActivity extends AppCompatActivity {
 
         FragmentManager fm = getFragmentManager();
 
-        loadfragment(new list_fragement());
+        loadFragment(new HouseListHomeFragment());
         navigationViewHome.setNavigationItemSelectedListener(new NavigationView.OnNavigationItemSelectedListener() {
             @Override
             public boolean onNavigationItemSelected(@NonNull MenuItem menuItem) {
                 int id = menuItem.getItemId();
                 switch (id){
                     case R.id.item_home:
-                        loadfragment(new list_fragement());
+                        loadFragment(new HouseListHomeFragment());
                         return true;
-
                     case R.id.item_favorite:
                         Intent intent = new Intent(getApplicationContext(), HouseFormActivity.class);
                         startActivity(intent);
                         return true;
                     case R.id.item_chat:
-                        Intent intent1 = new Intent(getApplicationContext(), RoomFormActivity.class);
-                        startActivity(intent1);
+                        loadFragment(new ChatOutFragment());
                         return true;
-
                     case R.id.item_setting:
-                        Intent intent2 = new Intent(getApplicationContext(), ChatActivity.class);
-                        startActivity(intent2);
+                        loadFragment(new SettingFragment());
                         return true;
                 }
                 return false;
@@ -67,11 +62,12 @@ public class MainActivity extends AppCompatActivity {
             return true;
         return super.onOptionsItemSelected(item);
     }
-    private void loadfragment(Fragment fragment){
+    private void loadFragment(Fragment fragment){
         FragmentManager fm = getFragmentManager();
         FragmentTransaction tr = fm.beginTransaction();
         tr.replace(R.id.container_home,fragment);
         tr.commit();
+        drawerLayoutHome.closeDrawers();
     }
 
     @Override
