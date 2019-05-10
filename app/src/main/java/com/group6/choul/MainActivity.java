@@ -42,8 +42,7 @@ public class MainActivity extends AppCompatActivity {
                         loadFragment(new HouseListHomeFragment());
                         return true;
                     case R.id.item_favorite:
-                        Intent intent = new Intent(getApplicationContext(), HouseFormActivity.class);
-                        startActivity(intent);
+                        loadFragment(new SavedPostFragment());
                         return true;
                     case R.id.item_chat:
                         loadFragment(new ChatOutFragment());

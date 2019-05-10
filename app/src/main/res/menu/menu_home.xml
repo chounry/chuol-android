@@ -17,7 +17,7 @@
 
     <item
         android:id="@+id/item_favorite"
-        android:title="Favorite"
+        android:title="Saved"
         android:icon="@drawable/lace">
 
     </item>

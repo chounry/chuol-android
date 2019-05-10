@@ -9,7 +9,15 @@
     <TextView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="My Favorite"
+        android:layout_marginTop="25dp"
+        android:text="My Saved"
         android:textStyle="bold"
         android:textSize="20sp"/>
+
+    <ListView
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1"
+        android:layout_marginTop="10dp">
+    </ListView>
 </LinearLayout>

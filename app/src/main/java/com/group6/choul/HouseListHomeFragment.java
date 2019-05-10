@@ -31,9 +31,9 @@ public class HouseListHomeFragment extends Fragment {
         listView = v.findViewById(R.id.item_id);
         HomeModelist = new ArrayList<>();
 
-        HomeModel model = new HomeModel("Luxury", "$2000", "445 Mount Eden Road, Mount Eden, Auckland", "Phnom Penh", "Villa", R.drawable.house1);
-        HomeModel model1 = new HomeModel("Luxury", "$1000", "Toul Kork, Phnom Penh", "Phnom Penh", "Villa", R.drawable.house1);
-        HomeModel model2 = new HomeModel("Luxury", "$2000", "Toul Kork, Phnom Penh", "Phnom Penh", "Villa", R.drawable.house1);
+        HomeModel model = new HomeModel("Full Of Bag", "$2000", "445 Mount Eden Road, Mount Eden, Auckland", "Phnom Penh", "Villa", R.drawable.house1);
+        HomeModel model1 = new HomeModel("Table", "$1000", "Toul Kork, Phnom Penh", "Phnom Penh", "Villa", R.drawable.house1);
+        HomeModel model2 = new HomeModel("Full of Nothing", "$2000", "Toul Kork, Phnom Penh", "Phnom Penh", "Villa", R.drawable.house1);
 
         HomeModelist.add(model);
         HomeModelist.add(model1);
