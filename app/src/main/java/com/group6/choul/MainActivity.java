@@ -15,7 +15,7 @@ import android.view.MenuItem;
 
 public class MainActivity extends AppCompatActivity {
 
-    private DrawerLayout drawerLayoutHome;
+    private DrawerLayout drawerLayoutHome, drawerLayoutChat;
     private NavigationView navigationViewHome;
     private ActionBarDrawerToggle toggle;
 
@@ -46,9 +46,15 @@ public class MainActivity extends AppCompatActivity {
                         return true;
 
                     case R.id.item_chat:
-                        Intent intent1 = new Intent(getApplicationContext(),RoomFormActivity.class);
-                        startActivity(intent1);
+                        loadfragment(new List_chat_fragment());
+                        drawerLayoutHome.closeDrawers();
                         return true;
+
+                    case R.id.item_setting:
+                        loadfragment(new setting());
+                        drawerLayoutHome.closeDrawers();
+                        return true;
+
 
                 }
                 return false;

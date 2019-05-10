@@ -11,6 +11,7 @@
         android:theme="@style/AppTheme">
         <activity android:name=".ChatActivity"></activity>
         <activity android:name=".HouseFormActivity"></activity>
+        <activity android:name=".PersonalInfoActivity"></activity>
         <activity android:name=".RoomFormActivity"></activity>
         <activity android:name=".MainActivity">
             <intent-filter>
