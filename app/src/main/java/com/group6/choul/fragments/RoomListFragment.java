@@ -1,27 +1,41 @@
-package com.group6.choul;
+package com.group6.choul.fragments;
 
-import android.app.Fragment;
+import android.annotation.SuppressLint;
+import android.app.Activity;
+import android.content.Context;
+import android.content.Intent;
 import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.annotation.RequiresApi;
+import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
 import android.widget.ListView;
 
+import com.group6.choul.R;
+import com.group6.choul.adapters.RoomListAdapter;
 import com.group6.choul.models.HomeModel;
-import com.group6.choul.models.adapters.HouseListAdapter;
 
 import java.util.ArrayList;
 import java.util.List;
 
-public class HouseListHomeFragment extends Fragment {
+public class RoomListFragment extends Fragment {
 
     private ListView listView ;
     private List<HomeModel> HomeModelist;
-    private HouseListAdapter adapter;
+    private RoomListAdapter adapter;
+    private Context context;
+
+    public RoomListFragment(){}
+
+    @SuppressLint("ValidFragment")
+    public RoomListFragment(Context context){
+        this.context = context;
+    }
 
     @RequiresApi(api = Build.VERSION_CODES.M)
     @Nullable
@@ -39,9 +53,21 @@ public class HouseListHomeFragment extends Fragment {
         HomeModelist.add(model1);
         HomeModelist.add(model2);
 
-        adapter = new HouseListAdapter(getContext(),HomeModelist);
+        adapter = new RoomListAdapter(getContext(),HomeModelist);
         listView.setAdapter(adapter);
+//
+//        listView.setOnClickListener(new AdapterView.OnItemClickListener(){
+//
+//            @Override
+//            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+//                Object item = parent.getItemAtPosition(position);
+////                Intent intent = new Intent(context,)
+//            }
+//        });
+
         return v;
     }
+
+
 
 }

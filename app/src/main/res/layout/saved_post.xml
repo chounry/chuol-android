@@ -12,7 +12,7 @@
         android:layout_marginTop="25dp"
         android:text="My Saved"
         android:textStyle="bold"
-        android:textSize="20sp"/>
+        android:textSize="16sp"/>
 
     <ListView
         android:layout_width="match_parent"
