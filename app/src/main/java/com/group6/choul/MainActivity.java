@@ -1,5 +1,9 @@
 package com.group6.choul;
 
+import android.app.Dialog;
+import android.graphics.Color;
+import android.graphics.drawable.ColorDrawable;
+import android.content.Intent;
 import android.support.annotation.NonNull;
 import android.support.design.widget.NavigationView;
 import android.support.design.widget.TabLayout;
@@ -15,6 +19,7 @@ import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.widget.Button;
 
 import com.group6.choul.adapters.PageAdapter;
 import com.group6.choul.fragments.ChatOutFragment;
@@ -28,6 +33,9 @@ public class MainActivity extends AppCompatActivity
     private DrawerLayout drawerLayoutHome;
     private NavigationView navigationViewHome;
     private ActionBarDrawerToggle toggle;
+    Dialog getMydialog;
+    Button btnhouse, btnroom;
+
     private PageAdapter tab_adapter;
 
     private TabLayout tabLayout;
@@ -38,6 +46,8 @@ public class MainActivity extends AppCompatActivity
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
+        getMydialog = new Dialog(this);
         drawerLayoutHome = findViewById(R.id.drawer_home);
         navigationViewHome = findViewById(R.id.nav_home);
         toolBar = findViewById(R.id.toolbar);
@@ -106,6 +116,15 @@ public class MainActivity extends AppCompatActivity
     public boolean onOptionsItemSelected(MenuItem item) {
         if (toggle.onOptionsItemSelected(item))
             return true;
+
+
+        switch (item.getItemId()){
+            case R.id.post:
+                showPopup();
+                return true;
+        }
+
+
         return super.onOptionsItemSelected(item);
     }
     private void loadFragment(Fragment fragment){
@@ -120,6 +139,15 @@ public class MainActivity extends AppCompatActivity
     public boolean onCreateOptionsMenu(Menu menu) {
         getMenuInflater().inflate(R.menu.post,menu);
         return super.onCreateOptionsMenu(menu);
+    }
+
+    public void showPopup() {
+        getMydialog.setContentView(R.layout.custompostpopup);
+        btnhouse=getMydialog.findViewById(R.id.btn_house);
+        btnroom=getMydialog.findViewById(R.id.btn_room);
+
+        getMydialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
+        getMydialog.show();
     }
 
     @Override
