@@ -14,9 +14,11 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
+import android.widget.AdapterView.OnItemClickListener;
 import android.widget.ListView;
 
 import com.group6.choul.R;
+import com.group6.choul.RoomDetailActivity;
 import com.group6.choul.adapters.RoomListAdapter;
 import com.group6.choul.models.HomeModel;
 
@@ -55,15 +57,15 @@ public class RoomListFragment extends Fragment {
 
         adapter = new RoomListAdapter(getContext(),HomeModelist);
         listView.setAdapter(adapter);
-//
-//        listView.setOnClickListener(new AdapterView.OnItemClickListener(){
-//
-//            @Override
-//            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-//                Object item = parent.getItemAtPosition(position);
-////                Intent intent = new Intent(context,)
-//            }
-//        });
+
+        listView.setOnItemClickListener(new OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                Object item = parent.getItemAtPosition(position);
+                Intent intent = new Intent(getActivity(), RoomDetailActivity.class);
+                startActivity(intent);
+            }
+        });
 
         return v;
     }

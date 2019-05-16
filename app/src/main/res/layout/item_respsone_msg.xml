@@ -1,22 +1,25 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    android:orientation="vertical"
+    android:orientation="horizontal"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="wrap_content">
     
     <LinearLayout
+        android:gravity="right"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="horizontal"
         android:padding="10dp">
 
         <com.github.library.bubbleview.BubbleTextView
+            android:id="@+id/msgTv"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Hello BubbleTextVew34534534fsdfsdfsdfdsfsdfdsfdsfsdfsdfewrewrwerwerwerwerwerwerwerwerwerwerwerwerwerwerwerwerwerwerwerwerwerwerwerewrwerwe534543534534534534534534534534534534543534534534534534534534534534534534534543534534534534534"
+            android:text="Hello erwerwerwerwerwerwer34534534"
             android:padding="10dp"
             android:textColor="#FFF"
+
             app:arrowWidth="10dp"
             app:angle="8dp"
             app:arrowHeight="10dp"

@@ -1,5 +1,6 @@
 package com.group6.choul.fragments;
 
+import android.content.Intent;
 import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
@@ -10,8 +11,11 @@ import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
 import android.widget.ListView;
 
+import com.group6.choul.ChatInActivity;
+import com.group6.choul.HouseDetailActivity;
 import com.group6.choul.R;
 import com.group6.choul.models.ChatModel;
 import com.group6.choul.adapters.ListChatAdapter;
@@ -43,6 +47,15 @@ public class ChatOutFragment extends Fragment {
 
         adapter = new ListChatAdapter(getContext(),ChatModelist);
         listView.setAdapter(adapter);
+
+        listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                Object item = parent.getItemAtPosition(position);
+                Intent intent = new Intent(getActivity(), ChatInActivity.class);
+                startActivity(intent);
+            }
+        });
         return v;
     }
 }

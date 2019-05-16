@@ -1,4 +1,4 @@
-package com.group6.choul;
+package com.group6.choul.adapters;
 
 import android.content.Context;
 import android.support.annotation.NonNull;
@@ -10,28 +10,30 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 
+import com.group6.choul.R;
+import com.group6.choul.models.RelatedModel;
 import com.squareup.picasso.Picasso;
 
 import java.util.List;
 
-public class relatedadapter extends RecyclerView.Adapter<relatedadapter.MyViewHolder> {
+public class RelatedAdapter extends RecyclerView.Adapter<RelatedAdapter.MyViewHolder> {
 
-    private List<realatedmodel> modelList;
+    private List<RelatedModel> modelList;
     private Context context;
 
-    public relatedadapter(List<realatedmodel> modelList) {
+    public RelatedAdapter(List<RelatedModel> modelList) {
         this.modelList = modelList;
     }
 
     @NonNull
     @Override
-    public relatedadapter.MyViewHolder onCreateViewHolder(@NonNull ViewGroup viewGroup, int i) {
-        View myView = LayoutInflater.from(viewGroup.getContext()).inflate(R.layout.customraletedview, viewGroup,false );
+    public RelatedAdapter.MyViewHolder onCreateViewHolder(@NonNull ViewGroup viewGroup, int i) {
+        View myView = LayoutInflater.from(viewGroup.getContext()).inflate(R.layout.custom_raleted_view, viewGroup,false );
         return new MyViewHolder(myView);
     }
 
     @Override
-    public void onBindViewHolder(@NonNull relatedadapter.MyViewHolder myViewHolder, int i) {
+    public void onBindViewHolder(@NonNull RelatedAdapter.MyViewHolder myViewHolder, int i) {
         myViewHolder.textViewTitle.setText(modelList.get(i).getTitle());
         myViewHolder.textViewDescription.setText(modelList.get(i).getDescriptino());
         Picasso.get().load(modelList.get(i).getImg()).into(myViewHolder.img);

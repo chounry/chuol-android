@@ -1,17 +1,15 @@
 package com.group6.choul;
 
 import android.app.Dialog;
+import android.content.Intent;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
-import android.content.Intent;
 import android.support.annotation.NonNull;
 import android.support.design.widget.NavigationView;
-import android.support.design.widget.TabLayout;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v4.view.GravityCompat;
-import android.support.v4.view.ViewPager;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
@@ -19,28 +17,24 @@ import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
 import android.widget.Button;
 
-import com.group6.choul.adapters.PageAdapter;
 import com.group6.choul.fragments.ChatOutFragment;
-import com.group6.choul.fragments.HouseListHomeFragment;
+import com.group6.choul.fragments.HomeFragment;
 import com.group6.choul.fragments.SavedPostFragment;
 import com.group6.choul.fragments.SettingFragment;
 
-public class MainActivity extends AppCompatActivity
-        implements NavigationView.OnNavigationItemSelectedListener{
+public class MainActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener{
 
     private DrawerLayout drawerLayoutHome;
     private NavigationView navigationViewHome;
     private ActionBarDrawerToggle toggle;
     Dialog getMydialog;
-    Button btnhouse, btnroom;
+    Button btnHouse, btnRoom;
 
-    private PageAdapter tab_adapter;
-
-    private TabLayout tabLayout;
     private Toolbar toolBar;
-    private ViewPager tabPageView;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -51,38 +45,15 @@ public class MainActivity extends AppCompatActivity
         drawerLayoutHome = findViewById(R.id.drawer_home);
         navigationViewHome = findViewById(R.id.nav_home);
         toolBar = findViewById(R.id.toolbar);
-        tabPageView = findViewById(R.id.viewPage_home);
-        tabLayout = findViewById(R.id.tab_h);
+
 
         setSupportActionBar(toolBar);
         toggle = new ActionBarDrawerToggle(this,drawerLayoutHome,toolBar,R.string.opened_menu,R.string.closed_menu);
         drawerLayoutHome.addDrawerListener(toggle);
         toggle.syncState();
         navigationViewHome.setNavigationItemSelectedListener(this);
+        loadFragment(new HomeFragment());
 
-//      <------------   handle tap
-        tab_adapter = new PageAdapter(getSupportFragmentManager(), tabLayout.getTabCount());
-        tabPageView.setAdapter(tab_adapter);
-
-        tabLayout.setOnTabSelectedListener(new TabLayout.OnTabSelectedListener() {
-            @Override
-            public void onTabSelected(TabLayout.Tab tab) {
-                tabPageView.setCurrentItem(tab.getPosition());
-            }
-
-            @Override
-            public void onTabUnselected(TabLayout.Tab tab) {
-
-            }
-
-            @Override
-            public void onTabReselected(TabLayout.Tab tab) {
-
-            }
-
-        });
-
-        tabPageView.addOnPageChangeListener(new TabLayout.TabLayoutOnPageChangeListener(tabLayout));
 
         //   handle tap -------------------->
 
@@ -117,14 +88,11 @@ public class MainActivity extends AppCompatActivity
         if (toggle.onOptionsItemSelected(item))
             return true;
 
-
-        switch (item.getItemId()){
+        switch (item.getItemId()) {
             case R.id.post:
                 showPopup();
                 return true;
         }
-
-
         return super.onOptionsItemSelected(item);
     }
     private void loadFragment(Fragment fragment){
@@ -142,9 +110,26 @@ public class MainActivity extends AppCompatActivity
     }
 
     public void showPopup() {
-        getMydialog.setContentView(R.layout.custompostpopup);
-        btnhouse=getMydialog.findViewById(R.id.btn_house);
-        btnroom=getMydialog.findViewById(R.id.btn_room);
+        getMydialog.setContentView(R.layout.custom_post_pop_up);
+        btnHouse = getMydialog.findViewById(R.id.btn_house);
+        btnRoom = getMydialog.findViewById(R.id.btn_room);
+
+        btnHouse.setOnClickListener( new View.OnClickListener(){
+
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(getApplicationContext(), HouseFormActivity.class);
+                startActivity(intent);
+            }
+        });
+        btnRoom.setOnClickListener( new View.OnClickListener(){
+
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(getApplicationContext(), RoomFormActivity.class);
+                startActivity(intent);
+            }
+        });
 
         getMydialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
         getMydialog.show();
@@ -157,7 +142,7 @@ public class MainActivity extends AppCompatActivity
         if (id == R.id.nav_home) {
             // Handle the camera action
         } else if (id == R.id.item_home) {
-            loadFragment(new HouseListHomeFragment());
+            loadFragment(new HomeFragment());
             return true;
         } else if (id == R.id.item_chat) {
             loadFragment(new ChatOutFragment());

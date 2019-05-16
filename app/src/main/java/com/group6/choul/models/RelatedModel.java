@@ -1,9 +1,9 @@
-package com.group6.choul;
+package com.group6.choul.models;
 
-public class realatedmodel {
+public class RelatedModel {
     private String title,descriptino,img;
 
-    public realatedmodel(String title, String descriptino, String img) {
+    public RelatedModel(String title, String descriptino, String img) {
         this.title = title;
         this.descriptino = descriptino;
         this.img = img;

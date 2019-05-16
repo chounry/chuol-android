@@ -19,10 +19,9 @@
             android:name="com.google.android.geo.API_KEY"
             android:value="AIzaSyB1dbxszCAqSCrePrLOveBD1XWaBHIM8PU" />
 
-        <activity android:name=".housedetailactivity" />
-        <activity android:name=".roomdetailactivity" />
-        android:theme="@style/AppTheme">
-        <activity android:name=".PostHistoryActivity"></activity>
+        <activity android:name=".HouseDetailActivity" />
+        <activity android:name=".RoomDetailActivity" />
+        <activity android:name=".PostHistoryActivity"/>
         <activity android:name=".ChatInActivity" />
         <activity android:name=".HouseFormActivity" />
         <activity android:name=".RoomFormActivity" />

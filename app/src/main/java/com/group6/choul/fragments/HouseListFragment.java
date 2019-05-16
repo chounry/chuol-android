@@ -1,5 +1,6 @@
 package com.group6.choul.fragments;
 
+import android.content.Intent;
 import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
@@ -9,16 +10,19 @@ import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
 import android.widget.ListView;
 
+import com.group6.choul.HouseDetailActivity;
 import com.group6.choul.R;
+import com.group6.choul.RoomDetailActivity;
 import com.group6.choul.models.HomeModel;
 import com.group6.choul.adapters.HouseListAdapter;
 
 import java.util.ArrayList;
 import java.util.List;
 
-public class HouseListHomeFragment extends Fragment {
+public class HouseListFragment extends Fragment {
 
     private ListView listView ;
     private List<HomeModel> HomeModelist;
@@ -32,6 +36,7 @@ public class HouseListHomeFragment extends Fragment {
         listView = v.findViewById(R.id.item_id);
         HomeModelist = new ArrayList<>();
 
+
         HomeModel model = new HomeModel("Full Of Bag", "$2000", "445 Mount Eden Road, Mount Eden, Auckland", "Phnom Penh", "Villa", R.drawable.house1);
         HomeModel model1 = new HomeModel("Table", "$1000", "Toul Kork, Phnom Penh", "Phnom Penh", "Villa", R.drawable.house1);
         HomeModel model2 = new HomeModel("Full of Nothing", "$2000", "Toul Kork, Phnom Penh", "Phnom Penh", "Villa", R.drawable.house1);
@@ -42,6 +47,15 @@ public class HouseListHomeFragment extends Fragment {
 
         adapter = new HouseListAdapter(getContext(),HomeModelist);
         listView.setAdapter(adapter);
+
+        listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                Object item = parent.getItemAtPosition(position);
+                Intent intent = new Intent(getActivity(), HouseDetailActivity.class);
+                startActivity(intent);
+            }
+        });
         return v;
     }
 

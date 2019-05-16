@@ -61,6 +61,7 @@ public class MapFormActivity extends AppCompatActivity implements OnMapReadyCall
             }
         });
 
+
         ActionBar actionBar = getSupportActionBar();
         actionBar.setDisplayHomeAsUpEnabled(false);
         actionBar.setDisplayShowHomeEnabled (false);
