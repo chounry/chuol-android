@@ -51,7 +51,7 @@ public class MainActivity extends AppCompatActivity {
                         return true;
 
                     case R.id.item_setting:
-                        loadfragment(new setting());
+                        loadfragment(new setting(getApplicationContext()));
                         drawerLayoutHome.closeDrawers();
                         return true;
 

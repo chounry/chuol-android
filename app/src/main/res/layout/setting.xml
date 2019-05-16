@@ -102,6 +102,7 @@
             android:layout_marginRight="20dp"/>
 
         <TextView
+            android:id="@+id/about_us_tv"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:text="About us"

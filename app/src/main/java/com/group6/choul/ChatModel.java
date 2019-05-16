@@ -11,7 +11,6 @@ public class ChatModel {
         this.img_id = img_id;
     }
 
-
     public String getName() {
         return name;
     }
