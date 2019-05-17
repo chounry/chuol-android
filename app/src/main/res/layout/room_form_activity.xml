@@ -1,6 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
 
+
+    xmlns:tools="http://schemas.android.com/tools"
+
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
@@ -50,14 +53,12 @@
 
             <EditText
                 android:id="@+id/title_et"
-                android:layout_marginBottom="10dp"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:hint="Title"
                 android:textSize="14sp"/>
 
             <EditText
-                android:layout_marginBottom="10dp"
                 android:id="@+id/description_et"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -68,7 +69,6 @@
             <EditText
 
                 android:id="@+id/size_et"
-                android:layout_marginBottom="10dp"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:hint="Room Size : eg 10m x 6m"
@@ -82,15 +82,23 @@
                 android:padding="5dp"
                 android:textAlignment="textStart"
                 android:background="@drawable/message_edit_text_shape"
+
                 android:layout_marginBottom="10dp"
                 android:textSize="12sp"
                 android:textColor="#8D8D8D"
-                android:drawableRight="@drawable/ic_keyboard_arrow_down_black_24dp"/>
+                android:drawableRight="@drawable/ic_keyboard_arrow_down_black_24dp"
+                android:gravity="start"
+
+                tools:ignore="RtlCompat" />
+
 
             <EditText
                 android:id="@+id/phone_et"
                 android:inputType="phone"
-                android:layout_marginBottom="10dp"
+
+
+                android:layout_marginBottom="15dp"
+
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:hint="Phone Number #1"
@@ -99,7 +107,6 @@
             <EditText
                 android:id="@+id/phone_opt_et"
                 android:inputType="phone"
-                android:layout_marginBottom="10dp"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:hint="Phone Number #2 (Optional)"
@@ -107,7 +114,6 @@
 
             <EditText
                 android:id="@+id/address_et"
-                android:layout_marginBottom="10dp"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:hint="Address : eg Preah Monivong Blvd, Sangkat Srah Chork, Khan Daun Penh #6"
@@ -116,7 +122,6 @@
 
             <Spinner
                 android:id="@+id/city_spinner"
-                android:layout_marginBottom="10dp"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:prompt="@string/city_promt"
@@ -126,7 +131,7 @@
 
 
             <LinearLayout
-                android:layout_marginBottom="10dp"
+
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:orientation="horizontal">
@@ -143,15 +148,17 @@
 
 
 
+
             <EditText
-                android:layout_marginBottom="10dp"
+                android:layout_marginBottom="15dp"
+
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:hint="Price"
                 android:textSize="14sp"/>
 
             <Spinner
-                android:layout_marginBottom="10dp"
+
                 android:id="@+id/currency_spinner"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -161,7 +168,6 @@
             </Spinner>
 
             <Spinner
-                android:layout_marginBottom="10dp"
                 android:id="@+id/duration_spinner"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -180,11 +186,26 @@
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+
                 android:orientation="vertical">
+
+
                 <TextView
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:text="Location"/>
+
+
+
+                <fragment
+                    xmlns:android="http://schemas.android.com/apk/res/android"
+                    xmlns:tools="http://schemas.android.com/tools"
+                    android:layout_width="match_parent"
+                    android:layout_height="150dp"
+                    android:id="@+id/map"
+                    tools:context=".MapsActivity"
+                    android:name="com.google.android.gms.maps.SupportMapFragment" />
+
 
             </LinearLayout>
 

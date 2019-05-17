@@ -37,7 +37,6 @@ public class list_adapter extends BaseAdapter {
     public View getView(int position, View convertView, ViewGroup parent) {
         View v =View.inflate(context,R.layout.home1,null);
 
-
         TextView textviewTitle = v.findViewById(R.id.title_home);
         TextView textviewPrice = v.findViewById(R.id.price);
         TextView textviewAddress = v.findViewById(R.id.address);

@@ -12,15 +12,15 @@
         android:layout_height="40dp"
         app:tabTextColor="#8F8F8F"
         app:tabSelectedTextColor="#fff"
-        app:tabBackground="@drawable/tab_color_selector"
-       >
+        app:tabBackground="@drawable/tab_color_selector">
+
 
         <android.support.design.widget.TabItem
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="Home"
-            android:id="@+id/home"
-            />
+            android:id="@+id/home" />
+
 
         <android.support.design.widget.TabItem
             android:layout_width="wrap_content"

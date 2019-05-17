@@ -17,6 +17,7 @@
         android:layout_height="184dp"
         android:src="@drawable/rick"
         app:civ_border_color="#FF000000" />
+
     <TextView
 
         android:textAlignment="center"

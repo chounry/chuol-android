@@ -25,7 +25,10 @@
         <com.github.library.bubbleview.BubbleTextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+
             android:text="Helsdfsdfdsfsdwerwerwerwerwerwerwerwerwerwerwerwerwerwerwerwerwerwerewrwerwe534543534534534534534534534534534534543534534534534534534534534534534534534543534534534534534"
+
+
             android:padding="10dp"
             android:textColor="#000"
             app:arrowWidth="10dp"
