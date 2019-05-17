@@ -8,6 +8,7 @@ import android.support.annotation.Nullable;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
 import android.view.LayoutInflater;
@@ -59,7 +60,7 @@ public class RoomFormActivity extends AppCompatActivity{
         layoutManager.setFlexWrap(FlexWrap.WRAP);
         layoutManager.setFlexDirection(FlexDirection.ROW);
         layoutManager.setAlignItems(AlignItems.STRETCH);
-        recyclerView.setLayoutManager(layoutManager);
+        recyclerView.setLayoutManager(new GridLayoutManager(this, 2));
         RecyclerView.Adapter adapter = new ImgFormAdapter(img_models_list,this);
         recyclerView.setAdapter(adapter);
         adapter.notifyDataSetChanged();

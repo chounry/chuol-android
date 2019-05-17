@@ -35,7 +35,7 @@ public class ImgFormAdapter extends RecyclerView.Adapter<ImgViewHolder> {
     @NonNull
     @Override
     public ImgViewHolder onCreateViewHolder(@NonNull ViewGroup viewGroup, int i) {
-        Log.e("Seomthing","Nothing");
+//        Log.e("Seomthing","Nothing");
         View view = LayoutInflater.from(viewGroup.getContext()).inflate(R.layout.img_each_post, null);
         return new ImgViewHolder(view);
     }
@@ -49,12 +49,11 @@ public class ImgFormAdapter extends RecyclerView.Adapter<ImgViewHolder> {
             @RequiresApi(api = Build.VERSION_CODES.JELLY_BEAN)
             @Override
             public void onGlobalLayout() {
-
 //                mCardView.getViewTreeObserver().removeGlobalOnLayoutListener(this);
                 int cardWidth = tmpCardView.getWidth();
                 int eachWidth = cardWidth / 2;
-                FlexboxLayoutManager.LayoutParams param = new FlexboxLayoutManager.LayoutParams(eachWidth, ViewGroup.LayoutParams.WRAP_CONTENT);
-                tmpCardView.setLayoutParams(param);
+//                FlexboxLayoutManager.LayoutParams param = new FlexboxLayoutManager.LayoutParams(190, ViewGroup.LayoutParams.WRAP_CONTENT);
+//                tmpCardView.setLayoutParams(param);
             }
         });
     }
@@ -63,7 +62,6 @@ public class ImgFormAdapter extends RecyclerView.Adapter<ImgViewHolder> {
     public int getItemCount() {
         return this.imgList.size();
     }
-
 }
 
 
@@ -72,8 +70,6 @@ class ImgViewHolder extends RecyclerView.ViewHolder {
     ImageView mImgView;
     ImageButton mImgBtn;
     public CardView mCardView;
-    int cardWidth;
-
 
 
     public ImgViewHolder(@NonNull View itemView) {
@@ -86,12 +82,12 @@ class ImgViewHolder extends RecyclerView.ViewHolder {
 
     }
 
-    void bindTo(Drawable drawable) {
-        mImgView.setImageDrawable(drawable);
-        ViewGroup.LayoutParams lp = mImgView.getLayoutParams();
-        if (lp instanceof FlexboxLayoutManager.LayoutParams) {
-            FlexboxLayoutManager.LayoutParams flexboxLp = (FlexboxLayoutManager.LayoutParams)lp;
-            flexboxLp.setFlexGrow(1.0f);
-        }
-    }
+//    void bindTo(Drawable drawable) {
+//        mImgView.setImageDrawable(drawable);
+//        ViewGroup.LayoutParams lp = mImgView.getLayoutParams();
+//        if (lp instanceof FlexboxLayoutManager.LayoutParams) {
+//            FlexboxLayoutManager.LayoutParams flexboxLp = (FlexboxLayoutManager.LayoutParams)lp;
+//            flexboxLp.setFlexGrow(1.0f);
+//        }
+//    }
 }
