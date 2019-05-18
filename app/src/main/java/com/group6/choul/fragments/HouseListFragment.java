@@ -3,19 +3,20 @@ package com.group6.choul.fragments;
 import android.content.Intent;
 import android.os.Build;
 import android.os.Bundle;
-import android.support.annotation.NonNull;
-import android.support.annotation.Nullable;
-import android.support.annotation.RequiresApi;
-import android.support.v4.app.Fragment;
+
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ListView;
 
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+import androidx.annotation.RequiresApi;
+import androidx.fragment.app.Fragment;
+
 import com.group6.choul.HouseDetailActivity;
 import com.group6.choul.R;
-import com.group6.choul.RoomDetailActivity;
 import com.group6.choul.models.HomeModel;
 import com.group6.choul.adapters.HouseListAdapter;
 
@@ -32,7 +33,7 @@ public class HouseListFragment extends Fragment {
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        View v = inflater.inflate(R.layout.house_list,container,false);
+        View v = inflater.inflate(R.layout.post_list_fragment,container,false);
         listView = v.findViewById(R.id.item_id);
         HomeModelist = new ArrayList<>();
 
