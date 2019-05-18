@@ -4,8 +4,11 @@ import android.app.AlertDialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.database.Cursor;
+import android.graphics.Bitmap;
 import android.net.Uri;
 import android.os.Bundle;
+import android.provider.MediaStore;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -14,6 +17,7 @@ import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.Toast;
 
 
 import androidx.annotation.Nullable;
@@ -32,21 +36,31 @@ import com.google.android.flexbox.FlexboxLayoutManager;
 import com.group6.choul.adapters.ImgFormAdapter;
 import com.group6.choul.models.ImgFormModel;
 
+import net.gotev.uploadservice.MultipartUploadRequest;
+import net.gotev.uploadservice.UploadNotificationConfig;
+
 import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.UUID;
 
 public class RoomFormActivity extends AppCompatActivity implements BSImagePicker.OnSingleImageSelectedListener,
         BSImagePicker.OnMultiImageSelectedListener,
         BSImagePicker.ImageLoaderDelegate {
-    Button service_btn;
-//    TextView mItemSelected;
-    String[] listItems = {"Free Wifi","Available Parking Space"};
-    boolean[] checkedItems;
-    ArrayList<Integer> mUserItems = new ArrayList<>();
+
+    private String[] listItems = {"Free Wifi","Available Parking Space"};
+    private boolean[] checkedItems;
+    private ArrayList<Integer> mUserItems = new ArrayList<>();
+    private List<ImgFormModel> img_models_list;
+    RecyclerView.Adapter img_adapter;
+
 
     private ImageButton map_imgBtn;
     private LinearLayout upload_img_btn;
+    private RecyclerView recyclerView;
+    private Button service_btn;
+
+    private final String UPLOAD_URL = "";
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -59,15 +73,15 @@ public class RoomFormActivity extends AppCompatActivity implements BSImagePicker
         showActionBar();
         // <------- handle toolbar
 
-        //<------------- Handle img upload
+        //<------------- Init img upload
         upload_img_btn = findViewById(R.id.upload_img_btn);
         upload_img_btn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 BSImagePicker multiSelectionPicker = new BSImagePicker.Builder("com.yourdomain.yourpackage.fileprovider")
                         .isMultiSelect() //Set this if you want to use multi selection mode.
-                        .setMinimumMultiSelectCount(3) //Default: 1.
-                        .setMaximumMultiSelectCount(6) //Default: Integer.MAX_VALUE (i.e. User can select as many images as he/she wants)
+                        .setMinimumMultiSelectCount(1) //Default: 1.
+                        .setMaximumMultiSelectCount(10) //Default: Integer.MAX_VALUE (i.e. User can select as many images as he/she wants)
                         .setMultiSelectBarBgColor(android.R.color.white) //Default: #FFFFFF. You can also set it to a translucent color.
                         .setMultiSelectTextColor(R.color.primary_text) //Default: #212121(Dark grey). This is the message in the multi-select bottom bar.
                         .setMultiSelectDoneTextColor(R.color.colorAccent) //Default: #388e3c(Green). This is the color of the "Done" TextView.
@@ -78,22 +92,16 @@ public class RoomFormActivity extends AppCompatActivity implements BSImagePicker
             }
         });
 
-        List<ImgFormModel> img_models_list = new ArrayList<>();
-        img_models_list.add(new ImgFormModel("https://images.unsplash.com/photo-1480074568708-e7b720bb3f09?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&w=1000&q=80"));
-        img_models_list.add(new ImgFormModel("https://www.amaialand.com/wp-content/uploads/2017/04/series-novaliches-townhome-list-img-1.jpg"));
-        img_models_list.add(new ImgFormModel("https://www.amaialand.com/wp-content/uploads/2017/04/series-novaliches-townhome-list-img-1.jpg"));
-        img_models_list.add(new ImgFormModel("https://www.amaialand.com/wp-content/uploads/2017/04/series-novaliches-townhome-list-img-1.jpg"));
+        img_models_list = new ArrayList<>();
 
-        RecyclerView recyclerView = (RecyclerView) findViewById(R.id.img_recyler_view);
+        recyclerView = findViewById(R.id.img_recyler_view);
         FlexboxLayoutManager layoutManager = new FlexboxLayoutManager();
         layoutManager.setFlexWrap(FlexWrap.WRAP);
         layoutManager.setFlexDirection(FlexDirection.ROW);
         layoutManager.setAlignItems(AlignItems.STRETCH);
         recyclerView.setLayoutManager(new GridLayoutManager(this, 2));
-        RecyclerView.Adapter adapter = new ImgFormAdapter(img_models_list,this);
-        recyclerView.setAdapter(adapter);
-        adapter.notifyDataSetChanged();
-        // Handle img upload ------------------->
+
+        // Init img upload ------------------->
 
 
 
@@ -168,6 +176,7 @@ public class RoomFormActivity extends AppCompatActivity implements BSImagePicker
         });
     }
 
+
     private void showActionBar() {
         LayoutInflater inflator = (LayoutInflater) this.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
         View v = inflator.inflate(R.layout.custom_action_bar, null);
@@ -188,6 +197,47 @@ public class RoomFormActivity extends AppCompatActivity implements BSImagePicker
         actionBar.setCustomView(v);
     }
 
+    public void uploadMultipart(Uri filePath) {
+
+        //getting the actual path of the image
+        String path = getPath(filePath);
+
+        //Uploading code
+        try {
+            String uploadId = UUID.randomUUID().toString();
+
+            //Creating a multi part request
+            new MultipartUploadRequest(this, uploadId, UPLOAD_URL)
+                    .addFileToUpload(path, "image") //Adding file
+                    .addParameter("caption", "Nothing") //Adding text parameter to the request
+                    .setNotificationConfig(new UploadNotificationConfig())
+                    .setMaxRetries(2)
+                    .startUpload(); //Starting the upload
+        } catch (Exception exc) {
+            Toast.makeText(this, exc.getMessage(), Toast.LENGTH_SHORT).show();
+        }
+    }
+
+    public String getPath(Uri uri) {
+        Cursor cursor = getContentResolver().query(uri, null, null, null, null);
+        cursor.moveToFirst();
+        String document_id = cursor.getString(0);
+        document_id = document_id.substring(document_id.lastIndexOf(":") + 1);
+        cursor.close();
+
+        cursor = getContentResolver().query(
+                android.provider.MediaStore.Images.Media.EXTERNAL_CONTENT_URI,
+                null, MediaStore.Images.Media._ID + " = ? ", new String[]{document_id}, null);
+        cursor.moveToFirst();
+        String path = cursor.getString(cursor.getColumnIndex(MediaStore.Images.Media.DATA));
+        cursor.close();
+
+        return path;
+    }
+
+
+    // image selection handling
+
     @Override
     public void loadImage(File imageFile, ImageView ivImage) {
         Glide.with(RoomFormActivity.this).load(imageFile).into(ivImage);
@@ -195,7 +245,23 @@ public class RoomFormActivity extends AppCompatActivity implements BSImagePicker
 
     @Override
     public void onMultiImageSelected(List<Uri> uriList, String tag) {
-        Log.e("Here","Is nothing");
+        // first clear out all the last img
+        img_models_list.clear();
+
+        for(int i=0;i < uriList.size();i++){
+
+            try{
+                Bitmap bitmap = MediaStore.Images.Media.getBitmap(getContentResolver(), uriList.get(i));
+                img_models_list.add(new ImgFormModel(bitmap));
+            }catch(Exception e){
+                Log.e("Bitamp : " ,e.toString());
+            }
+        }
+
+        // refresh and set new adapter
+        img_adapter = new ImgFormAdapter(img_models_list, this);
+        img_adapter.notifyDataSetChanged();
+        recyclerView.setAdapter(img_adapter);
     }
 
     @Override

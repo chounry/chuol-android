@@ -38,7 +38,7 @@ public class HouseListAdapter extends BaseAdapter {
 
     @Override
     public View getView(int position, View convertView, ViewGroup parent) {
-        View v = View.inflate(context, R.layout.each_house_item,null);
+        View v = View.inflate(context, R.layout.item_each_house,null);
 
 
         TextView textviewTitle = v.findViewById(R.id.title_home);

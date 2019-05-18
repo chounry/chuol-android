@@ -48,11 +48,10 @@ dependencies {
     implementation 'com.google.code.gson:gson:2.8.5'
     implementation 'de.hdodenhof:circleimageview:3.0.0'
     implementation 'com.google.android.gms:play-services:11.4.0'
+    implementation 'net.gotev:uploadservice:2.1' // multipart type upload
 
     implementation ("com.github.bumptech.glide:glide:4.9.0") {
         exclude group: "com.android.support"
     }
-//    implementation "com.android.support:support-fragment:26.1.0"
-
 
 }

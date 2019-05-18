@@ -18,7 +18,7 @@ public class SettingFragment extends Fragment implements View.OnClickListener {
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        View v = inflater.inflate(R.layout.m_setting_fragment,container,false);
+        View v = inflater.inflate(R.layout.fragment_m_setting,container,false);
 
         return v;
     }
