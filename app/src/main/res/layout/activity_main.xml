@@ -14,17 +14,6 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent" />
 
-    <!--<LinearLayout-->
-        <!--android:id="@+id/container_home"-->
-        <!--android:layout_width="match_parent"-->
-        <!--android:layout_height="match_parent"-->
-        <!--android:gravity="center"-->
-        <!--android:text="Hello"-->
-        <!--android:textColor="#FFFF"-->
-        <!--android:textSize="50sp"-->
-        <!--android:textAlignment="center"-->
-        <!--android:orientation="vertical" />-->
-
         <com.google.android.material.navigation.NavigationView
             android:id="@+id/nav_home"
             app:headerLayout="@layout/nav_head"

@@ -1,14 +1,19 @@
 package com.group6.choul.adapters;
 
 import android.content.Context;
+import android.content.Intent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import androidx.coordinatorlayout.widget.CoordinatorLayout;
+
+import com.group6.choul.HouseDetailActivity;
 import com.group6.choul.R;
 import com.group6.choul.models.HomeModel;
+import com.squareup.picasso.Picasso;
 
 import java.util.List;
 
@@ -46,10 +51,9 @@ public class RoomListAdapter  extends BaseAdapter {
         TextView textviewAddress = v.findViewById(R.id.address);
         TextView textviewLocation = v.findViewById(R.id.location);
         ImageView imageView = v.findViewById(R.id.imgView);
-
         HomeModel obj = modeList.get(position);
 
-        imageView.setImageResource(obj.getImg_id());
+        Picasso.get().load(obj.getImg_url()).into(imageView);
         textviewTitle.setText(obj.getTitle());
         textviewPrice.setText(obj.getPrice());
         textviewAddress.setText(obj.getAddress());

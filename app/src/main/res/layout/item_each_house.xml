@@ -1,147 +1,137 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:orientation="horizontal"
-    android:layout_width="match_parent"
-    android:layout_height="wrap_content">
+<androidx.coordinatorlayout.widget.CoordinatorLayout
+    android:id="@+id/m_coordinate"
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:orientation="horizontal">
+    <RelativeLayout
 
-    <androidx.cardview.widget.CardView
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:background="#fff">
+        android:layout_height="wrap_content">
+
+        <ImageView
+            android:id="@+id/imgView"
+            android:layout_width="match_parent"
+            android:layout_height="200dp"
+            android:scaleType="centerCrop"
+            android:src="@drawable/slide1" />
+
+        <TextView
+            android:background="@color/forRent"
+            android:layout_width="200dp"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="-70dp"
+            android:layout_marginTop="20dp"
+            android:paddingHorizontal="19dp"
+            android:paddingVertical="3dp"
+            android:rotation="-45"
+            android:shadowColor="#000"
+            android:shadowDx="0"
+            android:shadowDy="6"
+            android:shadowRadius="50"
+            android:text="For Sale"
+            android:textAlignment="center"
+            android:textColor="#fff"
+            android:textSize="13sp"
+            android:textStyle="bold" />
 
         <LinearLayout
-            android:id="@+id/each_linear_view"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:background="#fff"
+            android:layout_marginTop="70dp"
+            android:background="@drawable/post_gradient_color"
             android:orientation="vertical"
             android:padding="10dp">
 
-            <LinearLayout
+            <TextView
+                android:id="@+id/title_home"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:orientation="horizontal">
+                android:text="Luxury House"
+                android:textStyle="bold"
+                android:textColor="#FFFF"
+                android:textSize="20dp" />
 
-                <RelativeLayout
-                    android:layout_width="0dp"
-                    android:layout_weight="0.4"
-                    android:layout_height="120dp"
-                    android:layout_marginRight="5dp"
-                    android:layoutMode="clipBounds">
+            <TextView
+                android:id="@+id/price"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="$20000"
+                android:textColor="#4AA9D3"
+                android:textStyle="bold"
+                android:textSize="20dp" />
 
-                    <ImageView
-                        android:id="@+id/imgView"
-                        android:layout_width="match_parent"
-                        android:layout_height="match_parent"
-                        android:layout_alignParentStart="true"
-                        android:layout_alignParentLeft="true"
-                        android:layout_marginStart="0dp"
-                        android:layout_marginLeft="0dp"
-                        android:radius="5dp"
-                        android:scaleType="centerCrop"
-                        android:src="@drawable/house1" />
+            <TableLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:stretchColumns="0,1,2">
+
+                <TableRow>
 
                     <TextView
-                        android:rotation="-45"
-                        android:layout_marginStart="-28dp"
-                        android:layout_width="120dp"
+                        android:layout_width="0dp"
                         android:layout_height="wrap_content"
-                        android:layout_marginLeft="18dp"
-                        android:layout_marginTop="15dp"
-                        android:textColor="#fff"
-                        android:text="For Rent"
-                        android:textStyle="bold"
-                        android:textAlignment="center"
-                        android:textSize="10sp"
-                        android:shadowColor="#000"
-                        android:shadowDx="0"
-                        android:shadowDy="6"
-                        android:shadowRadius="50"
-                        android:background="#6418FF"
-                        android:paddingHorizontal="9dp"
-                        android:paddingVertical="3dp"/>
+                        android:layout_weight="0.3"
+                        android:text="Address"
+                        android:textColor="#D4D4D4" />
 
-                </RelativeLayout>
-
-                <LinearLayout
-                    android:layout_width="0dp"
-                    android:layout_weight="0.6"
-                    android:layout_height="wrap_content"
-                    android:orientation="vertical"
-                    android:layout_gravity="center">
                     <TextView
-                        android:id="@+id/title_home"
-                        android:layout_width="match_parent"
+                        android:id="@+id/address"
+                        android:layout_width="0dp"
                         android:layout_height="wrap_content"
-                        android:text="Luxury House"
-                        android:textSize="16sp"
-                        android:textStyle="bold"/>
+                        android:layout_weight="0.7"
+                        android:inputType="textMultiLine"
+                        android:text="Toul Kork, Phnom 435908 349058 "
+                        android:textColor="#FFFF" />
+
+                </TableRow>
+
+                <TableRow>
+
                     <TextView
-                        android:id="@+id/price"
-                        android:layout_width="match_parent"
+                        android:layout_width="0dp"
                         android:layout_height="wrap_content"
-                        android:text="$2000"
-                        android:textSize="18sp"
-                        android:textColor="@color/colorPrimary"/>
+                        android:layout_weight="0.3"
+                        android:text="Location"
+                        android:textColor="#D4D4D4" />
 
-                    <TableLayout
-                        android:layout_width="match_parent"
+                    <TextView
+                        android:id="@+id/location"
+                        android:layout_width="0dp"
                         android:layout_height="wrap_content"
-                        android:stretchColumns="0,1,2">
-                        <TableRow>
-                            <TextView
-                                android:textColor="#363636"
-                                android:layout_width="0dp"
-                                android:layout_weight="0.3"
-                                android:layout_height="wrap_content"
-                                android:text="Address"/>
-                            <TextView
-                                android:id="@+id/address"
-                                android:inputType="textMultiLine"
-                                android:layout_width="0dp"
-                                android:layout_weight="0.7"
-                                android:layout_height="wrap_content"
-                                android:text="Toul Kork, Phnom 435908 349058 " />
+                        android:layout_weight="0.7"
+                        android:text="Phnom Penh"
+                        android:textColor="#FFFF"/>
+                </TableRow>
 
-                        </TableRow>
+                <TableRow android:layout_height="9dp">
 
-                        <TableRow>
-                            <TextView
-                                android:textColor="#363636"
-                                android:layout_width="0dp"
-                                android:layout_weight="0.3"
-                                android:layout_height="wrap_content"
-                                android:text="Location"/>
-                            <TextView
-                                android:id="@+id/location"
-                                android:layout_width="0dp"
-                                android:layout_weight="0.7"
-                                android:layout_height="wrap_content"
-                                android:text="Phnom Penh"/>
-                        </TableRow>
+                    <TextView
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="0.3"
+                        android:text="Type"
+                        android:textColor="#D4D4D4" />
 
-                        <TableRow>
-                            <TextView
-                                android:textColor="#363636"
-                                android:layout_width="0dp"
-                                android:layout_weight="0.3"
-                                android:layout_height="wrap_content"
-                                android:text="Type"/>
-                            <TextView
-                                android:id="@+id/type"
-                                android:layout_width="0dp"
-                                android:layout_weight="0.7"
-                                android:layout_height="wrap_content"
-                                android:text="Villa"/>
-                        </TableRow>
-                    </TableLayout>
-
-                </LinearLayout>
-
-            </LinearLayout>
-
-
+                    <TextView
+                        android:id="@+id/type"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="0.7"
+                        android:text="Villa"
+                        android:textColor="#FFFF" />
+                </TableRow>
+            </TableLayout>
         </LinearLayout>
-    </androidx.cardview.widget.CardView>
+    </RelativeLayout>
+</androidx.coordinatorlayout.widget.CoordinatorLayout>
 
-</LinearLayout>
+
+
+
+
+
+
+
+
