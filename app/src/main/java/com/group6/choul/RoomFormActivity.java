@@ -1,9 +1,11 @@
 package com.group6.choul;
 
+import android.Manifest;
 import android.app.AlertDialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.pm.PackageManager;
 import android.database.Cursor;
 import android.graphics.Bitmap;
 import android.net.Uri;
@@ -14,16 +16,21 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.Button;
 
+import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.Switch;
 import android.widget.Toast;
 
 
+import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
+import androidx.core.app.ActivityCompat;
+import androidx.core.content.ContextCompat;
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -46,35 +53,57 @@ import java.util.UUID;
 
 public class RoomFormActivity extends AppCompatActivity implements BSImagePicker.OnSingleImageSelectedListener,
         BSImagePicker.OnMultiImageSelectedListener,
-        BSImagePicker.ImageLoaderDelegate {
+        BSImagePicker.ImageLoaderDelegate{
 
+    private static final int STORAGE_PERMISSION_CODE = 123;
     private String[] listItems = {"Free Wifi","Available Parking Space"};
     private boolean[] checkedItems;
-    private ArrayList<Integer> mUserItems = new ArrayList<>();
+    private ArrayList<Integer> mUserItems = new ArrayList<>(); // store the index of 'listItem' that use have selected
     private List<ImgFormModel> img_models_list;
-    RecyclerView.Adapter img_adapter;
-
+    private RecyclerView.Adapter img_adapter;
+    private List<Uri> imgs_uri;
 
     private ImageButton map_imgBtn;
     private LinearLayout upload_img_btn;
     private RecyclerView recyclerView;
-    private Button service_btn;
+    private Button service_btn,submit_btn;
+    private Toolbar myToolbar;
+    private Switch contact_swtich;
+    private EditText price_et;
 
-    private final String UPLOAD_URL = "";
+    private final String UPLOAD_URL = "http://192.168.43.40:8000/api/rooms/create";
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_room_form);
 
+        map_imgBtn = findViewById(R.id.map_imgBtn);
+        recyclerView = findViewById(R.id.img_recyler_view);
+        submit_btn = findViewById(R.id.submit_btn);
+        service_btn = findViewById(R.id.select_service_btn);
+        upload_img_btn = findViewById(R.id.upload_img_btn);
+        myToolbar = findViewById(R.id.my_toolbar);
+        contact_swtich = findViewById(R.id.contact_switch);
+        price_et = findViewById(R.id.price_et);
+
+
         // <------- handle toolbar
-        Toolbar myToolbar = (Toolbar) findViewById(R.id.my_toolbar);
         setSupportActionBar(myToolbar);
         showActionBar();
         // <------- handle toolbar
 
-        //<------------- Init img upload
-        upload_img_btn = findViewById(R.id.upload_img_btn);
+        contact_swtich.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                price_et.setVisibility(View.VISIBLE);
+                if(contact_swtich.isChecked()){
+                    price_et.setVisibility(View.GONE);
+                }
+            }
+        });
+
+        //<------------- Init img selection
         upload_img_btn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -93,24 +122,23 @@ public class RoomFormActivity extends AppCompatActivity implements BSImagePicker
         });
 
         img_models_list = new ArrayList<>();
-
-        recyclerView = findViewById(R.id.img_recyler_view);
         FlexboxLayoutManager layoutManager = new FlexboxLayoutManager();
         layoutManager.setFlexWrap(FlexWrap.WRAP);
         layoutManager.setFlexDirection(FlexDirection.ROW);
         layoutManager.setAlignItems(AlignItems.STRETCH);
         recyclerView.setLayoutManager(new GridLayoutManager(this, 2));
-
         // Init img upload ------------------->
 
-
-
-        service_btn = findViewById(R.id.select_service_btn);
-
-        map_imgBtn = findViewById(R.id.map_imgBtn);
-        checkedItems = new boolean[listItems.length]; // var for multiple select
+        // submit form
+        submit_btn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                uploadMultipart(imgs_uri);
+            }
+        });
 
         // handle multiple select services
+        checkedItems = new boolean[listItems.length]; // var for multiple select
         service_btn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -167,6 +195,8 @@ public class RoomFormActivity extends AppCompatActivity implements BSImagePicker
             }
         });
 
+
+
         map_imgBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -174,8 +204,8 @@ public class RoomFormActivity extends AppCompatActivity implements BSImagePicker
                 startActivity(intent);
             }
         });
-    }
 
+    }
 
     private void showActionBar() {
         LayoutInflater inflator = (LayoutInflater) this.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
@@ -197,47 +227,39 @@ public class RoomFormActivity extends AppCompatActivity implements BSImagePicker
         actionBar.setCustomView(v);
     }
 
-    public void uploadMultipart(Uri filePath) {
 
-        //getting the actual path of the image
-        String path = getPath(filePath);
+    public void uploadMultipart(List<Uri> filePath) {
+
+        /* *********************************************************************
+         * **********************  place to upload data to server ******************
+         ******************************************************************* */
 
         //Uploading code
         try {
             String uploadId = UUID.randomUUID().toString();
 
             //Creating a multi part request
-            new MultipartUploadRequest(this, uploadId, UPLOAD_URL)
-                    .addFileToUpload(path, "image") //Adding file
+            MultipartUploadRequest mUploadRequest = new MultipartUploadRequest(this, uploadId, UPLOAD_URL)
                     .addParameter("caption", "Nothing") //Adding text parameter to the request
+
                     .setNotificationConfig(new UploadNotificationConfig())
-                    .setMaxRetries(2)
-                    .startUpload(); //Starting the upload
+                    .setMaxRetries(2); // try request at least 2 time before give up
+
+            for(int i = 0;i < filePath.size();i++){
+                // add many imgs to the request
+                String path = filePath.get(i).getPath();
+                mUploadRequest.addFileToUpload(path, "imgs"+"["+i+"]");
+            }
+
+            mUploadRequest.startUpload();
+
+            Toast.makeText(this,"Upload successful", Toast.LENGTH_SHORT).show();
         } catch (Exception exc) {
-            Toast.makeText(this, exc.getMessage(), Toast.LENGTH_SHORT).show();
+            Toast.makeText(this,"Multipart Error" + exc.getMessage(), Toast.LENGTH_SHORT).show();
         }
     }
 
-    public String getPath(Uri uri) {
-        Cursor cursor = getContentResolver().query(uri, null, null, null, null);
-        cursor.moveToFirst();
-        String document_id = cursor.getString(0);
-        document_id = document_id.substring(document_id.lastIndexOf(":") + 1);
-        cursor.close();
-
-        cursor = getContentResolver().query(
-                android.provider.MediaStore.Images.Media.EXTERNAL_CONTENT_URI,
-                null, MediaStore.Images.Media._ID + " = ? ", new String[]{document_id}, null);
-        cursor.moveToFirst();
-        String path = cursor.getString(cursor.getColumnIndex(MediaStore.Images.Media.DATA));
-        cursor.close();
-
-        return path;
-    }
-
-
     // image selection handling
-
     @Override
     public void loadImage(File imageFile, ImageView ivImage) {
         Glide.with(RoomFormActivity.this).load(imageFile).into(ivImage);
@@ -248,6 +270,7 @@ public class RoomFormActivity extends AppCompatActivity implements BSImagePicker
         // first clear out all the last img
         img_models_list.clear();
 
+        imgs_uri = uriList;
         for(int i=0;i < uriList.size();i++){
 
             try{
