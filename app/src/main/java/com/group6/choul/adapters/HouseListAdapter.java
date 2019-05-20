@@ -40,7 +40,6 @@ public class HouseListAdapter extends BaseAdapter {
     public View getView(int position, View convertView, ViewGroup parent) {
         View v = View.inflate(context, R.layout.item_each_house,null);
 
-
         TextView textviewTitle = v.findViewById(R.id.title_home);
         TextView textviewPrice = v.findViewById(R.id.price);
         TextView textviewAddress = v.findViewById(R.id.address);
