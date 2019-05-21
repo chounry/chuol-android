@@ -1,28 +1,32 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_gravity="top"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
+    xmlns:tools="http://schemas.android.com/tools"
     android:orientation="vertical"
-    android:background="@drawable/loginbackground">
-    <TextView
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:textAlignment="center"
-        android:textSize="40sp"
-        android:text="Welcome"
-        android:textStyle="bold"
-        android:textColor="#FFFF"
-        android:padding="10dp"
-        android:background="@drawable/loginbackground"
+    android:paddingVertical="25dp"
+    android:background="#48C0E8"
+    tools:context=".MainActivity">
 
-        />
+    <!--<TextView-->
+        <!--android:id="@+id/welcome_tv"-->
+        <!--android:layout_width="match_parent"-->
+        <!--android:layout_height="wrap_content"-->
+        <!--android:textAlignment="center"-->
+        <!--android:textSize="20sp"-->
+        <!--android:text="Welcome"-->
+        <!--android:textStyle="bold"-->
+        <!--android:textColor="#FFFF"-->
+        <!--android:padding="10dp" />-->
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="horizontal"
         android:layout_gravity="center"
-        android:layout_margin="50sp">
+        android:paddingHorizontal="30dp"
+        android:layout_marginVertical="30dp">
         <ImageView
             android:layout_width="150sp"
             android:layout_height="100sp"
@@ -30,25 +34,34 @@
         <TextView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginLeft="10sp"
             android:textColor="#FFFF"
             android:textStyle="bold"
-            android:textSize="40sp"
+            android:textSize="30sp"
             android:layout_marginTop="23dp"
             android:text="Choul"
             />
     </LinearLayout>
-    <ImageView
-        android:layout_width="300dp"
-        android:layout_height="90dp"
+    <ImageButton
+        android:clickable="true"
+        android:layout_width="220dp"
+        android:layout_height="40dp"
+        android:scaleType="centerCrop"
         android:layout_gravity="center"
-        android:src="@drawable/facebook"
-        />
-    <ImageView
-        android:layout_width="300dp"
-        android:layout_height="90dp"
-        android:layout_gravity="center"
-        android:src="@drawable/gmail"
-        />
+        android:background="#00FFFFFF"
+        android:src="@drawable/facebook" />
+
+    <TextView
+        android:clickable="true"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="10dp"
+        android:text="Sign In/Sign Up Account"
+        android:textColor="#fff"
+        android:layout_gravity="center"/>
+    <!--<ImageView-->
+        <!--android:layout_width="200dp"-->
+        <!--android:layout_height="50dp"-->
+        <!--android:layout_gravity="center"-->
+        <!--android:src="@drawable/gmail" />-->
 
 </LinearLayout>
