@@ -5,26 +5,26 @@
 
     <uses-permission android:name="android.permission.INTERNET" />
 
-
     <application
         android:allowBackup="true"
         android:icon="@mipmap/ic_launcher"
         android:label="@string/app_name"
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
-        tools:ignore="GoogleAppIndexingWarning"
-        android:theme="@style/AppTheme">
-        <activity android:name=".ChatActivity"></activity>
-        <activity android:name=".HouseFormActivity"></activity>
-        <activity android:name=".PersonalInfoActivity"></activity>
-        <activity android:name=".RoomFormActivity"></activity>
-        <activity android:name=".housedetailactivity" />
-        <activity android:name=".roomdetailactivity" />
-        <activity android:name=".MapFormActivity"></activity>
+        android:theme="@style/AppTheme"
+        tools:ignore="GoogleAppIndexingWarning">
+        <activity android:name=".MapFormActivity"/>
 
         <meta-data
             android:name="com.google.android.geo.API_KEY"
             android:value="AIzaSyB1dbxszCAqSCrePrLOveBD1XWaBHIM8PU" />
+
+        <activity android:name=".HouseDetailActivity" />
+        <activity android:name=".RoomDetailActivity" />
+        <activity android:name=".PostHistoryActivity"/>
+        <activity android:name=".ChatInActivity" />
+        <activity android:name=".HouseFormActivity" />
+        <activity android:name=".RoomFormActivity" />
         <activity android:name=".MainActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
