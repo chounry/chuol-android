@@ -7,10 +7,15 @@ import android.graphics.drawable.ColorDrawable;
 
 import android.os.Bundle;
 
+import android.text.SpannableString;
+import android.text.style.UnderlineSpan;
+import android.view.Gravity;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
+import android.widget.LinearLayout;
+import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.ActionBarDrawerToggle;
@@ -34,10 +39,10 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     private DrawerLayout drawerLayoutHome;
     private NavigationView navigationViewHome;
     private ActionBarDrawerToggle toggle;
-    Dialog getMydialog;
-    Button btnHouse, btnRoom;
-
+    private Dialog formSelectDialog,loginDialog;
+    private Button btnHouseForm, btnRoomForm;
     private Toolbar toolBar;
+    private TextView welcomeTv;
 
 
     @Override
@@ -45,44 +50,21 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        getMydialog = new Dialog(this);
+        overridePendingTransition(0, 0);
+        formSelectDialog = new Dialog(this);
+        loginDialog = new Dialog(this);
         drawerLayoutHome = findViewById(R.id.drawer_home);
         navigationViewHome = findViewById(R.id.nav_home);
         toolBar = findViewById(R.id.toolbar);
 
-
         setSupportActionBar(toolBar);
+
         toggle = new ActionBarDrawerToggle(this,drawerLayoutHome,toolBar,R.string.opened_menu,R.string.closed_menu);
         drawerLayoutHome.addDrawerListener(toggle);
         toggle.syncState();
         navigationViewHome.setNavigationItemSelectedListener(this);
-        loadFragment(new HomeFragment());
 
-
-        //   handle tap -------------------->
-
-//        loadFragment(new HouseListHomeFragment());
-//        navigationViewHome.setNavigationItemSelectedListener(new NavigationView.OnNavigationItemSelectedListener() {
-//            @Override
-//            public boolean onNavigationItemSelected(@NonNull MenuItem menuItem) {
-//                int id = menuItem.getItemId();
-//                switch (id){
-//                    case R.id.item_home:
-//                        loadFragment(new HouseListHomeFragment());
-//                        return true;
-//                    case R.id.item_saved:
-//                        loadFragment(new SavedPostFragment());
-//                        return true;
-//                    case R.id.item_chat:
-//                        loadFragment(new ChatOutFragment());
-//                        return true;
-//                    case R.id.item_setting:
-//                        loadFragment(new SettingFragment());
-//                        return true;
-//                }
-//                return false;
-//            }
-//        });
+        loadFragment(new HomeFragment()); // init fragment
     }
 
 
@@ -94,7 +76,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 
         switch (item.getItemId()) {
             case R.id.post:
-                showPopup();
+                showFormSelectPopup();
                 return true;
         }
         return super.onOptionsItemSelected(item);
@@ -102,6 +84,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     private void loadFragment(Fragment fragment){
         FragmentManager fm = getSupportFragmentManager();
         FragmentTransaction tr = fm.beginTransaction();
+        tr.setCustomAnimations(R.anim.enter_from_right,R.anim.exit_to_right);
         tr.replace(R.id.container_home,fragment);
         tr.commit();
         drawerLayoutHome.closeDrawers();
@@ -113,12 +96,12 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         return super.onCreateOptionsMenu(menu);
     }
 
-    public void showPopup() {
-        getMydialog.setContentView(R.layout.custom_post_pop_up);
-        btnHouse = getMydialog.findViewById(R.id.btn_house);
-        btnRoom = getMydialog.findViewById(R.id.btn_room);
+    public void showFormSelectPopup() {
+        formSelectDialog.setContentView(R.layout.custom_post_pop_up);
+        btnHouseForm = formSelectDialog.findViewById(R.id.btn_house);
+        btnRoomForm = formSelectDialog.findViewById(R.id.btn_room);
 
-        btnHouse.setOnClickListener( new View.OnClickListener(){
+        btnHouseForm.setOnClickListener( new View.OnClickListener(){
 
             @Override
             public void onClick(View v) {
@@ -126,7 +109,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                 startActivity(intent);
             }
         });
-        btnRoom.setOnClickListener( new View.OnClickListener(){
+        btnRoomForm.setOnClickListener( new View.OnClickListener(){
 
             @Override
             public void onClick(View v) {
@@ -136,8 +119,17 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
             }
         });
 
-        getMydialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
-        getMydialog.show();
+        formSelectDialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
+        formSelectDialog.show();
+    }
+
+    public void showLoginPopUp() {
+        loginDialog.setContentView(R.layout.login);
+
+        loginDialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
+        loginDialog.getWindow().setLayout(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT);
+        loginDialog.getWindow().setGravity(Gravity.TOP);
+        loginDialog.show();
     }
 
     @Override
@@ -156,7 +148,9 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
             loadFragment(new SavedPostFragment());
             return true;
         } else if (id == R.id.item_setting) {
-            loadFragment(new SettingFragment());
+            showLoginPopUp();
+            drawerLayoutHome.closeDrawers();
+//            loadFragment(new SettingFragment());
             return true;
         }
 

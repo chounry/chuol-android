@@ -26,12 +26,12 @@
             android:src="@drawable/filter"/>
     </LinearLayout>
 
-    <ListView
-        android:id="@+id/item_id"
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/post_recyclerView"
         android:layout_width="match_parent"
         android:layout_height="match_parent">
 
-    </ListView>
+    </androidx.recyclerview.widget.RecyclerView>
 
 
 </LinearLayout>

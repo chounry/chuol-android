@@ -1,24 +1,18 @@
 package com.group6.choul.adapters;
 
 import android.content.Context;
-import android.os.Build;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.view.ViewTreeObserver;
 import android.widget.ImageButton;
 import android.widget.ImageView;
-import android.widget.LinearLayout;
 
 import androidx.annotation.NonNull;
-import androidx.annotation.RequiresApi;
 import androidx.cardview.widget.CardView;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.google.android.flexbox.FlexboxLayoutManager;
 import com.group6.choul.R;
 import com.group6.choul.models.ImgFormModel;
-import com.squareup.picasso.Picasso;
 
 import java.util.List;
 
@@ -34,27 +28,15 @@ public class ImgFormAdapter extends RecyclerView.Adapter<ImgViewHolder> {
     @NonNull
     @Override
     public ImgViewHolder onCreateViewHolder(@NonNull ViewGroup viewGroup, int i) {
-//        Log.e("Seomthing","Nothing");
-        View view = LayoutInflater.from(viewGroup.getContext()).inflate(R.layout.img_each_post, null);
+
+        View view = LayoutInflater.from(viewGroup.getContext()).inflate(R.layout.item_each_img, null);
         return new ImgViewHolder(view);
     }
 
     @Override
     public void onBindViewHolder(@NonNull ImgViewHolder imgViewHolder, int i) {
-        Picasso.get().load(imgList.get(i).getImgStr()).into(imgViewHolder.mImgView);
-        final CardView tmpCardView = imgViewHolder.mCardView;
+        imgViewHolder.mImgView.setImageBitmap(imgList.get(i).getImg());
 
-        imgViewHolder.mCardView.getViewTreeObserver().addOnGlobalLayoutListener(new ViewTreeObserver.OnGlobalLayoutListener() {
-            @RequiresApi(api = Build.VERSION_CODES.JELLY_BEAN)
-            @Override
-            public void onGlobalLayout() {
-//                mCardView.getViewTreeObserver().removeGlobalOnLayoutListener(this);
-                int cardWidth = tmpCardView.getWidth();
-                int eachWidth = cardWidth / 2;
-//                FlexboxLayoutManager.LayoutParams param = new FlexboxLayoutManager.LayoutParams(190, ViewGroup.LayoutParams.WRAP_CONTENT);
-//                tmpCardView.setLayoutParams(param);
-            }
-        });
     }
 
     @Override
@@ -81,12 +63,4 @@ class ImgViewHolder extends RecyclerView.ViewHolder {
 
     }
 
-//    void bindTo(Drawable drawable) {
-//        mImgView.setImageDrawable(drawable);
-//        ViewGroup.LayoutParams lp = mImgView.getLayoutParams();
-//        if (lp instanceof FlexboxLayoutManager.LayoutParams) {
-//            FlexboxLayoutManager.LayoutParams flexboxLp = (FlexboxLayoutManager.LayoutParams)lp;
-//            flexboxLp.setFlexGrow(1.0f);
-//        }
-//    }
 }

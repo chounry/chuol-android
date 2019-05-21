@@ -198,7 +198,18 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:text="Upload Image"/>
+
+                <androidx.recyclerview.widget.RecyclerView
+                    android:id="@+id/img_recyler_view"
+                    android:layout_width="match_parent"
+                    android:layout_height="0dp"
+                    android:layout_weight="1"
+                    android:layout_marginBottom="10dp">
+
+                </androidx.recyclerview.widget.RecyclerView>
+
                 <LinearLayout
+                    android:id="@+id/upload_img_btn"
                     android:background="@drawable/message_edit_text_shape"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
@@ -228,12 +239,7 @@
 
                 </LinearLayout>
 
-                <androidx.recyclerview.widget.RecyclerView
-                    android:id="@+id/img_recyler_view"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content">
 
-                </androidx.recyclerview.widget.RecyclerView>
 
                 <!--Google Map-->
                 <LinearLayout
@@ -295,6 +301,7 @@
             </LinearLayout>
 
             <Button
+                android:id="@+id/submit_btn"
                 android:layout_width="match_parent"
                 android:layout_height="50dp"
                 android:background="#48C0E8"

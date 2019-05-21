@@ -1,25 +1,36 @@
 package com.group6.choul;
 
+import android.Manifest;
 import android.app.AlertDialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.pm.PackageManager;
+import android.database.Cursor;
+import android.graphics.Bitmap;
 import android.net.Uri;
 import android.os.Bundle;
+import android.provider.MediaStore;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.Button;
 
+import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.Switch;
+import android.widget.Toast;
 
 
+import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
+import androidx.core.app.ActivityCompat;
+import androidx.core.content.ContextCompat;
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -32,42 +43,74 @@ import com.google.android.flexbox.FlexboxLayoutManager;
 import com.group6.choul.adapters.ImgFormAdapter;
 import com.group6.choul.models.ImgFormModel;
 
+import net.gotev.uploadservice.MultipartUploadRequest;
+import net.gotev.uploadservice.UploadNotificationConfig;
+
 import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.UUID;
 
 public class RoomFormActivity extends AppCompatActivity implements BSImagePicker.OnSingleImageSelectedListener,
         BSImagePicker.OnMultiImageSelectedListener,
-        BSImagePicker.ImageLoaderDelegate {
-    Button service_btn;
-//    TextView mItemSelected;
-    String[] listItems = {"Free Wifi","Available Parking Space"};
-    boolean[] checkedItems;
-    ArrayList<Integer> mUserItems = new ArrayList<>();
+        BSImagePicker.ImageLoaderDelegate{
+
+    private static final int STORAGE_PERMISSION_CODE = 123;
+    private String[] listItems = {"Free Wifi","Available Parking Space"};
+    private boolean[] checkedItems;
+    private ArrayList<Integer> mUserItems = new ArrayList<>(); // store the index of 'listItem' that use have selected
+    private List<ImgFormModel> img_models_list;
+    private RecyclerView.Adapter img_adapter;
+    private List<Uri> imgs_uri;
 
     private ImageButton map_imgBtn;
     private LinearLayout upload_img_btn;
+    private RecyclerView recyclerView;
+    private Button service_btn,submit_btn;
+    private Toolbar myToolbar;
+    private Switch contact_swtich;
+    private EditText price_et;
+
+    private final String UPLOAD_URL = "http://192.168.43.40:8000/api/rooms/create";
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_room_form);
 
+        map_imgBtn = findViewById(R.id.map_imgBtn);
+        recyclerView = findViewById(R.id.img_recyler_view);
+        submit_btn = findViewById(R.id.submit_btn);
+        service_btn = findViewById(R.id.select_service_btn);
+        upload_img_btn = findViewById(R.id.upload_img_btn);
+        myToolbar = findViewById(R.id.my_toolbar);
+        contact_swtich = findViewById(R.id.contact_switch);
+        price_et = findViewById(R.id.price_et);
+
+
         // <------- handle toolbar
-        Toolbar myToolbar = (Toolbar) findViewById(R.id.my_toolbar);
         setSupportActionBar(myToolbar);
         showActionBar();
         // <------- handle toolbar
 
-        //<------------- Handle img upload
-        upload_img_btn = findViewById(R.id.upload_img_btn);
+        contact_swtich.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                price_et.setVisibility(View.VISIBLE);
+                if(contact_swtich.isChecked()){
+                    price_et.setVisibility(View.GONE);
+                }
+            }
+        });
+
+        //<------------- Init img selection
         upload_img_btn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 BSImagePicker multiSelectionPicker = new BSImagePicker.Builder("com.yourdomain.yourpackage.fileprovider")
                         .isMultiSelect() //Set this if you want to use multi selection mode.
-                        .setMinimumMultiSelectCount(3) //Default: 1.
-                        .setMaximumMultiSelectCount(6) //Default: Integer.MAX_VALUE (i.e. User can select as many images as he/she wants)
+                        .setMinimumMultiSelectCount(1) //Default: 1.
+                        .setMaximumMultiSelectCount(10) //Default: Integer.MAX_VALUE (i.e. User can select as many images as he/she wants)
                         .setMultiSelectBarBgColor(android.R.color.white) //Default: #FFFFFF. You can also set it to a translucent color.
                         .setMultiSelectTextColor(R.color.primary_text) //Default: #212121(Dark grey). This is the message in the multi-select bottom bar.
                         .setMultiSelectDoneTextColor(R.color.colorAccent) //Default: #388e3c(Green). This is the color of the "Done" TextView.
@@ -78,31 +121,24 @@ public class RoomFormActivity extends AppCompatActivity implements BSImagePicker
             }
         });
 
-        List<ImgFormModel> img_models_list = new ArrayList<>();
-        img_models_list.add(new ImgFormModel("https://images.unsplash.com/photo-1480074568708-e7b720bb3f09?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&w=1000&q=80"));
-        img_models_list.add(new ImgFormModel("https://www.amaialand.com/wp-content/uploads/2017/04/series-novaliches-townhome-list-img-1.jpg"));
-        img_models_list.add(new ImgFormModel("https://www.amaialand.com/wp-content/uploads/2017/04/series-novaliches-townhome-list-img-1.jpg"));
-        img_models_list.add(new ImgFormModel("https://www.amaialand.com/wp-content/uploads/2017/04/series-novaliches-townhome-list-img-1.jpg"));
-
-        RecyclerView recyclerView = (RecyclerView) findViewById(R.id.img_recyler_view);
+        img_models_list = new ArrayList<>();
         FlexboxLayoutManager layoutManager = new FlexboxLayoutManager();
         layoutManager.setFlexWrap(FlexWrap.WRAP);
         layoutManager.setFlexDirection(FlexDirection.ROW);
         layoutManager.setAlignItems(AlignItems.STRETCH);
         recyclerView.setLayoutManager(new GridLayoutManager(this, 2));
-        RecyclerView.Adapter adapter = new ImgFormAdapter(img_models_list,this);
-        recyclerView.setAdapter(adapter);
-        adapter.notifyDataSetChanged();
-        // Handle img upload ------------------->
+        // Init img upload ------------------->
 
-
-
-        service_btn = findViewById(R.id.select_service_btn);
-
-        map_imgBtn = findViewById(R.id.map_imgBtn);
-        checkedItems = new boolean[listItems.length]; // var for multiple select
+        // submit form
+        submit_btn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                uploadMultipart(imgs_uri);
+            }
+        });
 
         // handle multiple select services
+        checkedItems = new boolean[listItems.length]; // var for multiple select
         service_btn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -159,6 +195,8 @@ public class RoomFormActivity extends AppCompatActivity implements BSImagePicker
             }
         });
 
+
+
         map_imgBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -166,6 +204,7 @@ public class RoomFormActivity extends AppCompatActivity implements BSImagePicker
                 startActivity(intent);
             }
         });
+
     }
 
     private void showActionBar() {
@@ -188,6 +227,39 @@ public class RoomFormActivity extends AppCompatActivity implements BSImagePicker
         actionBar.setCustomView(v);
     }
 
+
+    public void uploadMultipart(List<Uri> filePath) {
+
+        /* *********************************************************************
+         * **********************  place to upload data to server ******************
+         ******************************************************************* */
+
+        //Uploading code
+        try {
+            String uploadId = UUID.randomUUID().toString();
+
+            //Creating a multi part request
+            MultipartUploadRequest mUploadRequest = new MultipartUploadRequest(this, uploadId, UPLOAD_URL)
+                    .addParameter("caption", "Nothing") //Adding text parameter to the request
+
+                    .setNotificationConfig(new UploadNotificationConfig())
+                    .setMaxRetries(2); // try request at least 2 time before give up
+
+            for(int i = 0;i < filePath.size();i++){
+                // add many imgs to the request
+                String path = filePath.get(i).getPath();
+                mUploadRequest.addFileToUpload(path, "imgs"+"["+i+"]");
+            }
+
+            mUploadRequest.startUpload();
+
+            Toast.makeText(this,"Upload successful", Toast.LENGTH_SHORT).show();
+        } catch (Exception exc) {
+            Toast.makeText(this,"Multipart Error" + exc.getMessage(), Toast.LENGTH_SHORT).show();
+        }
+    }
+
+    // image selection handling
     @Override
     public void loadImage(File imageFile, ImageView ivImage) {
         Glide.with(RoomFormActivity.this).load(imageFile).into(ivImage);
@@ -195,7 +267,24 @@ public class RoomFormActivity extends AppCompatActivity implements BSImagePicker
 
     @Override
     public void onMultiImageSelected(List<Uri> uriList, String tag) {
-        Log.e("Here","Is nothing");
+        // first clear out all the last img
+        img_models_list.clear();
+
+        imgs_uri = uriList;
+        for(int i=0;i < uriList.size();i++){
+
+            try{
+                Bitmap bitmap = MediaStore.Images.Media.getBitmap(getContentResolver(), uriList.get(i));
+                img_models_list.add(new ImgFormModel(bitmap));
+            }catch(Exception e){
+                Log.e("Bitamp : " ,e.toString());
+            }
+        }
+
+        // refresh and set new adapter
+        img_adapter = new ImgFormAdapter(img_models_list, this);
+        img_adapter.notifyDataSetChanged();
+        recyclerView.setAdapter(img_adapter);
     }
 
     @Override
