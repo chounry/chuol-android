@@ -1,0 +1,134 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="City"
+        android:textSize="18sp"
+        android:textStyle="bold"
+        android:padding="30dp"
+        />
+    <TableLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:paddingLeft="20sp">
+        <TableRow>
+            <CheckBox android:id="@+id/checkbox_SR"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Siem Reap"
+                android:layout_weight="0.1"
+                android:onClick="onCheckboxClicked"/>
+            <CheckBox android:id="@+id/checkbox_KPC"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Kompomg Cham"
+                android:layout_weight="0.1"
+                android:onClick="onCheckboxClicked"/>
+            <CheckBox android:id="@+id/checkbox_sihanoukville"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Sihanoukville"
+                android:layout_weight="0.1"
+                android:onClick="onCheckboxClicked"/>
+
+        </TableRow>
+
+
+
+    </TableLayout>
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="House type"
+        android:textSize="18sp"
+        android:textStyle="bold"
+        android:padding="30dp"
+        />
+    <TableLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:paddingLeft="20sp">
+        <TableRow>
+            <CheckBox android:id="@+id/checkbox_villa"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="VIlla"
+                android:layout_weight="0.1"
+                android:onClick="onCheckboxClicked"/>
+            <CheckBox android:id="@+id/checkbox_Bugalow"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Bugalow"
+                android:layout_weight="0.1"
+                android:onClick="onCheckboxClicked"/>
+            <CheckBox android:id="@+id/checkbox_simpleHouse"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Simple House"
+                android:layout_weight="0.1"
+                android:onClick="onCheckboxClicked"/>
+
+        </TableRow>
+    </TableLayout>
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Categories"
+        android:textSize="18sp"
+        android:textStyle="bold"
+        android:padding="30dp"
+        />
+    <TableLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:paddingLeft="20sp">
+        <TableRow>
+            <RadioButton
+                android:id="@+id/radio_for_sale"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="For Sale"
+                android:layout_weight="0.2"
+                android:checked="true" />
+            <RadioButton
+                android:id="@+id/radio_for_rent"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_weight="0.2"
+                android:text="For Rent"
+                />
+        </TableRow>
+    </TableLayout>
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Price"
+        android:textSize="18sp"
+        android:textStyle="bold"
+        android:padding="30dp"
+        />
+    <SeekBar
+        android:id="@+id/simpleSeekBar"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:max="200"
+        android:progress="50"/>
+
+    <Button
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="235dp"
+        android:background="#48C0E8"
+        android:text="filter"
+        android:textColor="#FFFF"
+        android:textSize="15sp"
+
+        />
+
+</LinearLayout>
