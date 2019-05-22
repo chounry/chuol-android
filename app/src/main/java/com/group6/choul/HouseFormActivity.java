@@ -10,6 +10,7 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
@@ -47,10 +48,12 @@ public class HouseFormActivity extends AppCompatActivity implements BSImagePicke
     private LinearLayout upload_img_btn;
     private RecyclerView recyclerView;
     private Button submit_btn;
+    private EditText title_et;
 
     private List<ImgFormModel> img_models_list;
     private List<Uri> imgs_uri;
     private ImgFormAdapter img_adapter;
+
 
 
     private final String UPLOAD_URL = "http://192.168.43.40:8000/api/houses/create";
@@ -65,6 +68,8 @@ public class HouseFormActivity extends AppCompatActivity implements BSImagePicke
         map_imgBtn = findViewById(R.id.map_imgBtn);
         upload_img_btn = findViewById(R.id.upload_img_btn);
         submit_btn = findViewById(R.id.submit_btn);
+
+        title_et = findViewById(R.id.title_et);
 
         // <------- handle toolbar
         setSupportActionBar(myToolbar);
@@ -167,7 +172,6 @@ public class HouseFormActivity extends AppCompatActivity implements BSImagePicke
     public void loadImage(File imageFile, ImageView ivImage) {
         Glide.with(HouseFormActivity.this).load(imageFile).into(ivImage);
     }
-
     @Override
     public void onMultiImageSelected(List<Uri> uriList, String tag) {
         // first clear out all the last img
@@ -189,12 +193,10 @@ public class HouseFormActivity extends AppCompatActivity implements BSImagePicke
         img_adapter.notifyDataSetChanged();
         recyclerView.setAdapter(img_adapter);
     }
-
     @Override
     public void onSingleImageSelected(Uri uri, String tag) {
 
     }
-
     @Override
     public void onPointerCaptureChanged(boolean hasCapture) {
 
