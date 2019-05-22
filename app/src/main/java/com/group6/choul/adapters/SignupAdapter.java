@@ -12,6 +12,7 @@ import com.group6.choul.fragments.SignupFragement;
 public class SignupAdapter extends FragmentPagerAdapter {
 
     int numTab;
+    int some;
 
     public SignupAdapter(FragmentManager fm, int numTab) {
         super(fm);
