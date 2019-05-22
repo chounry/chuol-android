@@ -3,19 +3,21 @@ package com.group6.choul.fragments;
 import android.content.Intent;
 import android.os.Build;
 import android.os.Bundle;
-import android.support.annotation.NonNull;
-import android.support.annotation.Nullable;
-import android.support.annotation.RequiresApi;
 
-import android.support.v4.app.Fragment;
+
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ListView;
 
+
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+import androidx.annotation.RequiresApi;
+import androidx.fragment.app.Fragment;
+
 import com.group6.choul.ChatInActivity;
-import com.group6.choul.HouseDetailActivity;
 import com.group6.choul.R;
 import com.group6.choul.models.ChatModel;
 import com.group6.choul.adapters.ListChatAdapter;
@@ -33,7 +35,7 @@ public class ChatOutFragment extends Fragment {
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        View v = inflater.inflate(R.layout.chat_out,container,false);
+        View v = inflater.inflate(R.layout.chat_out_fragment,container,false);
         listView = v.findViewById(R.id.item_chat_id);
         ChatModelist = new ArrayList<>();
 

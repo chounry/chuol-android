@@ -1,6 +1,5 @@
 package com.group6.choul.models;
 
-import android.support.annotation.Nullable;
 
 public class MessageModel {
     private String message, user_img;

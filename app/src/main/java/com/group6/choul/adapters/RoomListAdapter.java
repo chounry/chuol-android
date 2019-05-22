@@ -38,7 +38,7 @@ public class RoomListAdapter  extends BaseAdapter {
 
     @Override
     public View getView(int position, View convertView, ViewGroup parent) {
-        View v =View.inflate(context, R.layout.room_each_item,null);
+        View v = View.inflate(context, R.layout.room_each_item,null);
 
 
         TextView textviewTitle = v.findViewById(R.id.title_home);

@@ -1,22 +1,35 @@
 package com.group6.choul;
 
+import android.annotation.TargetApi;
+import android.app.AlertDialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.net.Uri;
+import android.os.Build;
 import android.os.Bundle;
-import android.support.annotation.Nullable;
-import android.support.v7.app.ActionBar;
-import android.support.v7.app.AlertDialog;
-import android.support.v7.app.AppCompatActivity;
-import android.support.v7.widget.RecyclerView;
-import android.support.v7.widget.Toolbar;
+
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.Button;
 
 import android.widget.ImageButton;
+import android.widget.ImageView;
+import android.widget.LinearLayout;
 
 
+
+import androidx.annotation.Nullable;
+import androidx.annotation.RequiresApi;
+import androidx.appcompat.app.ActionBar;
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.Toolbar;
+import androidx.recyclerview.widget.GridLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
+
+import com.asksira.bsimagepicker.BSImagePicker;
+import com.bumptech.glide.Glide;
 import com.google.android.flexbox.AlignItems;
 import com.google.android.flexbox.FlexDirection;
 import com.google.android.flexbox.FlexWrap;
@@ -24,10 +37,13 @@ import com.google.android.flexbox.FlexboxLayoutManager;
 import com.group6.choul.adapters.ImgFormAdapter;
 import com.group6.choul.models.ImgFormModel;
 
+import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
 
-public class RoomFormActivity extends AppCompatActivity{
+public class RoomFormActivity extends AppCompatActivity implements BSImagePicker.OnSingleImageSelectedListener,
+        BSImagePicker.OnMultiImageSelectedListener,
+        BSImagePicker.ImageLoaderDelegate {
     Button service_btn;
 //    TextView mItemSelected;
     String[] listItems = {"Free Wifi","Available Parking Space"};
@@ -35,11 +51,14 @@ public class RoomFormActivity extends AppCompatActivity{
     ArrayList<Integer> mUserItems = new ArrayList<>();
 
     private ImageButton map_imgBtn;
+    private LinearLayout upload_img_btn;
 
+    @TargetApi(Build.VERSION_CODES.LOLLIPOP)
+    @RequiresApi(api = Build.VERSION_CODES.LOLLIPOP)
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.room_form_activity);
+        setContentView(R.layout.activity_room_form);
 
         // <------- handle toolbar
         Toolbar myToolbar = (Toolbar) findViewById(R.id.my_toolbar);
@@ -47,7 +66,25 @@ public class RoomFormActivity extends AppCompatActivity{
         showActionBar();
         // <------- handle toolbar
 
-        //<------------- Handle img upload layout
+        //<------------- Handle img upload
+        upload_img_btn = findViewById(R.id.upload_img_btn);
+        upload_img_btn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                BSImagePicker multiSelectionPicker = new BSImagePicker.Builder("com.yourdomain.yourpackage.fileprovider")
+                        .isMultiSelect() //Set this if you want to use multi selection mode.
+                        .setMinimumMultiSelectCount(3) //Default: 1.
+                        .setMaximumMultiSelectCount(6) //Default: Integer.MAX_VALUE (i.e. User can select as many images as he/she wants)
+                        .setMultiSelectBarBgColor(android.R.color.white) //Default: #FFFFFF. You can also set it to a translucent color.
+                        .setMultiSelectTextColor(R.color.primary_text) //Default: #212121(Dark grey). This is the message in the multi-select bottom bar.
+                        .setMultiSelectDoneTextColor(R.color.colorAccent) //Default: #388e3c(Green). This is the color of the "Done" TextView.
+                        .setOverSelectTextColor(R.color.error_text) //Default: #b71c1c. This is the color of the message shown when user tries to select more than maximum select count.
+                        .disableOverSelectionMessage() //You can also decide not to show this over select message.
+                        .build();
+                multiSelectionPicker.show(getSupportFragmentManager(), "picker");
+            }
+        });
+
         List<ImgFormModel> img_models_list = new ArrayList<>();
         img_models_list.add(new ImgFormModel("https://images.unsplash.com/photo-1480074568708-e7b720bb3f09?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&w=1000&q=80"));
         img_models_list.add(new ImgFormModel("https://www.amaialand.com/wp-content/uploads/2017/04/series-novaliches-townhome-list-img-1.jpg"));
@@ -59,11 +96,11 @@ public class RoomFormActivity extends AppCompatActivity{
         layoutManager.setFlexWrap(FlexWrap.WRAP);
         layoutManager.setFlexDirection(FlexDirection.ROW);
         layoutManager.setAlignItems(AlignItems.STRETCH);
-        recyclerView.setLayoutManager(layoutManager);
+        recyclerView.setLayoutManager(new GridLayoutManager(this, 2));
         RecyclerView.Adapter adapter = new ImgFormAdapter(img_models_list,this);
         recyclerView.setAdapter(adapter);
         adapter.notifyDataSetChanged();
-        // Handle img upload layout ------------------->
+        // Handle img upload ------------------->
 
 
 
@@ -119,7 +156,6 @@ public class RoomFormActivity extends AppCompatActivity{
                         for (int i = 0; i < checkedItems.length; i++) {
                             checkedItems[i] = false;
                             mUserItems.clear();
-//                            mItemSelected.setText("");
                         }
                     }
                 });
@@ -157,5 +193,25 @@ public class RoomFormActivity extends AppCompatActivity{
         actionBar.setDisplayShowCustomEnabled(true);
         actionBar.setDisplayShowTitleEnabled(false);
         actionBar.setCustomView(v);
+    }
+
+    @Override
+    public void loadImage(File imageFile, ImageView ivImage) {
+        Glide.with(RoomFormActivity.this).load(imageFile).into(ivImage);
+    }
+
+    @Override
+    public void onMultiImageSelected(List<Uri> uriList, String tag) {
+        Log.e("Here","Is nothing");
+    }
+
+    @Override
+    public void onSingleImageSelected(Uri uri, String tag) {
+
+    }
+
+    @Override
+    public void onPointerCaptureChanged(boolean hasCapture) {
+
     }
 }

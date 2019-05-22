@@ -13,7 +13,7 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme"
         tools:ignore="GoogleAppIndexingWarning">
-        <activity android:name=".MapFormActivity"></activity>
+        <activity android:name=".MapFormActivity"/>
 
         <meta-data
             android:name="com.google.android.geo.API_KEY"
@@ -21,10 +21,8 @@
 
         <activity android:name=".HouseDetailActivity" />
         <activity android:name=".RoomDetailActivity" />
-
         <activity android:name=".PostHistoryActivity"/>
         <activity android:name=".ChatInActivity" />
-        <activity android:name=".FilterActivity" />
         <activity android:name=".HouseFormActivity" />
         <activity android:name=".RoomFormActivity" />
         <activity android:name=".MainActivity">

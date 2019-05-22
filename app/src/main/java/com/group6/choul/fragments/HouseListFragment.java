@@ -3,21 +3,22 @@ package com.group6.choul.fragments;
 import android.content.Intent;
 import android.os.Build;
 import android.os.Bundle;
-import android.support.annotation.NonNull;
-import android.support.annotation.Nullable;
-import android.support.annotation.RequiresApi;
-import android.support.v4.app.Fragment;
+
+
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
-import android.widget.LinearLayout;
 import android.widget.ListView;
 
-import com.group6.choul.FilterActivity;
+
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+import androidx.annotation.RequiresApi;
+import androidx.fragment.app.Fragment;
+
 import com.group6.choul.HouseDetailActivity;
 import com.group6.choul.R;
-import com.group6.choul.RoomDetailActivity;
 import com.group6.choul.models.HomeModel;
 import com.group6.choul.adapters.HouseListAdapter;
 
@@ -29,7 +30,6 @@ public class HouseListFragment extends Fragment {
     private ListView listView ;
     private List<HomeModel> HomeModelist;
     private HouseListAdapter adapter;
-    private LinearLayout filter_linear_btn;
 
     @RequiresApi(api = Build.VERSION_CODES.M)
     @Nullable
@@ -37,8 +37,6 @@ public class HouseListFragment extends Fragment {
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View v = inflater.inflate(R.layout.post_list_fragment,container,false);
         listView = v.findViewById(R.id.item_id);
-
-        filter_linear_btn = v.findViewById(R.id.filter_linear_btn);
         HomeModelist = new ArrayList<>();
 
 
@@ -52,15 +50,6 @@ public class HouseListFragment extends Fragment {
 
         adapter = new HouseListAdapter(getContext(),HomeModelist);
         listView.setAdapter(adapter);
-        filter_linear_btn.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-
-                Intent intent = new Intent(getActivity(), FilterActivity.class);
-                startActivity(intent);
-            }
-        });
-
 
         listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
