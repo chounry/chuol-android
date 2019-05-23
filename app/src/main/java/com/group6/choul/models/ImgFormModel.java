@@ -1,17 +1,19 @@
 package com.group6.choul.models;
 
+import android.graphics.Bitmap;
+
 public class ImgFormModel {
-    private String imgStr;
+    private Bitmap img;
 
-    public ImgFormModel(String imgStr) {
-        this.imgStr = imgStr;
+    public ImgFormModel(Bitmap imgStr) {
+        this.img = imgStr;
     }
 
-    public String getImgStr() {
-        return imgStr;
+    public Bitmap getImg() {
+        return img;
     }
 
-    public void setImgStr(String imgStr) {
-        this.imgStr = imgStr;
+    public void setImg(Bitmap imgStr) {
+        this.img = imgStr;
     }
 }

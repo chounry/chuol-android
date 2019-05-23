@@ -7,6 +7,7 @@
     xmlns:android="http://schemas.android.com/apk/res/android">
 
     <androidx.appcompat.widget.Toolbar
+        android:focusableInTouchMode="true"
         android:id="@+id/my_toolbar"
         android:layout_width="match_parent"
         android:layout_height="?attr/actionBarSize"
@@ -17,7 +18,6 @@
 
     <ScrollView
         xmlns:android="http://schemas.android.com/apk/res/android"
-        xmlns:tools="http://schemas.android.com/tools"
         android:layout_width="match_parent"
         android:layout_height="match_parent">
 
@@ -49,7 +49,7 @@
                     android:id="@+id/title_et"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginBottom="15dp"
+                    android:layout_marginBottom="20dp"
                     android:hint="Title"
                     android:textSize="14sp" />
 
@@ -57,7 +57,7 @@
                     android:id="@+id/description_et"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginBottom="15dp"
+                    android:layout_marginBottom="20dp"
                     android:hint="Description (Optional)"
                     android:textSize="14sp" />
 
@@ -67,7 +67,7 @@
                     android:id="@+id/size_et"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginBottom="15dp"
+                    android:layout_marginBottom="20dp"
                     android:hint="Room Size : eg 10m x 6m"
                     android:textSize="14sp" />
 
@@ -75,7 +75,7 @@
                     android:id="@+id/select_service_btn"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginBottom="15dp"
+                    android:layout_marginBottom="20dp"
                     android:background="@drawable/message_edit_text_shape"
                     android:drawableRight="@drawable/ic_keyboard_arrow_down_black_24dp"
                     android:padding="5dp"
@@ -89,7 +89,7 @@
                     android:id="@+id/phone_et"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginBottom="15dp"
+                    android:layout_marginBottom="20dp"
                     android:hint="Phone Number #1"
                     android:inputType="phone"
                     android:textSize="14sp" />
@@ -98,7 +98,7 @@
                     android:id="@+id/phone_opt_et"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginBottom="15dp"
+                    android:layout_marginBottom="20dp"
                     android:hint="Phone Number #2 (Optional)"
                     android:inputType="phone"
                     android:textSize="14sp" />
@@ -107,7 +107,7 @@
                     android:id="@+id/address_et"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginBottom="15dp"
+                    android:layout_marginBottom="20dp"
                     android:hint="Address : eg Preah Monivong Blvd, Sangkat Srah Chork, Khan Daun Penh #6"
                     android:textSize="14sp" />
 
@@ -116,7 +116,7 @@
                     android:id="@+id/city_spinner"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginBottom="15dp"
+                    android:layout_marginBottom="20dp"
                     android:background="@drawable/spinner_border"
                     android:entries="@array/cities"
                     android:paddingVertical="15dp"
@@ -126,7 +126,7 @@
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginBottom="15dp"
+                    android:layout_marginBottom="20dp"
                     android:orientation="horizontal">
 
                     <TextView
@@ -135,6 +135,7 @@
                         android:text="Contact for Price" />
 
                     <Switch
+                        android:id="@+id/contact_switch"
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
                         android:layout_weight="1"
@@ -142,9 +143,10 @@
                 </LinearLayout>
 
                 <EditText
+                    android:id="@+id/price_et"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginBottom="15dp"
+                    android:layout_marginBottom="20dp"
                     android:hint="Price"
                     android:textSize="14sp" />
 
@@ -153,6 +155,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:background="@drawable/spinner_border"
+
                     android:entries="@array/currencies"
                     android:paddingVertical="15dp"
                     android:prompt="@string/currency_promt"></Spinner>
@@ -161,7 +164,7 @@
                     android:id="@+id/duration_spinner"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginBottom="15dp"
+                    android:layout_marginBottom="20dp"
                     android:background="@drawable/spinner_border"
                     android:entries="@array/duration"
                     android:paddingVertical="15dp"
@@ -191,6 +194,7 @@
                     android:background="@drawable/message_edit_text_shape"
                     android:gravity="center"
                     android:orientation="vertical"
+                    android:layout_marginBottom="20dp"
                     android:paddingVertical="15dp">
 
                     <ImageView
@@ -283,6 +287,7 @@
             </LinearLayout>
 
             <Button
+                android:id="@+id/submit_btn"
                 android:layout_width="match_parent"
                 android:layout_height="50dp"
                 android:background="#48C0E8"

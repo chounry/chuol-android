@@ -41,7 +41,7 @@ public class ListChatAdapter extends BaseAdapter {
 
     @Override
     public View getView(int position, View convertView, ViewGroup parent) {
-        View v =View.inflate(context, R.layout.each_chat_item,null);
+        View v =View.inflate(context, R.layout.item_each_chat,null);
 
 
         ImageView imageView  = v.findViewById(R.id.profile_image);

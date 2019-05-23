@@ -8,7 +8,7 @@
         android:layout_width="300dp"
         android:layout_height="300dp"
         android:layout_gravity="center"
-        android:src="@drawable/header"
+        android:src="@drawable/favorite"
         />
     <TextView
         android:layout_width="match_parent"
