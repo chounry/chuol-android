@@ -63,12 +63,4 @@ class ImgViewHolder extends RecyclerView.ViewHolder {
 
     }
 
-//    void bindTo(Drawable drawable) {
-//        mImgView.setImageDrawable(drawable);
-//        ViewGroup.LayoutParams lp = mImgView.getLayoutParams();
-//        if (lp instanceof FlexboxLayoutManager.LayoutParams) {
-//            FlexboxLayoutManager.LayoutParams flexboxLp = (FlexboxLayoutManager.LayoutParams)lp;
-//            flexboxLp.setFlexGrow(1.0f);
-//        }
-//    }
 }
