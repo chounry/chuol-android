@@ -71,7 +71,7 @@ public class RoomFormActivity extends AppCompatActivity implements BSImagePicker
     private Switch contact_swtich;
     private EditText price_et;
 
-    private final String UPLOAD_URL = "http://192.168.43.40:8000/api/rooms/create";
+    private final String UPLOAD_URL = "http://192.168.100.208:8000/api/rooms/create";
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -133,6 +133,7 @@ public class RoomFormActivity extends AppCompatActivity implements BSImagePicker
         submit_btn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+
                 uploadMultipart(imgs_uri);
             }
         });
