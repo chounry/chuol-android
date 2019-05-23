@@ -12,9 +12,10 @@
         android:label="@string/app_name"
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
+        android:name=".login_register_handling.MyApp"
         android:theme="@style/AppTheme"
         tools:ignore="GoogleAppIndexingWarning">
-        <activity android:name=".login_register_handling.RegisterActivity"></activity>
+        <!--<activity android:name=".login_register_handling.RegisterActivity"/>-->
         <activity android:name=".MapFormActivity" />
 
         <meta-data
@@ -27,13 +28,15 @@
         <activity android:name=".ChatInActivity" />
         <activity android:name=".HouseFormActivity" />
         <activity android:name=".RoomFormActivity" />
-        <activity android:name=".MainActivity">
+
+        <activity android:name=".RegisterActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-    </application>
+
+</application>
 
 </manifest>

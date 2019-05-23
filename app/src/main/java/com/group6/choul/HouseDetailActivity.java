@@ -2,8 +2,10 @@ package com.group6.choul;
 
 import android.os.Bundle;
 
+
 import android.view.WindowManager;
 import android.widget.FrameLayout;
+
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;

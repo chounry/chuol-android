@@ -1,13 +1,18 @@
 package com.group6.choul;
 
 import android.content.Context;
+import android.os.Build;
 import android.os.Bundle;
+
 
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.ImageButton;
 import android.widget.ListView;
 
+
+
+import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
@@ -24,6 +29,7 @@ public class ChatInActivity extends AppCompatActivity {
     private List<MessageModel> messageModelList;
     private MessageListAdapter messageAdapter;
 
+    @RequiresApi(api = Build.VERSION_CODES.LOLLIPOP)
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);

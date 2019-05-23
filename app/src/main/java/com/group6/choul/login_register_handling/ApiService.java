@@ -8,5 +8,5 @@ import retrofit2.http.POST;
 public interface ApiService {
     @POST("register")
     @FormUrlEncoded
-    Call<AccessToken> register(@Field("fname") String fname, @Field("lname") String email, @Field("password") String password , @Field("phone") String phone);
+    Call<AccessToken> register(@Field("fname") String fname, @Field("lname") String laname,@Field("email") String email, @Field("password") String password , @Field("phone") String phone);
 }

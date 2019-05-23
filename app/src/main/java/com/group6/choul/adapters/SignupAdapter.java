@@ -2,20 +2,21 @@ package com.group6.choul.adapters;
 
 
 
-
-
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentPagerAdapter;
 
 import com.group6.choul.fragments.HouseListFragment;
 import com.group6.choul.fragments.RoomListFragment;
+import com.group6.choul.fragments.SigninFragement;
+import com.group6.choul.fragments.SignupFragement;
 
-public class PageAdapter extends FragmentPagerAdapter {
+public class SignupAdapter extends FragmentPagerAdapter {
 
     int numTab;
+    int some;
 
-    public PageAdapter(FragmentManager fm, int numTab) {
+    public SignupAdapter(FragmentManager fm, int numTab) {
         super(fm);
         this.numTab = numTab;
     }
@@ -24,9 +25,9 @@ public class PageAdapter extends FragmentPagerAdapter {
     public Fragment getItem(int i) {
         switch(i){
             case 0:
-                return new HouseListFragment();
+                return new SignupFragement();
             case 1:
-                return new RoomListFragment();
+                return new SigninFragement();
         }
         return null;
     }
@@ -36,3 +37,4 @@ public class PageAdapter extends FragmentPagerAdapter {
         return this.numTab;
     }
 }
+
