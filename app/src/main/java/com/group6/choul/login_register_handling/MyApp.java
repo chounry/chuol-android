@@ -10,10 +10,10 @@ public class MyApp extends Application {
     public void onCreate() {
         super.onCreate();
         Stetho.initializeWithDefaults(this);
-        if(LeakCanary.isInAnalyzerProcess(this)){
-
-            return;
-        }
-        LeakCanary.install(this);
+//        if(LeakCanary.isInAnalyzerProcess(this)){
+//
+//            return;
+//        }
+//        LeakCanary.install(this);
     }
 }

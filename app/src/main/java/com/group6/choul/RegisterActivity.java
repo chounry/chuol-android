@@ -6,14 +6,13 @@ import android.widget.EditText;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import com.basgeekball.awesomevalidation.AwesomeValidation;
+import com.google.android.material.textfield.TextInputLayout;
 import com.group6.choul.login_register_handling.AccessToken;
 import com.group6.choul.login_register_handling.ApiError;
 import com.group6.choul.login_register_handling.ApiService;
 import com.group6.choul.login_register_handling.RetrofitBuilder;
 import com.group6.choul.login_register_handling.Utils;
-
-import java.io.IOException;
-import java.lang.annotation.Annotation;
 import java.util.List;
 import java.util.Map;
 
@@ -30,21 +29,21 @@ import retrofit2.Response;
 public class RegisterActivity extends AppCompatActivity {
 
     @BindView(R.id.fname_et)
-    EditText fname_et;
+    TextInputLayout fname_et;
     @BindView(R.id.lname_et)
-    EditText lname_et;
+    TextInputLayout lname_et;
     @BindView(R.id.email_et)
-    EditText email_et;
+    TextInputLayout email_et;
     @BindView(R.id.phone_et)
-    EditText phone_et;
+    TextInputLayout phone_et;
     @BindView(R.id.password_et)
-    EditText password_et;
+    TextInputLayout password_et;
     @BindView(R.id.confirm_password_et)
-    EditText confirm_password_et;
+    TextInputLayout confirm_password_et;
 
     ApiService service;
     Call<AccessToken> call;
-
+    AwesomeValidation validation;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -52,17 +51,16 @@ public class RegisterActivity extends AppCompatActivity {
         setContentView(R.layout.activity_register);
         ButterKnife.bind(this);
         service = RetrofitBuilder.createService(ApiService.class);
-
-
     }
 
     @OnClick(R.id.submit_btn)
     void register(){
-        String fname = fname_et.getText().toString();
-        String lname = lname_et.getText().toString();
-        String email = email_et.getText().toString();
-        String password = password_et.getText().toString();
-        String phone = phone_et.getText().toString();
+        String fname = fname_et.getEditText().getText().toString();
+        String lname = lname_et.getEditText().getText().toString();
+        String email = email_et.getEditText().getText().toString();
+        String password = password_et.getEditText().getText().toString();
+        String phone = phone_et.getEditText().getText().toString();
+        String con_password = confirm_password_et.getEditText().getText().toString();
 
         fname_et.setError(null);
         lname_et.setError(null);
@@ -70,7 +68,7 @@ public class RegisterActivity extends AppCompatActivity {
         password_et.setError(null);
         phone_et.setError(null);
 
-        call = service.register(fname,lname,email,password,phone);
+        call = service.register(fname,lname,email,password,con_password,phone);
         call.enqueue(new Callback<AccessToken>() {
             @Override
             public void onResponse(Call<AccessToken> call, Response<AccessToken> response) {
@@ -87,6 +85,10 @@ public class RegisterActivity extends AppCompatActivity {
 
             }
         });
+
+    }
+
+    public void setupValidation(){
 
     }
 

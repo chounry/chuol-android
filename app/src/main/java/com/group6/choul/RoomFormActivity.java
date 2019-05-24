@@ -168,7 +168,6 @@ public class RoomFormActivity extends AppCompatActivity implements BSImagePicker
                                 item = item + ", ";
                             }
                         }
-//                        mItemSelected.setText(item);
                     }
                 });
 

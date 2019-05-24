@@ -92,6 +92,8 @@ public class HouseFormActivity extends AppCompatActivity implements BSImagePicke
                 multiSelectionPicker.show(getSupportFragmentManager(), "picker");
             }
         });
+
+
         img_models_list = new ArrayList<>();
         FlexboxLayoutManager layoutManager = new FlexboxLayoutManager();
         layoutManager.setFlexWrap(FlexWrap.WRAP);
@@ -111,6 +113,7 @@ public class HouseFormActivity extends AppCompatActivity implements BSImagePicke
         submit_btn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+
                 uploadMultipart(imgs_uri);
             }
         });
@@ -150,6 +153,7 @@ public class HouseFormActivity extends AppCompatActivity implements BSImagePicke
             //Creating a multi part request
             MultipartUploadRequest mUploadRequest = new MultipartUploadRequest(this, uploadId, UPLOAD_URL)
                     .addParameter("caption", "Nothing") //Adding text parameter to the request
+
                     .setNotificationConfig(new UploadNotificationConfig())
                     .setMaxRetries(2); // try request at least 2 time before give up
 

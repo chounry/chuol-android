@@ -28,8 +28,8 @@
         <activity android:name=".ChatInActivity" />
         <activity android:name=".HouseFormActivity" />
         <activity android:name=".RoomFormActivity" />
-
-        <activity android:name=".RegisterActivity">
+        <activity android:name=".LoginRegisterActivity" />
+        <activity android:name=".MainActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 

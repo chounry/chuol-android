@@ -1,14 +1,14 @@
 package com.group6.choul;
 
 import android.app.Dialog;
+import android.content.Context;
 import android.content.Intent;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
 
 import android.os.Bundle;
 
-import android.text.SpannableString;
-import android.text.style.UnderlineSpan;
+import android.util.Log;
 import android.view.Gravity;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -18,6 +18,7 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.appcompat.app.ActionBarDrawerToggle;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
@@ -33,6 +34,10 @@ import com.group6.choul.fragments.ChatOutFragment;
 import com.group6.choul.fragments.HomeFragment;
 import com.group6.choul.fragments.SavedPostFragment;
 import com.group6.choul.fragments.SettingFragment;
+import com.group6.choul.login_register_handling.TokenManager;
+
+import butterknife.ButterKnife;
+import butterknife.OnClick;
 
 public class MainActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener{
 
@@ -42,7 +47,9 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     private Dialog formSelectDialog,loginDialog;
     private Button btnHouseForm, btnRoomForm;
     private Toolbar toolBar;
-    private TextView welcomeTv;
+    TokenManager tokenManager;
+
+    private final int REGISTER_CODE = 0;
 
 
     @Override
@@ -50,7 +57,10 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        overridePendingTransition(0, 0);
+        ButterKnife.bind(this);
+        tokenManager = TokenManager.getInstance(getSharedPreferences("prefs", MODE_PRIVATE));
+        tokenManager.deleteToken();
+        
         formSelectDialog = new Dialog(this);
         loginDialog = new Dialog(this);
         drawerLayoutHome = findViewById(R.id.drawer_home);
@@ -124,7 +134,16 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     }
 
     public void showLoginPopUp() {
-        loginDialog.setContentView(R.layout.login);
+        loginDialog.setContentView(R.layout.dialog_login);
+        TextView login_sign_up_btn = loginDialog.findViewById(R.id.login_sign_up_btn);
+        login_sign_up_btn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(getApplicationContext(), LoginRegisterActivity.class);
+                startActivityForResult(intent,REGISTER_CODE);
+                finish();
+            }
+        });
 
         loginDialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
         loginDialog.getWindow().setLayout(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT);
@@ -142,15 +161,22 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
             loadFragment(new HomeFragment());
             return true;
         } else if (id == R.id.item_chat) {
-            loadFragment(new ChatOutFragment());
+            if(tokenManager.getToken() == null){
+                showLoginPopUp();
+            }else {
+                loadFragment(new ChatOutFragment());
+            }
+
             return true;
         } else if (id == R.id.item_saved) {
-            loadFragment(new SavedPostFragment());
+            if(tokenManager.getToken() == null){
+                showLoginPopUp();
+            }else {
+                loadFragment(new SavedPostFragment());
+            }
             return true;
         } else if (id == R.id.item_setting) {
-            showLoginPopUp();
-            drawerLayoutHome.closeDrawers();
-//            loadFragment(new SettingFragment());
+                showLoginPopUp();
             return true;
         }
 
@@ -162,6 +188,16 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     @Override
     public void onPointerCaptureChanged(boolean hasCapture) {
 
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if((resultCode == 200 || requestCode == 300) && requestCode == 0){
+
+            tokenManager = TokenManager.getInstance(getSharedPreferences("prefs", MODE_PRIVATE));
+            Log.e("Nothing",tokenManager.getToken().getAccessToken()+"");
+        }
     }
 }
 

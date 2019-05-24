@@ -33,8 +33,6 @@ public class HomeFragment extends Fragment {
 
     }
 
-
-
     @RequiresApi(api = Build.VERSION_CODES.M)
     @Nullable
     @Override
@@ -46,6 +44,7 @@ public class HomeFragment extends Fragment {
         tab_adapter = new PageAdapter(getChildFragmentManager(),tabLayout.getTabCount());
         // <------------   handle tap
 //        tab_adapter = new PageAdapter(getActivity().getSupportFragmentManager(), tabLayout.getTabCount());
+
         tabPageView.setAdapter(tab_adapter);
         tabPageView.setOffscreenPageLimit(0);
 
@@ -63,9 +62,6 @@ public class HomeFragment extends Fragment {
 
             }
         });
-
-
-
 
         tabPageView.addOnPageChangeListener(new TabLayout.TabLayoutOnPageChangeListener(tabLayout));
         return v;

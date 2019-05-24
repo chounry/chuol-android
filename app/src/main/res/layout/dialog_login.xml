@@ -51,10 +51,11 @@
         android:src="@drawable/facebook" />
 
     <TextView
+        android:id="@+id/login_sign_up_btn"
         android:clickable="true"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="10dp"
+        android:layout_marginTop="25dp"
         android:text="Sign In/Sign Up Account"
         android:textColor="#fff"
         android:layout_gravity="center"/>

@@ -6,8 +6,8 @@
     xmlns:app="http://schemas.android.com/apk/res-auto">
 
 
-    <android.support.design.widget.TabLayout
-        android:id="@+id/tab_h"
+    <com.google.android.material.tabs.TabLayout
+        android:id="@+id/login_signup_tab_layout"
         android:layout_width="match_parent"
         android:layout_height="40dp"
         app:tabTextColor="#8F8F8F"
@@ -15,25 +15,25 @@
         app:tabBackground="@drawable/tab_color_selector"
         app:tabIndicatorHeight="0dp">
 
-        <android.support.design.widget.TabItem
+        <com.google.android.material.tabs.TabItem
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:text="Home"
-            android:id="@+id/home_tab" />
+            android:text="Login"
+            android:id="@+id/login_tab" />
 
-        <android.support.design.widget.TabItem
+        <com.google.android.material.tabs.TabItem
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:text="Room"
-            android:id="@+id/room_tab" />
+            android:text="Sign Up"
+            android:id="@+id/sign_up_tab" />
 
-    </android.support.design.widget.TabLayout>
+    </com.google.android.material.tabs.TabLayout>
 
-    <android.support.v4.view.ViewPager
-        android:id="@+id/viewPage_signin"
+    <androidx.viewpager.widget.ViewPager
+        android:id="@+id/viewPage_home"
         android:layout_width="match_parent"
         android:layout_height="match_parent">
 
-    </android.support.v4.view.ViewPager>
+    </androidx.viewpager.widget.ViewPager>
 
 </LinearLayout>
