@@ -1,7 +1,6 @@
 package com.group6.choul.login_register_handling;
 
 import android.content.SharedPreferences;
-import android.media.session.MediaSession;
 
 public class TokenManager {
     private SharedPreferences prefs;
@@ -22,13 +21,15 @@ public class TokenManager {
     }
 
     public void saveToken(AccessToken token){
-        editor.putString("ACCESS_TOKEN", token.getAccessToken()).commit();
-        editor.putString("REFRESH_TOKEN", token.getRefreshToken()).commit();
+        editor.putString("ACCESS_TOKEN", token.getAccessToken());
+        editor.putString("REFRESH_TOKEN", token.getRefreshToken());
+        editor.apply();
     }
 
     public void deleteToken(){
-        editor.remove("ACCESS_TOKEN").commit();
-        editor.remove("REFRESH_TOKEN").commit();
+        editor.remove("ACCESS_TOKEN");
+        editor.remove("REFRESH_TOKEN");
+        editor.apply();
     }
 
     public AccessToken getToken(){

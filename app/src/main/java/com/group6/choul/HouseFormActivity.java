@@ -48,15 +48,15 @@ public class HouseFormActivity extends AppCompatActivity implements BSImagePicke
     private LinearLayout upload_img_btn;
     private RecyclerView recyclerView;
     private Button submit_btn;
-    private EditText title_et;
+    private EditText title_et, price_et, description_et, phone_et, phone_opt_et, address_et, bathroom_h, bedroom_h, floor_h, size_et;
 
     private List<ImgFormModel> img_models_list;
     private List<Uri> imgs_uri;
     private ImgFormAdapter img_adapter;
+    private String title, price, description, phone, phone_opt, address, bathroom, bedroom, floor, house_size ;
 
 
-
-    private final String UPLOAD_URL = "http://192.168.43.40:8000/api/houses/create";
+    private final String UPLOAD_URL = "http://192.168.100.208:8000/api/houses/create";
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -70,6 +70,15 @@ public class HouseFormActivity extends AppCompatActivity implements BSImagePicke
         submit_btn = findViewById(R.id.submit_btn);
 
         title_et = findViewById(R.id.title_et);
+        price_et = findViewById(R.id.price_et);
+        description_et = findViewById(R.id.description_et);
+        address_et = findViewById(R.id.address_et);
+        phone_et = findViewById(R.id.phone_et);
+        phone_opt_et = findViewById(R.id.phone_opt_et);
+        bathroom_h = findViewById(R.id.bathroom_et);
+        bedroom_h = findViewById(R.id.bedroom_et);
+        floor_h = findViewById(R.id.floor_et);
+        size_et = findViewById(R.id.size_et);
 
         // <------- handle toolbar
         setSupportActionBar(myToolbar);
@@ -92,8 +101,6 @@ public class HouseFormActivity extends AppCompatActivity implements BSImagePicke
                 multiSelectionPicker.show(getSupportFragmentManager(), "picker");
             }
         });
-
-
         img_models_list = new ArrayList<>();
         FlexboxLayoutManager layoutManager = new FlexboxLayoutManager();
         layoutManager.setFlexWrap(FlexWrap.WRAP);
@@ -113,8 +120,22 @@ public class HouseFormActivity extends AppCompatActivity implements BSImagePicke
         submit_btn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                title = title_et.getText().toString();
+                price = price_et.getText().toString();
+                description = description_et.getText().toString();
+                phone = phone_et.getText().toString();
+                phone_opt = phone_opt_et.getText().toString();
+                address = address_et.getText().toString();
+                bedroom = bedroom_h.getText().toString();
+                bathroom = bathroom_h.getText().toString();
+                floor = floor_h.getText().toString();
+                house_size = size_et.getText().toString();
 
-                uploadMultipart(imgs_uri);
+                if(!title.isEmpty() && !price.isEmpty() && !phone.isEmpty() && !address.isEmpty() && !bedroom.isEmpty() &&
+                        !bathroom.isEmpty() && !floor.isEmpty() && !house_size.isEmpty()){
+                    uploadMultipart(imgs_uri);
+                }
+
             }
         });
     }
@@ -152,8 +173,14 @@ public class HouseFormActivity extends AppCompatActivity implements BSImagePicke
 
             //Creating a multi part request
             MultipartUploadRequest mUploadRequest = new MultipartUploadRequest(this, uploadId, UPLOAD_URL)
-                    .addParameter("caption", "Nothing") //Adding text parameter to the request
-
+                    .addParameter("price", price)
+                    .addParameter("description", description)
+                    .addParameter("phone", phone)
+                    .addParameter("address", address)
+                    .addParameter("bathroom",bathroom)
+                    .addParameter("bedroom", bedroom)
+                    .addParameter("floor", floor)
+                    .addParameter("house_size", house_size)
                     .setNotificationConfig(new UploadNotificationConfig())
                     .setMaxRetries(2); // try request at least 2 time before give up
 
@@ -176,6 +203,7 @@ public class HouseFormActivity extends AppCompatActivity implements BSImagePicke
     public void loadImage(File imageFile, ImageView ivImage) {
         Glide.with(HouseFormActivity.this).load(imageFile).into(ivImage);
     }
+
     @Override
     public void onMultiImageSelected(List<Uri> uriList, String tag) {
         // first clear out all the last img
@@ -197,10 +225,12 @@ public class HouseFormActivity extends AppCompatActivity implements BSImagePicke
         img_adapter.notifyDataSetChanged();
         recyclerView.setAdapter(img_adapter);
     }
+
     @Override
     public void onSingleImageSelected(Uri uri, String tag) {
 
     }
+
     @Override
     public void onPointerCaptureChanged(boolean hasCapture) {
 

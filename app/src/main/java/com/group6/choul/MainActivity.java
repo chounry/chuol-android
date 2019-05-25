@@ -49,7 +49,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     private Toolbar toolBar;
     TokenManager tokenManager;
 
-    private final int REGISTER_CODE = 0;
+
 
 
     @Override
@@ -140,7 +140,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
             @Override
             public void onClick(View v) {
                 Intent intent = new Intent(getApplicationContext(), LoginRegisterActivity.class);
-                startActivityForResult(intent,REGISTER_CODE);
+                startActivity(intent);
                 finish();
             }
         });
@@ -169,11 +169,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 
             return true;
         } else if (id == R.id.item_saved) {
-            if(tokenManager.getToken() == null){
-                showLoginPopUp();
-            }else {
-                loadFragment(new SavedPostFragment());
-            }
+            Log.e("Token ", tokenManager.getToken().getAccessToken());
             return true;
         } else if (id == R.id.item_setting) {
                 showLoginPopUp();
@@ -190,14 +186,5 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 
     }
 
-    @Override
-    protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
-        super.onActivityResult(requestCode, resultCode, data);
-        if((resultCode == 200 || requestCode == 300) && requestCode == 0){
-
-            tokenManager = TokenManager.getInstance(getSharedPreferences("prefs", MODE_PRIVATE));
-            Log.e("Nothing",tokenManager.getToken().getAccessToken()+"");
-        }
-    }
 }
 

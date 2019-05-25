@@ -85,12 +85,20 @@
                     android:hint="# of Floor"/>
 
                 <EditText
-                    android:id="@+id/size_et"
+                    android:id="@+id/house_size_et"
                     android:layout_marginBottom="10dp"
                     android:layout_width="match_parent"
                     android:textSize="14sp"
                     android:layout_height="wrap_content"
                     android:hint="House Size : eg 10m x 6m" />
+
+                <EditText
+                    android:id="@+id/yard_size_et"
+                    android:layout_marginBottom="10dp"
+                    android:layout_width="match_parent"
+                    android:textSize="14sp"
+                    android:layout_height="wrap_content"
+                    android:hint="Yard Size : eg 14m x 6m" />
 
                 <EditText
                     android:id="@+id/address_et"

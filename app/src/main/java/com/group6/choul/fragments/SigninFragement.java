@@ -84,11 +84,10 @@ public class SigninFragement extends Fragment {
                     public void onResponse(Call<AccessToken> call, Response<AccessToken> response) {
                         if(response.isSuccessful()) {
                             tokenManager.saveToken(response.body());
-                            Log.e("Message",tokenManager.getToken().toString());
-                            tokenManager.deleteToken();
-                            Log.e("Message1",tokenManager.getToken()+"");
+
                             getActivity().startActivity(new Intent(getActivity(), MainActivity.class));
                             getActivity().finish();
+
                         }else if(response.code() == 422){
                             handleErrors(response.errorBody());
                         }else if(response.code() ==  401){

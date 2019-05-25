@@ -182,8 +182,8 @@
                     android:id="@+id/img_recyler_view"
                     android:layout_width="match_parent"
                     android:layout_height="0dp"
-                    android:layout_weight="1"
-                    android:layout_marginBottom="10dp">
+                    android:layout_marginBottom="10dp"
+                    android:layout_weight="1">
 
                 </androidx.recyclerview.widget.RecyclerView>
 
@@ -191,10 +191,10 @@
                     android:id="@+id/upload_img_btn"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
+                    android:layout_marginBottom="20dp"
                     android:background="@drawable/message_edit_text_shape"
                     android:gravity="center"
                     android:orientation="vertical"
-                    android:layout_marginBottom="20dp"
                     android:paddingVertical="15dp">
 
                     <ImageView

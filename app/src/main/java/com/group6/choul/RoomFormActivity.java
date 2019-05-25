@@ -20,6 +20,7 @@ import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.Spinner;
 import android.widget.Switch;
 import android.widget.Toast;
 
@@ -62,6 +63,7 @@ public class RoomFormActivity extends AppCompatActivity implements BSImagePicker
     private List<ImgFormModel> img_models_list;
     private RecyclerView.Adapter img_adapter;
     private List<Uri> imgs_uri;
+    private List<String> service_aval;
 
     private ImageButton map_imgBtn;
     private LinearLayout upload_img_btn;
@@ -69,9 +71,11 @@ public class RoomFormActivity extends AppCompatActivity implements BSImagePicker
     private Button service_btn,submit_btn;
     private Toolbar myToolbar;
     private Switch contact_swtich;
-    private EditText price_et;
+    private EditText title_et, price_et, description_et, phone_et, phone_opt_et, address_et,size_r;
+    private String title, price, description, phone, phone_opt, address,size,city;
+    private Spinner cityspinner;
 
-    private final String UPLOAD_URL = "http://192.168.43.40:8000/api/rooms/create";
+    private final String UPLOAD_URL = "http://192.168.100.13:8000/api/rooms/create";
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -87,11 +91,20 @@ public class RoomFormActivity extends AppCompatActivity implements BSImagePicker
         contact_swtich = findViewById(R.id.contact_switch);
         price_et = findViewById(R.id.price_et);
 
-
+        title_et = findViewById(R.id.title_et);
+        price_et = findViewById(R.id.price_et);
+        description_et = findViewById(R.id.description_et);
+        address_et = findViewById(R.id.address_et);
+        phone_et = findViewById(R.id.phone_et);
+        phone_opt_et = findViewById(R.id.phone_opt_et);
+        size_r = findViewById(R.id.size_et);
+        cityspinner = findViewById(R.id.city_spinner);
         // <------- handle toolbar
         setSupportActionBar(myToolbar);
         showActionBar();
         // <------- handle toolbar
+
+        service_aval = new ArrayList<>();
 
         contact_swtich.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -133,8 +146,23 @@ public class RoomFormActivity extends AppCompatActivity implements BSImagePicker
         submit_btn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                uploadMultipart(imgs_uri);
+                title = title_et.getText().toString();
+                price = price_et.getText().toString();
+                description = description_et.getText().toString();
+                phone = phone_et.getText().toString();
+                phone_opt = phone_opt_et.getText().toString();
+                address = address_et.getText().toString();
+                size = size_r.getText().toString();
+                city = cityspinner.getSelectedItem().toString();
+
+
+                if(!title.isEmpty() && !price.isEmpty() && !phone.isEmpty() && !address.isEmpty() && !size.isEmpty() &&
+                        !city.isEmpty()){
+                    uploadMultipart(imgs_uri);
+                }
+
             }
+
         });
 
         // handle multiple select services
@@ -161,12 +189,9 @@ public class RoomFormActivity extends AppCompatActivity implements BSImagePicker
                 mBuilder.setPositiveButton("Ok", new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialogInterface, int which) {
-                        String item = "";
+                        service_aval.clear();
                         for (int i = 0; i < mUserItems.size(); i++) {
-                            item = item + listItems[mUserItems.get(i)];
-                            if (i != mUserItems.size() - 1) {
-                                item = item + ", ";
-                            }
+                            service_aval.add(listItems[mUserItems.get(i)]);
                         }
                     }
                 });
@@ -239,8 +264,13 @@ public class RoomFormActivity extends AppCompatActivity implements BSImagePicker
 
             //Creating a multi part request
             MultipartUploadRequest mUploadRequest = new MultipartUploadRequest(this, uploadId, UPLOAD_URL)
-                    .addParameter("caption", "Nothing") //Adding text parameter to the request
-
+                    .addParameter("title", title) //Adding text parameter to the request
+                    .addParameter("price", price)
+                    .addParameter("description", description)
+                    .addParameter("phone", phone)
+                    .addParameter("address", address)
+                    .addParameter("size",size)
+                    .addParameter("city",city)
                     .setNotificationConfig(new UploadNotificationConfig())
                     .setMaxRetries(2); // try request at least 2 time before give up
 

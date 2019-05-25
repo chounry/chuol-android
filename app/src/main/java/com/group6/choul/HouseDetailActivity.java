@@ -63,7 +63,6 @@ public class HouseDetailActivity extends AppCompatActivity implements OnMapReady
             modelList.add(new RelatedModel("Luxury House","$20000","https://www.iconichouses.org/foto/houses/duldeck.jpg" ));
             modelList.add(new RelatedModel("Luxury House","$20000","https://static1.squarespace.com/static/5729cc3701dbae1046dcf042/58a0ec586b8f5b048e0528bd/58a0ec8ec534a53dfb4b4520/1486941328065/POINT112E_1.jpg?format=1000w" ));
             modelList.add(new RelatedModel("Luxury House","$20000","https://images.adsttc.com/media/images/59a4/c624/b22e/389d/3e00/02a3/newsletter/MHA.JR_201708_038.jpg?1503970808" ));
-
         }
 
         adapter = new RelatedAdapter(modelList);
