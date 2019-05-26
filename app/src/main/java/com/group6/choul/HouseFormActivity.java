@@ -14,6 +14,8 @@ import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.Spinner;
+import android.widget.Switch;
 import android.widget.Toast;
 
 import androidx.annotation.Nullable;
@@ -48,13 +50,14 @@ public class HouseFormActivity extends AppCompatActivity implements BSImagePicke
     private LinearLayout upload_img_btn;
     private RecyclerView recyclerView;
     private Button submit_btn;
-    private EditText title_et, price_et, description_et, phone_et, phone_opt_et, address_et, bathroom_h, bedroom_h, floor_h, size_et;
+    private EditText title_et, price_et, description_et, phone_et, phone_opt_et, address_et, bathroom_h, bedroom_h, floor_h, size_et,house_yard_size_et;
 
     private List<ImgFormModel> img_models_list;
     private List<Uri> imgs_uri;
     private ImgFormAdapter img_adapter;
-    private String title, price, description, phone, phone_opt, address, bathroom, bedroom, floor, house_size ;
-
+    private String title,type_house,price, description, phone, phone_opt, address, bathroom, bedroom, floor, house_size, yard_size,forSale_status,city_id;
+    private Spinner for_sale_status,type,city;
+    private Switch contact_swtich;
 
     private final String UPLOAD_URL = "http://192.168.100.208:8000/api/houses/create";
 
@@ -67,19 +70,33 @@ public class HouseFormActivity extends AppCompatActivity implements BSImagePicke
         myToolbar = findViewById(R.id.my_toolbar);
         map_imgBtn = findViewById(R.id.map_imgBtn);
         upload_img_btn = findViewById(R.id.upload_img_btn);
-        submit_btn = findViewById(R.id.submit_btn);
+        submit_btn = findViewById(R.id.submit_btn_house);
 
         title_et = findViewById(R.id.title_et);
-        price_et = findViewById(R.id.price_et);
+        price_et = findViewById(R.id.price_for_house);
         description_et = findViewById(R.id.description_et);
         address_et = findViewById(R.id.address_et);
         phone_et = findViewById(R.id.phone_et);
         phone_opt_et = findViewById(R.id.phone_opt_et);
+        contact_swtich = findViewById(R.id.contact_switch_house);
         bathroom_h = findViewById(R.id.bathroom_et);
         bedroom_h = findViewById(R.id.bedroom_et);
         floor_h = findViewById(R.id.floor_et);
-        size_et = findViewById(R.id.size_et);
+        size_et = findViewById(R.id.house_size_et);
+        house_yard_size_et = findViewById(R.id.yard_size_et);
+        for_sale_status = findViewById(R.id.for_what_spinner);
+        type = findViewById(R.id.house_type_spinner);
+        city = findViewById(R.id.city_spinner);
 
+        contact_swtich.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                price_et.setVisibility(View.VISIBLE);
+                if(contact_swtich.isChecked()){
+                    price_et.setVisibility(View.GONE);
+                }
+            }
+        });
         // <------- handle toolbar
         setSupportActionBar(myToolbar);
         showActionBar();
@@ -130,12 +147,15 @@ public class HouseFormActivity extends AppCompatActivity implements BSImagePicke
                 bathroom = bathroom_h.getText().toString();
                 floor = floor_h.getText().toString();
                 house_size = size_et.getText().toString();
-
-                if(!title.isEmpty() && !price.isEmpty() && !phone.isEmpty() && !address.isEmpty() && !bedroom.isEmpty() &&
-                        !bathroom.isEmpty() && !floor.isEmpty() && !house_size.isEmpty()){
+                yard_size = house_yard_size_et.getText().toString();
+                forSale_status = for_sale_status.getSelectedItem().toString();
+                type_house = type.getSelectedItem().toString();
+                city_id = city.getSelectedItem().toString();
+//                if(!title.isEmpty() && !price.isEmpty() && !phone.isEmpty() && !address.isEmpty() && !bedroom.isEmpty() &&
+//                        !bathroom.isEmpty() && !floor.isEmpty() && !house_size.isEmpty() && forSale_status.isEmpty()){
                     uploadMultipart(imgs_uri);
-                }
-
+//                }
+//
             }
         });
     }
@@ -173,6 +193,7 @@ public class HouseFormActivity extends AppCompatActivity implements BSImagePicke
 
             //Creating a multi part request
             MultipartUploadRequest mUploadRequest = new MultipartUploadRequest(this, uploadId, UPLOAD_URL)
+                    .addParameter("title", title)
                     .addParameter("price", price)
                     .addParameter("description", description)
                     .addParameter("phone", phone)
@@ -181,6 +202,10 @@ public class HouseFormActivity extends AppCompatActivity implements BSImagePicke
                     .addParameter("bedroom", bedroom)
                     .addParameter("floor", floor)
                     .addParameter("house_size", house_size)
+                    .addParameter("yard_size", yard_size)
+                    .addParameter("for_sale_status", forSale_status)
+                    .addParameter("type", type_house)
+                    .addParameter("city_id",city_id)
                     .setNotificationConfig(new UploadNotificationConfig())
                     .setMaxRetries(2); // try request at least 2 time before give up
 
