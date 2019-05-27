@@ -13,4 +13,12 @@ public interface ApiService {
     @POST("login")
     @FormUrlEncoded
     Call<AccessToken> login(@Field("email") String email,@Field("password") String password);
+
+    @POST("refresh")
+    @FormUrlEncoded
+    Call<AccessToken> refresh(@Field("refresh_token") String refreshToken);
+
+    @POST("logout")
+    Call<AccessToken> logout();
+
 }

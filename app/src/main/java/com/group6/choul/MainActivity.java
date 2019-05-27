@@ -47,9 +47,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     private Dialog formSelectDialog,loginDialog;
     private Button btnHouseForm, btnRoomForm;
     private Toolbar toolBar;
-    TokenManager tokenManager;
-
-
+    public TokenManager tokenManager;
 
 
     @Override
@@ -59,7 +57,6 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 
         ButterKnife.bind(this);
         tokenManager = TokenManager.getInstance(getSharedPreferences("prefs", MODE_PRIVATE));
-        tokenManager.deleteToken();
         
         formSelectDialog = new Dialog(this);
         loginDialog = new Dialog(this);
@@ -67,8 +64,8 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         navigationViewHome = findViewById(R.id.nav_home);
         toolBar = findViewById(R.id.toolbar);
 
+        // setup toolbar
         setSupportActionBar(toolBar);
-
         toggle = new ActionBarDrawerToggle(this,drawerLayoutHome,toolBar,R.string.opened_menu,R.string.closed_menu);
         drawerLayoutHome.addDrawerListener(toggle);
         toggle.syncState();
@@ -84,20 +81,18 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         if (toggle.onOptionsItemSelected(item))
             return true;
 
+        tokenManager = TokenManager.getInstance(getSharedPreferences("prefs", MODE_PRIVATE));
+
         switch (item.getItemId()) {
             case R.id.post:
-                showFormSelectPopup();
+                if(tokenManager.getToken().getAccessToken() == null){
+                    showLoginPopUp();
+                }else{
+                    showFormSelectPopup();
+                }
                 return true;
         }
         return super.onOptionsItemSelected(item);
-    }
-    private void loadFragment(Fragment fragment){
-        FragmentManager fm = getSupportFragmentManager();
-        FragmentTransaction tr = fm.beginTransaction();
-        tr.setCustomAnimations(R.anim.enter_from_right,R.anim.exit_to_right);
-        tr.replace(R.id.container_home,fragment);
-        tr.commit();
-        drawerLayoutHome.closeDrawers();
     }
 
     @Override
@@ -105,6 +100,68 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         getMenuInflater().inflate(R.menu.post,menu);
         return super.onCreateOptionsMenu(menu);
     }
+
+    @Override
+    public boolean onNavigationItemSelected(@NonNull MenuItem menuItem) {
+        int id = menuItem.getItemId();
+        tokenManager = TokenManager.getInstance(getSharedPreferences("prefs", MODE_PRIVATE));
+        Fragment fragment = getSupportFragmentManager().findFragmentById(R.id.container_home);
+        if (id == R.id.nav_home) {
+            // Handle the camera action
+        } else if (id == R.id.item_home) {
+            drawerLayoutHome.closeDrawers();
+            if(fragment instanceof HomeFragment){
+                return true;
+            }
+            loadFragment(new HomeFragment());
+            return true;
+        } else if (id == R.id.item_chat) {
+            drawerLayoutHome.closeDrawers();
+            if(tokenManager.getToken().getAccessToken() == null){
+                showLoginPopUp();
+            }else {
+                loadFragment(new ChatOutFragment());
+            }
+            return true;
+        } else if (id == R.id.item_saved) {
+            drawerLayoutHome.closeDrawers();
+            if(tokenManager.getToken().getAccessToken() == null){
+                showLoginPopUp();
+            }else {
+                loadFragment(new SavedPostFragment());
+            }
+            return true;
+        } else if (id == R.id.item_setting) {
+            drawerLayoutHome.closeDrawers();
+            if(tokenManager.getToken().getAccessToken() == null){
+                showLoginPopUp();
+            }else {
+                loadFragment(new SettingFragment());
+            }
+            return true;
+        }
+
+        DrawerLayout drawer = findViewById(R.id.drawer_home);
+        drawer.closeDrawer(GravityCompat.START);
+        return true;
+    }
+
+    @Override
+    public void onPointerCaptureChanged(boolean hasCapture) {
+
+    }
+    /*
+
+   ===================== MY Functions =====================================
+     */
+    private void loadFragment(Fragment fragment){
+        FragmentManager fm = getSupportFragmentManager();
+        FragmentTransaction tr = fm.beginTransaction();
+//        tr.setCustomAnimations(R.anim.enter_from_right,R.anim.exit_to_right);
+        tr.replace(R.id.container_home,fragment);
+        tr.commit();
+    }
+
 
     public void showFormSelectPopup() {
         formSelectDialog.setContentView(R.layout.custom_post_pop_up);
@@ -133,6 +190,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         formSelectDialog.show();
     }
 
+
     public void showLoginPopUp() {
         loginDialog.setContentView(R.layout.dialog_login);
         TextView login_sign_up_btn = loginDialog.findViewById(R.id.login_sign_up_btn);
@@ -141,7 +199,6 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
             public void onClick(View v) {
                 Intent intent = new Intent(getApplicationContext(), LoginRegisterActivity.class);
                 startActivity(intent);
-                finish();
             }
         });
 
@@ -151,40 +208,6 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         loginDialog.show();
     }
 
-    @Override
-    public boolean onNavigationItemSelected(@NonNull MenuItem menuItem) {
-        int id = menuItem.getItemId();
-
-        if (id == R.id.nav_home) {
-            // Handle the camera action
-        } else if (id == R.id.item_home) {
-            loadFragment(new HomeFragment());
-            return true;
-        } else if (id == R.id.item_chat) {
-            if(tokenManager.getToken() == null){
-                showLoginPopUp();
-            }else {
-                loadFragment(new ChatOutFragment());
-            }
-
-            return true;
-        } else if (id == R.id.item_saved) {
-            Log.e("Token ", tokenManager.getToken().getAccessToken());
-            return true;
-        } else if (id == R.id.item_setting) {
-                showLoginPopUp();
-            return true;
-        }
-
-        DrawerLayout drawer = findViewById(R.id.drawer_home);
-        drawer.closeDrawer(GravityCompat.START);
-        return true;
-    }
-
-    @Override
-    public void onPointerCaptureChanged(boolean hasCapture) {
-
-    }
 
 }
 

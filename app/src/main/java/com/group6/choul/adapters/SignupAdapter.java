@@ -24,9 +24,9 @@ public class SignupAdapter extends FragmentPagerAdapter {
     public Fragment getItem(int i) {
         switch(i){
             case 0:
-                return new SignupFragement();
-            case 1:
                 return new SigninFragement();
+            case 1:
+                return new SignupFragement();
         }
         return null;
     }

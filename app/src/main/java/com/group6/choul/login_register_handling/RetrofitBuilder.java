@@ -15,9 +15,9 @@ import retrofit2.converter.moshi.MoshiConverterFactory;
 
 public class RetrofitBuilder {
 
-    public static final String BASE_URL = "http://192.168.100.13:8000/api/auth/";
+    public static final String BASE_URL = "http://192.168.100.96:8000/api/auth/";
     private static OkHttpClient client = buildClient();
-    private static Retrofit retrofit  = buildRetrofit(client);;
+    private static Retrofit retrofit  = buildRetrofit(client);
 
     private static OkHttpClient buildClient(){
         OkHttpClient.Builder builder = new OkHttpClient.Builder()
@@ -50,6 +50,30 @@ public class RetrofitBuilder {
     public static <T> T createService(Class<T> service){
         return retrofit.create(service);
     }
+
+    public static <T> T createServiceWithAuth(Class<T> service, final TokenManager tokenManager){
+
+        OkHttpClient newClient = client.newBuilder().addInterceptor(new Interceptor() {
+            @Override
+            public Response intercept(Chain chain) throws IOException {
+
+                Request request = chain.request();
+
+                Request.Builder builder = request.newBuilder();
+
+                if(tokenManager.getToken().getAccessToken() != null){
+                    builder.addHeader("Authorization", "Bearer " + tokenManager.getToken().getAccessToken());
+                }
+                request = builder.build();
+                return chain.proceed(request);
+            }
+        }).authenticator(CustomAuthenticator.getInstance(tokenManager)).build();
+
+        Retrofit newRetrofit = retrofit.newBuilder().client(newClient).build();
+        return newRetrofit.create(service);
+
+    }
+
 
     public static Retrofit getRetrofit() {
         return retrofit;

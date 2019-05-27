@@ -21,6 +21,7 @@
         android:hint="Email">
 
         <com.google.android.material.textfield.TextInputEditText
+            android:inputType="textEmailAddress"
             android:drawableStart="@drawable/ic_email_black"
             android:drawableLeft="@drawable/ic_email_black"
             android:layout_width="match_parent"

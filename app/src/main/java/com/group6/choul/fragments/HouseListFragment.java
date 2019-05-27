@@ -50,7 +50,7 @@ public class HouseListFragment extends Fragment {
         homeModelist.add(model1);
         homeModelist.add(model2);
 
-        adapter = new HouseListAdapter(homeModelist, getContext());
+        adapter = new HouseListAdapter(homeModelist, getContext(),houseRecyclerView);
         houseRecyclerView.setHasFixedSize(true);
         adapter.setHasStableIds(true);
         houseRecyclerView.setItemViewCacheSize(20);

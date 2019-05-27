@@ -3,7 +3,7 @@ package com.group6.choul.login_register_handling;
 import android.content.SharedPreferences;
 
 public class TokenManager {
-    private SharedPreferences prefs;
+    public SharedPreferences prefs;
     private SharedPreferences.Editor editor;
 
     private static TokenManager INSTANCE = null;
@@ -21,9 +21,8 @@ public class TokenManager {
     }
 
     public void saveToken(AccessToken token){
-        editor.putString("ACCESS_TOKEN", token.getAccessToken());
-        editor.putString("REFRESH_TOKEN", token.getRefreshToken());
-        editor.apply();
+        editor.putString("ACCESS_TOKEN", token.getAccessToken()).commit();
+        editor.putString("REFRESH_TOKEN", token.getRefreshToken()).commit();
     }
 
     public void deleteToken(){
