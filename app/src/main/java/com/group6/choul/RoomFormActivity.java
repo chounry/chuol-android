@@ -75,7 +75,7 @@ public class RoomFormActivity extends AppCompatActivity implements BSImagePicker
     private String title, price, description, phone, phone_opt, address,size,city;
     private Spinner cityspinner;
 
-    private final String UPLOAD_URL = "http://192.168.100.13:8000/api/rooms/create";
+    private final String UPLOAD_URL = "http://192.168.100.171:8000/api/rooms/create";
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -219,8 +219,6 @@ public class RoomFormActivity extends AppCompatActivity implements BSImagePicker
             }
         });
 
-
-
         map_imgBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -251,7 +249,6 @@ public class RoomFormActivity extends AppCompatActivity implements BSImagePicker
         actionBar.setCustomView(v);
     }
 
-
     public void uploadMultipart(List<Uri> filePath) {
 
         /* *********************************************************************
@@ -273,7 +270,10 @@ public class RoomFormActivity extends AppCompatActivity implements BSImagePicker
                     .addParameter("city",city)
                     .setNotificationConfig(new UploadNotificationConfig())
                     .setMaxRetries(2); // try request at least 2 time before give up
-
+            for(int i = 0;i < service_aval.size();i++){
+                String path = filePath.get(i).getPath();
+                mUploadRequest.addParameter( "services"+"["+i+"]",service_aval.get(i));
+            }
             for(int i = 0;i < filePath.size();i++){
                 // add many imgs to the request
                 String path = filePath.get(i).getPath();

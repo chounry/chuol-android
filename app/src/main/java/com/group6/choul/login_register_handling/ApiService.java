@@ -1,5 +1,8 @@
 package com.group6.choul.login_register_handling;
 
+import com.group6.choul.models.ResponseStatus;
+import com.group6.choul.models.UserModel;
+
 import retrofit2.Call;
 import retrofit2.http.Field;
 import retrofit2.http.FormUrlEncoded;
@@ -20,5 +23,12 @@ public interface ApiService {
 
     @POST("logout")
     Call<AccessToken> logout();
+
+    @POST("get-user")
+    Call<UserModel> get_user();
+
+    @POST("edit")
+    @FormUrlEncoded
+    Call<ResponseStatus> update_user(@Field("id") int id,@Field("fname") String fname,@Field("lname") String lname,@Field("email") String email,@Field("phone") String phone);
 
 }

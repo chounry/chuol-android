@@ -59,7 +59,7 @@ public class HouseFormActivity extends AppCompatActivity implements BSImagePicke
     private Spinner for_sale_status,type,city;
     private Switch contact_swtich;
 
-    private final String UPLOAD_URL = "http://192.168.100.208:8000/api/houses/create";
+    private final String UPLOAD_URL = "http://192.168.100.171:8000/api/houses/create";
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -193,21 +193,21 @@ public class HouseFormActivity extends AppCompatActivity implements BSImagePicke
 
             //Creating a multi part request
             MultipartUploadRequest mUploadRequest = new MultipartUploadRequest(this, uploadId, UPLOAD_URL)
-                    .addParameter("title", title)
-                    .addParameter("price", price)
-                    .addParameter("description", description)
-                    .addParameter("phone", phone)
-                    .addParameter("address", address)
-                    .addParameter("bathroom",bathroom)
-                    .addParameter("bedroom", bedroom)
-                    .addParameter("floor", floor)
-                    .addParameter("house_size", house_size)
-                    .addParameter("yard_size", yard_size)
-                    .addParameter("for_sale_status", forSale_status)
-                    .addParameter("type", type_house)
-                    .addParameter("city_id",city_id)
-                    .setNotificationConfig(new UploadNotificationConfig())
-                    .setMaxRetries(2); // try request at least 2 time before give up
+                .addParameter("title", title)
+                .addParameter("price", price)
+                .addParameter("description", description)
+                .addParameter("phone", phone)
+                .addParameter("address", address)
+                .addParameter("bathroom",bathroom)
+                .addParameter("bedroom", bedroom)
+                .addParameter("floor", floor)
+                .addParameter("house_size", house_size)
+                .addParameter("yard_size", yard_size)
+                .addParameter("for_sale_status", forSale_status)
+                .addParameter("type", type_house)
+                .addParameter("city_id",city_id)
+                .setNotificationConfig(new UploadNotificationConfig())
+                .setMaxRetries(2); // try request at least 2 time before give up
 
             for(int i = 0;i < filePath.size();i++){
                 // add many imgs to the request

@@ -16,19 +16,20 @@
         android:theme="@style/AppTheme"
         tools:ignore="GoogleAppIndexingWarning">
         <!--<activity android:name=".login_register_handling.RegisterActivity"/>-->
-        <activity android:name=".MapFormActivity" />
+        <activity android:name=".MapFormActivity" android:launchMode="singleTop"/>
 
         <meta-data
             android:name="com.google.android.geo.API_KEY"
             android:value="AIzaSyB1dbxszCAqSCrePrLOveBD1XWaBHIM8PU" />
 
-        <activity android:name=".HouseDetailActivity" />
-        <activity android:name=".RoomDetailActivity" />
-        <activity android:name=".PostHistoryActivity" />
-        <activity android:name=".ChatInActivity" />
-        <activity android:name=".HouseFormActivity" />
-        <activity android:name=".RoomFormActivity" />
-        <activity android:name=".LoginRegisterActivity" />
+        <activity android:name=".HouseDetailActivity" android:launchMode="singleTop"/>
+        <activity android:name=".RoomDetailActivity" android:launchMode="singleTop"/>
+        <activity android:name=".PostHistoryActivity" android:launchMode="singleTop"/>
+        <activity android:name=".ChatInActivity" android:launchMode="singleTop"/>
+        <activity android:name=".HouseFormActivity" android:launchMode="singleTop"/>
+        <activity android:name=".RoomFormActivity" android:launchMode="singleTop"/>
+        <activity android:name=".LoginRegisterActivity" android:launchMode="singleTop"/>
+        <activity android:name=".PersonalInfoActivity" android:launchMode="singleTop"/>
         <activity android:name=".MainActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />

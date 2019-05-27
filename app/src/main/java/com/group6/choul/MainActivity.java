@@ -37,7 +37,6 @@ import com.group6.choul.fragments.SettingFragment;
 import com.group6.choul.login_register_handling.TokenManager;
 
 import butterknife.ButterKnife;
-import butterknife.OnClick;
 
 public class MainActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener{
 
@@ -64,8 +63,8 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         navigationViewHome = findViewById(R.id.nav_home);
         toolBar = findViewById(R.id.toolbar);
 
-        // setup toolbar
         setSupportActionBar(toolBar);
+        getSupportActionBar().setElevation(0);
         toggle = new ActionBarDrawerToggle(this,drawerLayoutHome,toolBar,R.string.opened_menu,R.string.closed_menu);
         drawerLayoutHome.addDrawerListener(toggle);
         toggle.syncState();
@@ -174,6 +173,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
             public void onClick(View v) {
                 Intent intent = new Intent(getApplicationContext(), HouseFormActivity.class);
                 startActivity(intent);
+                formSelectDialog.cancel();
             }
         });
         btnRoomForm.setOnClickListener( new View.OnClickListener(){
@@ -183,6 +183,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 
                 Intent intent = new Intent(getApplicationContext(), RoomFormActivity.class);
                 startActivity(intent);
+                formSelectDialog.cancel();
             }
         });
 

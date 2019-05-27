@@ -1,5 +1,6 @@
 package com.group6.choul.fragments;
 
+import android.app.Person;
 import android.content.Context;
 import android.content.Intent;
 import android.media.session.MediaSession;
@@ -33,7 +34,7 @@ import retrofit2.Response;
 import static android.content.Context.MODE_PRIVATE;
 
 public class SettingFragment extends Fragment{
-    private LinearLayout linearSignOut;
+    private LinearLayout linearSignOut, linearPersonal;
 
     ApiService service;
     TokenManager tokenManager;
@@ -44,6 +45,7 @@ public class SettingFragment extends Fragment{
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View v = inflater.inflate(R.layout.fragment_m_setting,container,false);
         linearSignOut = v.findViewById(R.id.linear_signout);
+        linearPersonal = v.findViewById(R.id.linear_personal);
 
         ButterKnife.bind(getActivity());
         tokenManager = TokenManager.getInstance(getActivity().getSharedPreferences("prefs",MODE_PRIVATE));
@@ -71,6 +73,15 @@ public class SettingFragment extends Fragment{
                 });
             }
         });
+
+        linearPersonal.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(getActivity(), PersonalInfoActivity.class);
+                startActivity(intent);
+            }
+        });
+
         return v;
     }
 
