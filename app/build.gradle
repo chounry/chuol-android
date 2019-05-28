@@ -80,6 +80,9 @@ dependencies {
     releaseImplementation 'com.squareup.leakcanary:leakcanary-android-no-op:1.5.1'
     // auth libs
 
+
+    implementation 'com.scaledrone:scaledrone-java:0.6.0' // realtime messaging
+
     implementation("com.github.bumptech.glide:glide:4.9.0") {
         exclude group: "com.android.support"
     }
