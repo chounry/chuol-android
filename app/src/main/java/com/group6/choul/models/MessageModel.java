@@ -3,16 +3,16 @@ package com.group6.choul.models;
 
 public class MessageModel {
     private String message;
-    private MemberData memberData;
+    private MemberDataForChat memberData;
     private boolean response;
 
-    public MessageModel(String message, boolean response, MemberData memberData) {
+    public MessageModel(String message, boolean response, MemberDataForChat memberData) {
         this.message = message;
         this.response = response;
         this.memberData = memberData;
     }
 
-    public MemberData getMemberData() {
+    public MemberDataForChat getMemberData() {
         return memberData;
     }
 

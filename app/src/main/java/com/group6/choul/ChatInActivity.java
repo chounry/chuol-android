@@ -22,7 +22,7 @@ import androidx.appcompat.widget.Toolbar;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.group6.choul.adapters.MessageListAdapter;
-import com.group6.choul.models.MemberData;
+import com.group6.choul.models.MemberDataForChat;
 import com.group6.choul.models.MessageModel;
 import com.scaledrone.lib.Listener;
 import com.scaledrone.lib.Message;
@@ -54,9 +54,8 @@ public class ChatInActivity extends AppCompatActivity implements RoomListener {
         mstEt = findViewById(R.id.msg_et);
         sendBtn = findViewById(R.id.send_btn);
 
-
         //------------ Action bar thing
-        Toolbar myToolbar = (Toolbar) findViewById(R.id.my_toolbar);
+        Toolbar myToolbar = findViewById(R.id.my_toolbar);
         setSupportActionBar(myToolbar);
         showActionBar();
         // Action bar thing ------------
@@ -72,17 +71,7 @@ public class ChatInActivity extends AppCompatActivity implements RoomListener {
                 sendMessage();
             }
         });
-//        MessageModel receive1 = new MessageModel("Hi","https://img.icons8.com/bubbles/2x/user.png",false);
-//        MessageModel receive2 = new MessageModel("What is your name?","https://img.icons8.com/bubbles/2x/user.png",false);
-//        MessageModel response1 = new MessageModel("Hi my name is Something",true);
-//        MessageModel receive3 = new MessageModel("Oh","https://img.icons8.com/bubbles/2x/user.png",false);
 
-
-
-//        messageModelList.add(receive1);
-//        messageModelList.add(receive2);
-//        messageModelList.add(response1);
-//        messageModelList.add(receive3);
         messageAdapter = new MessageListAdapter(this,messageModelList);
         listView.setDivider(null);
         listView.setAdapter(messageAdapter);
@@ -100,7 +89,7 @@ public class ChatInActivity extends AppCompatActivity implements RoomListener {
             }
         });
 
-        MemberData data = new MemberData("Phone","https://wowsciencecamp.org/wp-content/uploads/2018/07/dummy-user-img-1-400x400_x_acf_cropped.png");
+        MemberDataForChat data = new MemberDataForChat("Phone","https://wowsciencecamp.org/wp-content/uploads/2018/07/dummy-user-img-1-400x400_x_acf_cropped.png");
         scaledrone = new Scaledrone(channelID, data);
         scaledrone.connect(new Listener() {
             @Override
@@ -152,7 +141,7 @@ public class ChatInActivity extends AppCompatActivity implements RoomListener {
         final ObjectMapper mapper = new ObjectMapper();
         try {
             // member.clientData is a MemberData object, let's parse it as such
-            final MemberData data = mapper.treeToValue(message.getMember().getClientData(), MemberData.class);
+            final MemberDataForChat data = mapper.treeToValue(message.getMember().getClientData(), MemberDataForChat.class);
             // if the clientID of the message sender is the same as our's it was sent by us
             boolean belongsToCurrentUser = message.getClientID().equals(scaledrone.getClientID());
             // since the message body is a simple string in our case we can use json.asText() to parse it as such

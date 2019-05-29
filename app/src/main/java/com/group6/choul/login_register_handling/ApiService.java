@@ -1,5 +1,6 @@
 package com.group6.choul.login_register_handling;
 
+import com.group6.choul.models.ChatModel;
 import com.group6.choul.models.ResponseStatus;
 import com.group6.choul.models.UserModel;
 
@@ -9,26 +10,29 @@ import retrofit2.http.FormUrlEncoded;
 import retrofit2.http.POST;
 
 public interface ApiService {
-    @POST("register")
+    @POST("auth/register")
     @FormUrlEncoded
     Call<AccessToken> register(@Field("fname") String fname, @Field("lname") String laname,@Field("email") String email, @Field("password") String password, @Field("password_confirmation") String password_confirmation , @Field("phone") String phone);
 
-    @POST("login")
+    @POST("auth/login")
     @FormUrlEncoded
     Call<AccessToken> login(@Field("email") String email,@Field("password") String password);
 
-    @POST("refresh")
+    @POST("auth/refresh")
     @FormUrlEncoded
     Call<AccessToken> refresh(@Field("refresh_token") String refreshToken);
 
-    @POST("logout")
+    @POST("auth/logout")
     Call<AccessToken> logout();
 
-    @POST("get-user")
+    @POST("auth/get-user")
     Call<UserModel> get_user();
 
-    @POST("edit")
+    @POST("auth/edit")
     @FormUrlEncoded
     Call<ResponseStatus> update_user(@Field("id") int id,@Field("fname") String fname,@Field("lname") String lname,@Field("email") String email,@Field("phone") String phone);
 
+    @POST
+    @FormUrlEncoded
+    Call<ChatModel> get_chat_room(@Field("user_id") int user_id);
 }
