@@ -53,6 +53,7 @@ public class RoomDetailActivity extends AppCompatActivity implements OnMapReadyC
         map = findViewById(R.id.map);
 
         modelList = new ArrayList<>();
+
         LinearLayoutManager layoutManager = new LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false);
 
         recyclerViewHome.setHasFixedSize(true);

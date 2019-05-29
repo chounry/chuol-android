@@ -4,18 +4,21 @@ import android.content.Context;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.net.Uri;
+import android.os.Build;
 import android.os.Bundle;
 import android.provider.MediaStore;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.Toast;
 
 import androidx.annotation.Nullable;
+import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
@@ -35,10 +38,13 @@ import net.gotev.uploadservice.MultipartUploadRequest;
 import net.gotev.uploadservice.UploadNotificationConfig;
 
 import java.io.File;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
 
+@RequiresApi(api = Build.VERSION_CODES.O)
 public class HouseFormActivity extends AppCompatActivity implements BSImagePicker.OnSingleImageSelectedListener,
         BSImagePicker.OnMultiImageSelectedListener,
         BSImagePicker.ImageLoaderDelegate{
@@ -47,13 +53,21 @@ public class HouseFormActivity extends AppCompatActivity implements BSImagePicke
     private LinearLayout upload_img_btn;
     private RecyclerView recyclerView;
     private Button submit_btn;
+    private EditText title_et, price_et, description_et, phone_et, phone_opt_et, address_et, bathroom_h, bedroom_h, floor_h, size_et;
 
     private List<ImgFormModel> img_models_list;
     private List<Uri> imgs_uri;
     private ImgFormAdapter img_adapter;
 
 
-    private final String UPLOAD_URL = "http://192.168.43.40:8000/api/houses/create";
+
+    private String title, price, description, phone, phone_opt, address, bathroom, bedroom, floor, house_size ;
+
+
+
+
+    private final String UPLOAD_URL = "http://192.168.100.229:8000/api/houses/create";
+
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -65,6 +79,18 @@ public class HouseFormActivity extends AppCompatActivity implements BSImagePicke
         map_imgBtn = findViewById(R.id.map_imgBtn);
         upload_img_btn = findViewById(R.id.upload_img_btn);
         submit_btn = findViewById(R.id.submit_btn);
+
+        title_et = findViewById(R.id.title_et);
+        price_et = findViewById(R.id.price_et);
+        description_et = findViewById(R.id.description_et);
+        address_et = findViewById(R.id.address_et);
+        phone_et = findViewById(R.id.phone_et);
+        phone_opt_et = findViewById(R.id.phone_opt_et);
+        bathroom_h = findViewById(R.id.bathroom_et);
+        bedroom_h = findViewById(R.id.bedroom_et);
+        floor_h = findViewById(R.id.floor_et);
+        size_et = findViewById(R.id.size_et);
+
 
         // <------- handle toolbar
         setSupportActionBar(myToolbar);
@@ -106,8 +132,25 @@ public class HouseFormActivity extends AppCompatActivity implements BSImagePicke
         submit_btn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                uploadMultipart(imgs_uri);
+                title = title_et.getText().toString();
+                price = price_et.getText().toString();
+                description = description_et.getText().toString();
+                phone = phone_et.getText().toString();
+                phone_opt = phone_opt_et.getText().toString();
+                address = address_et.getText().toString();
+                bedroom = bedroom_h.getText().toString();
+                bathroom = bathroom_h.getText().toString();
+                floor = floor_h.getText().toString();
+                house_size = size_et.getText().toString();
+
+                if(!title.isEmpty() && !price.isEmpty() && !phone.isEmpty() && !address.isEmpty() && !bedroom.isEmpty() &&
+                        !bathroom.isEmpty() && !floor.isEmpty() && !house_size.isEmpty()){
+                    uploadMultipart(imgs_uri);
+              }
+
             }
+
+
         });
     }
 
@@ -144,7 +187,17 @@ public class HouseFormActivity extends AppCompatActivity implements BSImagePicke
 
             //Creating a multi part request
             MultipartUploadRequest mUploadRequest = new MultipartUploadRequest(this, uploadId, UPLOAD_URL)
-                    .addParameter("caption", "Nothing") //Adding text parameter to the request
+
+                    .addParameter("title", title) //Adding text parameter to the request
+                    .addParameter("price", price)
+                    .addParameter("description", description)
+                    .addParameter("phone", phone)
+                    .addParameter("address", address)
+                    .addParameter("bathroom",bathroom)
+                    .addParameter("bedroom", bedroom)
+                    .addParameter("floor", floor)
+                    .addParameter("house_size", house_size)
+
                     .setNotificationConfig(new UploadNotificationConfig())
                     .setMaxRetries(2); // try request at least 2 time before give up
 

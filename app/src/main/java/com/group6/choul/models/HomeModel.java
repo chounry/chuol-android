@@ -3,6 +3,8 @@ package com.group6.choul.models;
 public class HomeModel {
     private String title, price, address, location, type,img_url;
 
+//    bedroom','bathroom','floor','house_size','yard_size','for_sale_status',,'estate_id
+
     public HomeModel(String title, String price, String address, String location, String type, String img_url) {
         this.title = title;
         this.price = price;

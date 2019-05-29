@@ -30,7 +30,7 @@
         <ImageView
             android:layout_width="150sp"
             android:layout_height="100sp"
-            android:src="@drawable/header"/>
+            android:src="@drawable/profile"/>
         <TextView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -58,10 +58,5 @@
         android:text="Sign In/Sign Up Account"
         android:textColor="#fff"
         android:layout_gravity="center"/>
-    <!--<ImageView-->
-        <!--android:layout_width="200dp"-->
-        <!--android:layout_height="50dp"-->
-        <!--android:layout_gravity="center"-->
-        <!--android:src="@drawable/gmail" />-->
 
 </LinearLayout>
