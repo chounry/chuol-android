@@ -6,7 +6,7 @@ import com.squareup.moshi.Json;
 
 public class ChatModel {
     private int img_id, imgProfile;
-    @Json(name = "username")
+    @Json(name = "name")
     String name;
     @Json(name = "time")
     String time;
@@ -14,12 +14,15 @@ public class ChatModel {
     String title;
     @Json(name = "message")
     String message;
+    @Json(name = "estate_id")
+    int chat_room_id;
 
 
     public ChatModel() {
         this.imgProfile = R.drawable.rick;
         this.img_id = R.drawable.house;
     }
+
 
     public String getName() {
         return name;
@@ -59,5 +62,9 @@ public class ChatModel {
 
     public String getMessage() {
         return message;
+    }
+
+    public int getChatRoom_id() {
+        return chat_room_id;
     }
 }

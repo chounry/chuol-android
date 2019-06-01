@@ -21,6 +21,7 @@ import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.Spinner;
+import android.widget.Spinner;
 import android.widget.Switch;
 import android.widget.Toast;
 
@@ -71,11 +72,14 @@ public class RoomFormActivity extends AppCompatActivity implements BSImagePicker
     private Button service_btn,submit_btn;
     private Toolbar myToolbar;
     private Switch contact_swtich;
-    private EditText title_et, price_et, description_et, phone_et, phone_opt_et, address_et,size_r;
-    private String title, price, description, phone, phone_opt, address,size,city;
+    private EditText price_et, title_et, description_et, size_et, phone_et, phone_opt_et, address_et ;
+
+    private String title, price, description, phone, phone_opt, address, size, lat ;
+    private EditText size_r;
+    private String city;
     private Spinner cityspinner;
 
-    private final String UPLOAD_URL = "http://192.168.100.171:8000/api/rooms/create";
+    private final String UPLOAD_URL = "http://192.168.43.40:8000/api/rooms/create";
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -89,7 +93,15 @@ public class RoomFormActivity extends AppCompatActivity implements BSImagePicker
         upload_img_btn = findViewById(R.id.upload_img_btn);
         myToolbar = findViewById(R.id.my_toolbar);
         contact_swtich = findViewById(R.id.contact_switch);
+
         price_et = findViewById(R.id.price_et);
+        title_et = findViewById(R.id.title_et);
+        description_et = findViewById(R.id.description_et);
+        size_et = findViewById(R.id.size_et);
+        phone_et = findViewById(R.id.phone_et);
+        phone_opt_et = findViewById(R.id.phone_opt_et);
+        address_et = findViewById(R.id.address_et);
+
 
         title_et = findViewById(R.id.title_et);
         price_et = findViewById(R.id.price_et);
@@ -162,7 +174,6 @@ public class RoomFormActivity extends AppCompatActivity implements BSImagePicker
                 }
 
             }
-
         });
 
         // handle multiple select services
@@ -193,6 +204,7 @@ public class RoomFormActivity extends AppCompatActivity implements BSImagePicker
                         for (int i = 0; i < mUserItems.size(); i++) {
                             service_aval.add(listItems[mUserItems.get(i)]);
                         }
+//                        mItemSelected.setText(item);
                     }
                 });
 
@@ -219,12 +231,35 @@ public class RoomFormActivity extends AppCompatActivity implements BSImagePicker
             }
         });
 
+
+
         map_imgBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 Intent intent = new Intent(getApplicationContext(), MapFormActivity.class);
                 startActivity(intent);
             }
+        });
+
+
+        submit_btn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                title = title_et.getText().toString();
+                price = price_et.getText().toString();
+                description = description_et.getText().toString();
+                phone = phone_et.getText().toString();
+                phone_opt = phone_opt_et.getText().toString();
+                address = address_et.getText().toString();
+                size = size_et.getText().toString();
+
+                if(!title.isEmpty() && !price.isEmpty() && !phone.isEmpty() && !address.isEmpty() && size.isEmpty()){
+                    uploadMultipart(imgs_uri);
+                }
+
+            }
+
+
         });
 
     }
@@ -248,6 +283,7 @@ public class RoomFormActivity extends AppCompatActivity implements BSImagePicker
         actionBar.setDisplayShowTitleEnabled(false);
         actionBar.setCustomView(v);
     }
+
 
     public void uploadMultipart(List<Uri> filePath) {
 

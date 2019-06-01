@@ -1,10 +1,16 @@
 package com.group6.choul.models;
 
 
+import com.squareup.moshi.Json;
+
 public class MessageModel {
-    private String message;
+
+    @Json(name = "content")
+    String message;
     private MemberDataForChat memberData;
     private boolean response;
+
+    public MessageModel(){}
 
     public MessageModel(String message, boolean response, MemberDataForChat memberData) {
         this.message = message;
@@ -18,6 +24,10 @@ public class MessageModel {
 
     public boolean isResponse() {
         return response;
+    }
+
+    public void setCustromResponse() {
+
     }
 
     public void setResponse(boolean response) {

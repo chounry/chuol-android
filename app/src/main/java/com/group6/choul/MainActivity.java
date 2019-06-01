@@ -1,5 +1,6 @@
 package com.group6.choul;
 
+import android.app.Activity;
 import android.app.Dialog;
 import android.content.Context;
 import android.content.Intent;
@@ -14,6 +15,7 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
@@ -22,6 +24,7 @@ import androidx.annotation.Nullable;
 import androidx.appcompat.app.ActionBarDrawerToggle;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
+import androidx.coordinatorlayout.widget.CoordinatorLayout;
 import androidx.core.view.GravityCompat;
 import androidx.drawerlayout.widget.DrawerLayout;
 import androidx.fragment.app.Fragment;
@@ -34,9 +37,16 @@ import com.group6.choul.fragments.ChatOutFragment;
 import com.group6.choul.fragments.HomeFragment;
 import com.group6.choul.fragments.SavedPostFragment;
 import com.group6.choul.fragments.SettingFragment;
+import com.group6.choul.login_register_handling.AccessToken;
+import com.group6.choul.login_register_handling.ApiService;
+import com.group6.choul.login_register_handling.RetrofitBuilder;
 import com.group6.choul.login_register_handling.TokenManager;
+import com.group6.choul.models.UserModel;
 
 import butterknife.ButterKnife;
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
 
 public class MainActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener{
 
@@ -48,6 +58,8 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     private Toolbar toolBar;
     public TokenManager tokenManager;
 
+    public ApiService service;
+    public Call<UserModel> call;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -70,9 +82,10 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         toggle.syncState();
         navigationViewHome.setNavigationItemSelectedListener(this);
 
+        getUserInfo(); // get user id and save it to sharedPrefs
+
         loadFragment(new HomeFragment()); // init fragment
     }
-
 
 
     @Override
@@ -173,6 +186,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
             public void onClick(View v) {
                 Intent intent = new Intent(getApplicationContext(), HouseFormActivity.class);
                 startActivity(intent);
+
                 formSelectDialog.cancel();
             }
         });
@@ -183,6 +197,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 
                 Intent intent = new Intent(getApplicationContext(), RoomFormActivity.class);
                 startActivity(intent);
+
                 formSelectDialog.cancel();
             }
         });
@@ -200,6 +215,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
             public void onClick(View v) {
                 Intent intent = new Intent(getApplicationContext(), LoginRegisterActivity.class);
                 startActivity(intent);
+                finish();
             }
         });
 
@@ -207,6 +223,26 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         loginDialog.getWindow().setLayout(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT);
         loginDialog.getWindow().setGravity(Gravity.TOP);
         loginDialog.show();
+    }
+
+
+    public void getUserInfo(){
+        service = RetrofitBuilder.createServiceWithAuth(ApiService.class, tokenManager);
+        call = service.get_user();
+        call.enqueue(new Callback<UserModel>() {
+            @Override
+            public void onResponse(Call<UserModel> call, Response<UserModel> response) {
+                if(response.isSuccessful()){
+                    tokenManager.saveUserId(response.body().getId());
+                    tokenManager.saveUserName(response.body().getUsername());
+                }
+            }
+
+            @Override
+            public void onFailure(Call<UserModel> call, Throwable t) {
+                Log.e("Retrofit error : " , t.toString());
+            }
+        });
     }
 
 

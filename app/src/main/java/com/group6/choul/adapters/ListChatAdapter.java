@@ -47,13 +47,17 @@ public class ListChatAdapter extends BaseAdapter {
         ImageView imageView  = v.findViewById(R.id.profile_image);
         TextView textviewName = v.findViewById(R.id.userName);
         TextView textviewTime = v.findViewById(R.id.chatTime);
+        TextView titleTv = v.findViewById(R.id.title_tv);
+        TextView msgTv = v.findViewById(R.id.msg_tv);
         ImageView imgView  = v.findViewById(R.id.imgViewProduct);
 
         ChatModel obj = modeList.get(position);
 
         imageView.setImageResource(obj.getImg_id());
         textviewName.setText(obj.getName());
+        titleTv.setText(obj.getTitle());
         textviewTime.setText(obj.getTime());
+        msgTv.setText(obj.getMessage());
         imgView.setImageResource(obj.getImgProfile());
 
         return v;

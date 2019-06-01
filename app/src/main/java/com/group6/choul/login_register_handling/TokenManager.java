@@ -28,7 +28,25 @@ public class TokenManager {
     public void deleteToken(){
         editor.remove("ACCESS_TOKEN");
         editor.remove("REFRESH_TOKEN");
+        editor.remove("USER_ID");
+        editor.remove("USERNAME");
         editor.apply();
+    }
+
+    public void saveUserId(int id){
+        editor.putInt("USER_ID",id).commit();
+    }
+
+    public int getUserId(){
+        return prefs.getInt("USER_ID",0);
+    }
+
+    public void saveUserName(String username){
+        editor.putString("USERNAME",username).commit();
+    }
+
+    public String getUserName(){
+        return prefs.getString("USERNAME",null);
     }
 
     public AccessToken getToken(){

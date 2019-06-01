@@ -86,23 +86,6 @@
                         android:textColor="#FFFF"/>
                 </TableRow>
 
-                <TableRow android:layout_height="9dp">
-
-                    <TextView
-                        android:layout_width="0dp"
-                        android:layout_height="wrap_content"
-                        android:layout_weight="0.3"
-                        android:text="Type"
-                        android:textColor="#FFFF" />
-
-                    <TextView
-                        android:id="@+id/type"
-                        android:layout_width="0dp"
-                        android:layout_height="wrap_content"
-                        android:layout_weight="0.7"
-                        android:text="Villa"
-                        android:textColor="#FFFF" />
-                </TableRow>
             </TableLayout>
         </LinearLayout>
     </RelativeLayout>

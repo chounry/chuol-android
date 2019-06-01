@@ -13,15 +13,16 @@ import androidx.coordinatorlayout.widget.CoordinatorLayout;
 import com.group6.choul.HouseDetailActivity;
 import com.group6.choul.R;
 import com.group6.choul.models.HomeModel;
+import com.group6.choul.models.RoomModel;
 import com.squareup.picasso.Picasso;
 
 import java.util.List;
 
 public class RoomListAdapter  extends BaseAdapter {
     private Context context;
-    private List<HomeModel> modeList;
+    private List<RoomModel> modeList;
 
-    public RoomListAdapter(Context context , List<HomeModel> modeList){
+    public RoomListAdapter(Context context , List<RoomModel> modeList){
         this.context = context;
         this.modeList = modeList;
     }
@@ -51,7 +52,7 @@ public class RoomListAdapter  extends BaseAdapter {
         TextView textviewAddress = v.findViewById(R.id.address);
         TextView textviewLocation = v.findViewById(R.id.location);
         ImageView imageView = v.findViewById(R.id.imgView);
-        HomeModel obj = modeList.get(position);
+        RoomModel obj = modeList.get(position);
 
         Picasso.get().load(obj.getImg_url()).into(imageView);
         textviewTitle.setText(obj.getTitle());

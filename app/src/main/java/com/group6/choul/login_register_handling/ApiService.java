@@ -4,6 +4,8 @@ import com.group6.choul.models.ChatModel;
 import com.group6.choul.models.ResponseStatus;
 import com.group6.choul.models.UserModel;
 
+import java.util.List;
+
 import retrofit2.Call;
 import retrofit2.http.Field;
 import retrofit2.http.FormUrlEncoded;
@@ -32,7 +34,7 @@ public interface ApiService {
     @FormUrlEncoded
     Call<ResponseStatus> update_user(@Field("id") int id,@Field("fname") String fname,@Field("lname") String lname,@Field("email") String email,@Field("phone") String phone);
 
-    @POST
+    @POST("messages/get")
     @FormUrlEncoded
-    Call<ChatModel> get_chat_room(@Field("user_id") int user_id);
+    Call<List<ChatModel>> get_chat_room(@Field("user_id") int user_id);
 }

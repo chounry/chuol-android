@@ -1,5 +1,8 @@
 package com.group6.choul.models;
 
+
+import com.squareup.moshi.Json;
+
 public class MemberDataForChat {
     private String name;
     private String img;
