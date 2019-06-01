@@ -25,21 +25,14 @@
         android:layout_height="wrap_content"
         android:orientation="horizontal"
         android:layout_gravity="center"
+        android:gravity="center_horizontal"
         android:paddingHorizontal="30dp"
-        android:layout_marginVertical="30dp">
+        android:layout_marginBottom="35dp">
         <ImageView
-            android:layout_width="150sp"
-            android:layout_height="100sp"
-            android:src="@drawable/favorite"/>
-        <TextView
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:textColor="#FFFF"
-            android:textStyle="bold"
-            android:textSize="30sp"
-            android:layout_marginTop="23dp"
-            android:text="Choul"
-            />
+            android:layout_width="140sp"
+            android:layout_height="140sp"
+            android:src="@drawable/app_logo"/>
+
     </LinearLayout>
     <ImageButton
         android:clickable="true"
@@ -51,10 +44,11 @@
         android:src="@drawable/facebook" />
 
     <TextView
+        android:id="@+id/login_sign_up_btn"
         android:clickable="true"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="10dp"
+        android:layout_marginTop="25dp"
         android:text="Sign In/Sign Up Account"
         android:textColor="#fff"
         android:layout_gravity="center"/>

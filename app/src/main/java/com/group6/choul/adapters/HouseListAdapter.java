@@ -1,6 +1,7 @@
 package com.group6.choul.adapters;
 
 import android.content.Context;
+import android.content.Intent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -10,6 +11,8 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.group6.choul.HouseDetailActivity;
+import com.group6.choul.MainActivity;
 import com.group6.choul.R;
 import com.group6.choul.models.HouseModel;
 import com.squareup.picasso.Picasso;
@@ -21,17 +24,29 @@ public class HouseListAdapter extends RecyclerView.Adapter<MyHomeRecyClerView>{
 
     private List<HouseModel> modelList;
     private Context context; // new
+    private RecyclerView recyclerViewHome;
+    private View.OnClickListener mOnClickListener;
 
 
     public HouseListAdapter(List<HouseModel> modelList, Context context) {
         this.modelList = modelList;
         this.context = context;
+        this.recyclerViewHome = recyclerViewHome;
     }
 
     @NonNull
     @Override
     public MyHomeRecyClerView onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         View myView = LayoutInflater.from(parent.getContext()).inflate(R.layout.item_each_house,null);
+        mOnClickListener = new View.OnClickListener(){
+            @Override
+            public void onClick(View v) {
+                int itemPos = recyclerViewHome.getChildLayoutPosition(v);
+                Intent intent = new Intent(context, HouseDetailActivity.class);
+                context.startActivity(intent);
+            }
+        };
+        myView.setOnClickListener(mOnClickListener);
         return new MyHomeRecyClerView(myView);
     }
 

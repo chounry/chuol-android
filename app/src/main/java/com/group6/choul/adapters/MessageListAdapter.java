@@ -23,6 +23,11 @@ public class MessageListAdapter extends BaseAdapter {
         this.modelList = modelList;
     }
 
+    public void add(MessageModel message) {
+        this.modelList.add(message);
+        notifyDataSetChanged(); // to render the list we need to notify
+    }
+
     @Override
     public int getCount() {
         return this.modelList.size();
@@ -48,7 +53,7 @@ public class MessageListAdapter extends BaseAdapter {
             // if the message is a receive message
             v = View.inflate(this.context, R.layout.item_recieve_msg,  null);
             ImageView imgView = v.findViewById(R.id.profile_image);
-            Picasso.get().load(m.getUser_img()).into(imgView);
+            Picasso.get().load(m.getMemberData().getImg()).into(imgView);
         }
         TextView messageView = v.findViewById(R.id.msgTv);
         messageView.setText(m.getMessage());

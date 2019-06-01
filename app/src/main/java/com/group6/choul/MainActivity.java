@@ -1,6 +1,7 @@
 package com.group6.choul;
 
 import android.app.Dialog;
+import android.content.Context;
 import android.content.Intent;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
@@ -9,6 +10,7 @@ import android.os.Bundle;
 
 import android.text.SpannableString;
 import android.text.style.UnderlineSpan;
+import android.util.Log;
 import android.util.Log;
 import android.view.Gravity;
 import android.view.Menu;
@@ -22,6 +24,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.appcompat.app.ActionBarDrawerToggle;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
@@ -39,6 +42,9 @@ import com.group6.choul.fragments.ChatOutFragment;
 import com.group6.choul.fragments.HomeFragment;
 import com.group6.choul.fragments.SavedPostFragment;
 import com.group6.choul.fragments.SettingFragment;
+import com.group6.choul.login_register_handling.TokenManager;
+
+import butterknife.ButterKnife;
 
 public class MainActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener{
 
@@ -48,7 +54,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     private Dialog formSelectDialog,loginDialog;
     private Button btnHouseForm, btnRoomForm;
     private Toolbar toolBar;
-    private TextView welcomeTv;
+    public TokenManager tokenManager;
 
 
 
@@ -58,7 +64,9 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        overridePendingTransition(0, 0);
+        ButterKnife.bind(this);
+        tokenManager = TokenManager.getInstance(getSharedPreferences("prefs", MODE_PRIVATE));
+
         formSelectDialog = new Dialog(this);
         loginDialog = new Dialog(this);
         drawerLayoutHome = findViewById(R.id.drawer_home);
@@ -66,18 +74,15 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         toolBar = findViewById(R.id.toolbar);
 
         setSupportActionBar(toolBar);
-
+        getSupportActionBar().setElevation(0);
         toggle = new ActionBarDrawerToggle(this,drawerLayoutHome,toolBar,R.string.opened_menu,R.string.closed_menu);
         drawerLayoutHome.addDrawerListener(toggle);
         toggle.syncState();
         navigationViewHome.setNavigationItemSelectedListener(this);
 
+
         loadFragment(new HomeFragment()); // init fragment
-
     }
-
-
-
 
 
     @Override
@@ -85,20 +90,18 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         if (toggle.onOptionsItemSelected(item))
             return true;
 
+        tokenManager = TokenManager.getInstance(getSharedPreferences("prefs", MODE_PRIVATE));
+
         switch (item.getItemId()) {
             case R.id.post:
-                showFormSelectPopup();
+                if(tokenManager.getToken().getAccessToken() == null){
+                    showLoginPopUp();
+                }else{
+                    showFormSelectPopup();
+                }
                 return true;
         }
         return super.onOptionsItemSelected(item);
-    }
-    private void loadFragment(Fragment fragment){
-        FragmentManager fm = getSupportFragmentManager();
-        FragmentTransaction tr = fm.beginTransaction();
-        tr.setCustomAnimations(R.anim.enter_from_right,R.anim.exit_to_right);
-        tr.replace(R.id.container_home,fragment);
-        tr.commit();
-        drawerLayoutHome.closeDrawers();
     }
 
     @Override
@@ -107,61 +110,43 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         return super.onCreateOptionsMenu(menu);
     }
 
-    public void showFormSelectPopup() {
-        formSelectDialog.setContentView(R.layout.custom_post_pop_up);
-        btnHouseForm = formSelectDialog.findViewById(R.id.btn_house);
-        btnRoomForm = formSelectDialog.findViewById(R.id.btn_room);
-
-        btnHouseForm.setOnClickListener( new View.OnClickListener(){
-
-            @Override
-            public void onClick(View v) {
-                Intent intent = new Intent(getApplicationContext(), HouseFormActivity.class);
-                startActivity(intent);
-            }
-        });
-        btnRoomForm.setOnClickListener( new View.OnClickListener(){
-
-            @Override
-            public void onClick(View v) {
-
-                Intent intent = new Intent(getApplicationContext(), RoomFormActivity.class);
-                startActivity(intent);
-            }
-        });
-
-        formSelectDialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
-        formSelectDialog.show();
-    }
-
-    public void showLoginPopUp() {
-        loginDialog.setContentView(R.layout.login);
-
-        loginDialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
-        loginDialog.getWindow().setLayout(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT);
-        loginDialog.getWindow().setGravity(Gravity.TOP);
-        loginDialog.show();
-    }
-
     @Override
     public boolean onNavigationItemSelected(@NonNull MenuItem menuItem) {
         int id = menuItem.getItemId();
-
+        tokenManager = TokenManager.getInstance(getSharedPreferences("prefs", MODE_PRIVATE));
+        Fragment fragment = getSupportFragmentManager().findFragmentById(R.id.container_home);
         if (id == R.id.nav_home) {
             // Handle the camera action
         } else if (id == R.id.item_home) {
+            drawerLayoutHome.closeDrawers();
+            if(fragment instanceof HomeFragment){
+                return true;
+            }
             loadFragment(new HomeFragment());
             return true;
         } else if (id == R.id.item_chat) {
-            loadFragment(new ChatOutFragment());
+            drawerLayoutHome.closeDrawers();
+            if(tokenManager.getToken().getAccessToken() == null){
+                showLoginPopUp();
+            }else {
+                loadFragment(new ChatOutFragment());
+            }
             return true;
         } else if (id == R.id.item_saved) {
-            loadFragment(new SavedPostFragment());
+            drawerLayoutHome.closeDrawers();
+            if(tokenManager.getToken().getAccessToken() == null){
+                showLoginPopUp();
+            }else {
+                loadFragment(new SavedPostFragment());
+            }
             return true;
         } else if (id == R.id.item_setting) {
-            showLoginPopUp();
             drawerLayoutHome.closeDrawers();
-//            loadFragment(new SettingFragment());
+            if(tokenManager.getToken().getAccessToken() == null){
+                showLoginPopUp();
+            }else {
+                loadFragment(new SettingFragment());
+            }
             return true;
         }
 
@@ -174,5 +159,66 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     public void onPointerCaptureChanged(boolean hasCapture) {
 
     }
+    /*
+
+   ===================== MY Functions =====================================
+     */
+    private void loadFragment(Fragment fragment){
+        FragmentManager fm = getSupportFragmentManager();
+        FragmentTransaction tr = fm.beginTransaction();
+//        tr.setCustomAnimations(R.anim.enter_from_right,R.anim.exit_to_right);
+        tr.replace(R.id.container_home,fragment);
+        tr.commit();
+    }
+
+
+    public void showFormSelectPopup() {
+        formSelectDialog.setContentView(R.layout.custom_post_pop_up);
+        btnHouseForm = formSelectDialog.findViewById(R.id.btn_house);
+        btnRoomForm = formSelectDialog.findViewById(R.id.btn_room);
+
+        btnHouseForm.setOnClickListener( new View.OnClickListener(){
+
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(getApplicationContext(), HouseFormActivity.class);
+                startActivity(intent);
+                formSelectDialog.cancel();
+            }
+        });
+        btnRoomForm.setOnClickListener( new View.OnClickListener(){
+
+            @Override
+            public void onClick(View v) {
+
+                Intent intent = new Intent(getApplicationContext(), RoomFormActivity.class);
+                startActivity(intent);
+                formSelectDialog.cancel();
+            }
+        });
+
+        formSelectDialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
+        formSelectDialog.show();
+    }
+
+
+    public void showLoginPopUp() {
+        loginDialog.setContentView(R.layout.dialog_login);
+        TextView login_sign_up_btn = loginDialog.findViewById(R.id.login_sign_up_btn);
+        login_sign_up_btn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(getApplicationContext(), LoginRegisterActivity.class);
+                startActivity(intent);
+            }
+        });
+
+        loginDialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
+        loginDialog.getWindow().setLayout(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT);
+        loginDialog.getWindow().setGravity(Gravity.TOP);
+        loginDialog.show();
+    }
+
+
 }
 

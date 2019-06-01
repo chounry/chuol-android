@@ -30,7 +30,8 @@
                 android:layout_height="wrap_content"
                 android:text="House Information"
                 android:gravity="center"
-                android:textSize="18sp"
+                android:textStyle="bold"
+                android:textSize="25sp"
                 android:textColor="#000"/>
 
             <LinearLayout
@@ -39,97 +40,154 @@
                 android:orientation="vertical"
                 android:layout_marginVertical="15dp">
 
-                <EditText
-                    android:id="@+id/title_et"
-                    android:layout_marginBottom="15dp"
-                    android:textSize="14sp"
+                <com.google.android.material.textfield.TextInputLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:hint="Title"/>
+                    android:hint="Title">
+                    <EditText
+                        android:id="@+id/title_et"
+                        android:layout_marginBottom="20dp"
+                        android:textSize="16sp"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content" />
+                </com.google.android.material.textfield.TextInputLayout>
+
+
+                <com.google.android.material.textfield.TextInputLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:hint="Description (optional)">
+                    <EditText
+                        android:layout_marginBottom="20dp"
+                        android:id="@+id/description_et"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:hint=""
+                        android:textSize="16sp"/>
+                </com.google.android.material.textfield.TextInputLayout>
 
                 <Spinner
                     android:background="@drawable/spinner_border"
                     android:id="@+id/house_type_spinner"
-                    android:layout_marginBottom="10dp"
+                    android:layout_marginBottom="20dp"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:prompt="@string/house_type_promt"
                     android:entries="@array/house_type">
                 </Spinner>
 
-                <EditText
-                    android:inputType="number"
-                    android:layout_marginBottom="10dp"
-                    android:id="@+id/bathroom_et"
-                    android:textSize="14sp"
+
+                <com.google.android.material.textfield.TextInputLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:hint="# of Bedroom"/>
+                    android:hint="# of Bedroom">
+                    <EditText
+                        android:inputType="number"
+                        android:layout_marginBottom="20dp"
+                        android:id="@+id/bathroom_et"
+                        android:textSize="16sp"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content" />
+                </com.google.android.material.textfield.TextInputLayout>
 
-                <EditText
-                    android:inputType="number"
-                    android:layout_marginBottom="10dp"
-                    android:id="@+id/bedroom_et"
-                    android:textSize="14sp"
+                <com.google.android.material.textfield.TextInputLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:hint="# of Bathroom"/>
+                    android:hint="# of Bathroom">
+                    <EditText
+                        android:inputType="number"
+                        android:layout_marginBottom="20dp"
+                        android:id="@+id/bedroom_et"
+                        android:textSize="16sp"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content" />
+                </com.google.android.material.textfield.TextInputLayout>
 
-                <EditText
-                    android:inputType="number"
-                    android:layout_marginBottom="10dp"
-                    android:id="@+id/floor_et"
-                    android:textSize="14sp"
+                <com.google.android.material.textfield.TextInputLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:hint="# of Floor"/>
+                    android:hint="# of Floor">
+                    <EditText
+                        android:inputType="number"
+                        android:layout_marginBottom="20dp"
+                        android:id="@+id/floor_et"
+                        android:textSize="16sp"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content" />
+                </com.google.android.material.textfield.TextInputLayout>
 
+                <com.google.android.material.textfield.TextInputLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:hint="House Size : eg 10m x 6m">
                 <EditText
                     android:id="@+id/house_size_et"
-                    android:layout_marginBottom="10dp"
+                    android:layout_marginBottom="20dp"
                     android:layout_width="match_parent"
-                    android:textSize="14sp"
-                    android:layout_height="wrap_content"
-                    android:hint="House Size : eg 10m x 6m" />
+                    android:textSize="16sp"
+                    android:layout_height="wrap_content" />
+                </com.google.android.material.textfield.TextInputLayout>
 
+
+                <com.google.android.material.textfield.TextInputLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:hint="Yard Size : eg 14m x 6m">
                 <EditText
                     android:id="@+id/yard_size_et"
-                    android:layout_marginBottom="10dp"
+                    android:layout_marginBottom="20dp"
                     android:layout_width="match_parent"
-                    android:textSize="14sp"
-                    android:layout_height="wrap_content"
-                    android:hint="Yard Size : eg 14m x 6m" />
+                    android:textSize="16sp"
+                    android:layout_height="wrap_content" />
+                </com.google.android.material.textfield.TextInputLayout>
 
+
+                <com.google.android.material.textfield.TextInputLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:hint="Address">
                 <EditText
                     android:id="@+id/address_et"
-                    android:layout_marginBottom="10dp"
-                    android:textSize="14sp"
+                    android:layout_marginBottom="20dp"
+                    android:textSize="16sp"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:hint="Address : eg Preah Monivong Blvd, Sangkat Srah Chork, Khan Daun Penh #6"/>
+                    android:hint=""/>
+                </com.google.android.material.textfield.TextInputLayout>
 
-                <EditText
-                    android:id="@+id/phone_et"
-                    android:inputType="phone"
-                    android:textSize="14sp"
-                    android:layout_marginBottom="10dp"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:hint="Phone Number #1" />
 
-                <EditText
-                    android:id="@+id/phone_opt_et"
-                    android:inputType="phone"
-                    android:textSize="14sp"
-                    android:layout_marginBottom="10dp"
+                <com.google.android.material.textfield.TextInputLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:hint="Phone Number #2 (Optional)" />
+                    android:hint="# of BathroomPhone Number #1">
+                    <EditText
+                        android:id="@+id/phone_et"
+                        android:inputType="phone"
+                        android:textSize="16sp"
+                        android:layout_marginBottom="20dp"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content" />
+                </com.google.android.material.textfield.TextInputLayout>
+
+
+                <com.google.android.material.textfield.TextInputLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:hint="Phone Number #2 (Optional)">
+                    <EditText
+                        android:id="@+id/phone_opt_et"
+                        android:inputType="phone"
+                        android:textSize="16sp"
+                        android:layout_marginBottom="20dp"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:hint="" />
+                </com.google.android.material.textfield.TextInputLayout>
 
                 <Spinner
                     android:background="@drawable/spinner_border"
                     android:id="@+id/city_spinner"
-                    android:layout_marginBottom="10dp"
+                    android:layout_marginBottom="20dp"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:prompt="@string/city_promt"
@@ -139,7 +197,7 @@
                 <Spinner
                     android:background="@drawable/spinner_border"
                     android:id="@+id/for_what_spinner"
-                    android:layout_marginBottom="10dp"
+                    android:layout_marginBottom="20dp"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:prompt="@string/sale_rent_promt"
@@ -148,7 +206,7 @@
                 </Spinner>
 
                 <LinearLayout
-                    android:layout_marginBottom="10dp"
+                    android:layout_marginBottom="20dp"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:orientation="horizontal">
@@ -165,19 +223,23 @@
                 </LinearLayout>
 
 
-
-                <EditText
-                    android:id="@+id/price_for_house"
-                    android:layout_marginBottom="10dp"
+                <com.google.android.material.textfield.TextInputLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:textSize="14sp"
-                    android:hint="Price"/>
+                    android:hint="Price">
+                    <EditText
+                        android:id="@+id/price_for_house"
+                        android:layout_marginBottom="20dp"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:textSize="16sp"
+                        android:hint=""/>
+                </com.google.android.material.textfield.TextInputLayout>
 
                 <Spinner
                     android:background="@drawable/spinner_border"
-                    android:layout_marginBottom="10dp"
-                    android:id="@+id/currency_sp"
+                    android:layout_marginBottom="20dp"
+                    android:id="@+id/currency_spinner"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:prompt="@string/currency_promt"
@@ -187,21 +249,15 @@
 
                 <Spinner
                     android:background="@drawable/spinner_border"
-                    android:layout_marginBottom="10dp"
-                    android:id="@+id/duration_sp"
+                    android:layout_marginBottom="20dp"
+                    android:id="@+id/duration_spinner"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:prompt="@string/duration_promt"
                     android:entries="@array/duration">
                 </Spinner>
 
-                <EditText
-                    android:layout_marginBottom="10dp"
-                    android:id="@+id/description_et"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:hint="Description"
-                    android:textSize="14sp"/>
+
 
                 <!-- Image upload -->
                 <TextView
@@ -226,7 +282,7 @@
                     android:orientation="vertical"
                     android:gravity="center"
                     android:paddingVertical="15dp"
-                    android:layout_marginBottom="15dp">
+                    android:layout_marginBottom="20dp">
 
                     <ImageView
                         android:layout_width="60dp"
@@ -243,7 +299,7 @@
                         <TextView
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:text="(Max : 12)"
+                            android:text="(Max : 10)"
                             android:textColor="#A5A5A5"/>
                     </LinearLayout>
 
@@ -260,6 +316,7 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_marginBottom="10dp"
+                        android:textSize="16sp"
                         android:text="Location"/>
 
                     <ImageButton
@@ -275,7 +332,7 @@
                     android:layout_height="wrap_content"
                     android:orientation="horizontal">
                     <CheckBox
-                        android:textSize="14sp"
+                        android:textSize="16sp"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:text="Agree of Term &amp; Condition"/>

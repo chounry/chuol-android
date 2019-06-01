@@ -76,7 +76,7 @@ public class HouseFormActivity extends AppCompatActivity implements BSImagePicke
         myToolbar = findViewById(R.id.my_toolbar);
         map_imgBtn = findViewById(R.id.map_imgBtn);
         upload_img_btn = findViewById(R.id.upload_img_btn);
-        submit_btn = findViewById(R.id.submit_btn_house);
+        submit_btn = findViewById(R.id.submit_btn);
 
         title_et = findViewById(R.id.title_et);
         price_et = findViewById(R.id.price_for_house);

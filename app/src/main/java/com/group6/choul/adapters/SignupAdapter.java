@@ -14,7 +14,6 @@ import com.group6.choul.fragments.SignupFragement;
 public class SignupAdapter extends FragmentPagerAdapter {
 
     int numTab;
-    int some;
 
     public SignupAdapter(FragmentManager fm, int numTab) {
         super(fm);
@@ -25,9 +24,9 @@ public class SignupAdapter extends FragmentPagerAdapter {
     public Fragment getItem(int i) {
         switch(i){
             case 0:
-                return new SignupFragement();
-            case 1:
                 return new SigninFragement();
+            case 1:
+                return new SignupFragement();
         }
         return null;
     }

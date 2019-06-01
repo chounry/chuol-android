@@ -33,19 +33,21 @@ public class HomeFragment extends Fragment {
 
     }
 
-
-
     @RequiresApi(api = Build.VERSION_CODES.M)
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View v = inflater.inflate(R.layout.fragment_home, container, false);
         tabPageView = v.findViewById(R.id.viewPage_home);
-
         tabLayout = v.findViewById(R.id.tab_h);
+
+        return v;
+    }
+
+    @Override
+    public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         tab_adapter = new PageAdapter(getChildFragmentManager(),tabLayout.getTabCount());
         // <------------   handle tap
-//        tab_adapter = new PageAdapter(getActivity().getSupportFragmentManager(), tabLayout.getTabCount());
         tabPageView.setAdapter(tab_adapter);
         tabPageView.setOffscreenPageLimit(0);
 
@@ -64,10 +66,7 @@ public class HomeFragment extends Fragment {
             }
         });
 
-
-
-
         tabPageView.addOnPageChangeListener(new TabLayout.TabLayoutOnPageChangeListener(tabLayout));
-        return v;
+        super.onViewCreated(view, savedInstanceState);
     }
 }

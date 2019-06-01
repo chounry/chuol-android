@@ -5,11 +5,13 @@ import android.os.Build;
 import android.os.Bundle;
 
 
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
+import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.ListView;
-
+import android.widget.Toast;
 
 
 import androidx.annotation.RequiresApi;
@@ -17,14 +19,28 @@ import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.group6.choul.adapters.MessageListAdapter;
+import com.group6.choul.models.MemberData;
 import com.group6.choul.models.MessageModel;
+import com.scaledrone.lib.Listener;
+import com.scaledrone.lib.Message;
+import com.scaledrone.lib.Room;
+import com.scaledrone.lib.RoomListener;
+import com.scaledrone.lib.Scaledrone;
 
 import java.util.ArrayList;
 import java.util.List;
 
-public class ChatInActivity extends AppCompatActivity {
+public class ChatInActivity extends AppCompatActivity implements RoomListener {
 
+    private String channelID = "DGIuZ5gOpwXwUfB1";
+    private String roomName = "observable-room";
+    private Scaledrone scaledrone;
+
+    private EditText mstEt;
+    private ImageButton sendBtn;
     private ListView listView;
     private List<MessageModel> messageModelList;
     private MessageListAdapter messageAdapter;
@@ -35,6 +51,10 @@ public class ChatInActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_chat_in);
 
+        mstEt = findViewById(R.id.msg_et);
+        sendBtn = findViewById(R.id.send_btn);
+
+
         //------------ Action bar thing
         Toolbar myToolbar = (Toolbar) findViewById(R.id.my_toolbar);
         setSupportActionBar(myToolbar);
@@ -42,31 +62,27 @@ public class ChatInActivity extends AppCompatActivity {
         // Action bar thing ------------
 
         listView = findViewById(R.id.message_listView);
-
+        sendBtn = findViewById(R.id.send_btn);
         messageModelList = new ArrayList<>();
 
-        MessageModel receive1 = new MessageModel("Hi","https://img.icons8.com/bubbles/2x/user.png",false);
-        MessageModel receive2 = new MessageModel("What is your name?","https://img.icons8.com/bubbles/2x/user.png",false);
-        MessageModel response1 = new MessageModel("Hi my name is Something",true);
-        MessageModel receive3 = new MessageModel("Oh","https://img.icons8.com/bubbles/2x/user.png",false);
+
+        sendBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                sendMessage();
+            }
+        });
+//        MessageModel receive1 = new MessageModel("Hi","https://img.icons8.com/bubbles/2x/user.png",false);
+//        MessageModel receive2 = new MessageModel("What is your name?","https://img.icons8.com/bubbles/2x/user.png",false);
+//        MessageModel response1 = new MessageModel("Hi my name is Something",true);
+//        MessageModel receive3 = new MessageModel("Oh","https://img.icons8.com/bubbles/2x/user.png",false);
 
 
-        messageModelList.add(receive1);
-        messageModelList.add(receive2);
-        messageModelList.add(response1);
-        messageModelList.add(receive3);
-        messageModelList.add(receive1);
-        messageModelList.add(receive2);
-        messageModelList.add(response1);
-        messageModelList.add(receive3);
-        messageModelList.add(receive1);
-        messageModelList.add(receive2);
-        messageModelList.add(response1);
-        messageModelList.add(receive3);
-        messageModelList.add(receive1);
-        messageModelList.add(receive2);
-        messageModelList.add(response1);
-        messageModelList.add(receive3);
+
+//        messageModelList.add(receive1);
+//        messageModelList.add(receive2);
+//        messageModelList.add(response1);
+//        messageModelList.add(receive3);
         messageAdapter = new MessageListAdapter(this,messageModelList);
         listView.setDivider(null);
         listView.setAdapter(messageAdapter);
@@ -84,6 +100,31 @@ public class ChatInActivity extends AppCompatActivity {
             }
         });
 
+        MemberData data = new MemberData("Phone","https://wowsciencecamp.org/wp-content/uploads/2018/07/dummy-user-img-1-400x400_x_acf_cropped.png");
+        scaledrone = new Scaledrone(channelID, data);
+        scaledrone.connect(new Listener() {
+            @Override
+            public void onOpen() {
+                System.out.println("Scaledrone connection open");
+                // Since the MainActivity itself already implement RoomListener we can pass it as a target
+                scaledrone.subscribe(roomName, ChatInActivity.this);
+            }
+
+            @Override
+            public void onOpenFailure(Exception ex) {
+                System.err.println(ex);
+            }
+
+            @Override
+            public void onFailure(Exception ex) {
+                System.err.println(ex);
+            }
+
+            @Override
+            public void onClosed(String reason) {
+                System.err.println(reason);
+            }
+        });
 
         ActionBar actionBar = getSupportActionBar();
         actionBar.setDisplayHomeAsUpEnabled(false);
@@ -91,5 +132,55 @@ public class ChatInActivity extends AppCompatActivity {
         actionBar.setDisplayShowCustomEnabled(true);
         actionBar.setDisplayShowTitleEnabled(false);
         actionBar.setCustomView(v);
+    }
+
+
+    @Override
+    public void onOpen(Room room) {
+        Log.e("Scale Drom onOpen Status : ", "Successful");
+
+    }
+
+    @Override
+    public void onOpenFailure(Room room, Exception ex) {
+        Log.e("Scale Drom onOpen Status : ", "Faild");
+    }
+
+    @Override
+    public void onMessage(Room room, Message message) {
+
+        final ObjectMapper mapper = new ObjectMapper();
+        try {
+            // member.clientData is a MemberData object, let's parse it as such
+            final MemberData data = mapper.treeToValue(message.getMember().getClientData(), MemberData.class);
+            // if the clientID of the message sender is the same as our's it was sent by us
+            boolean belongsToCurrentUser = message.getClientID().equals(scaledrone.getClientID());
+            // since the message body is a simple string in our case we can use json.asText() to parse it as such
+            // if it was instead an object we could use a similar pattern to data parsing
+            final MessageModel recieve_message = new MessageModel(message.getData().asText(), belongsToCurrentUser, data);
+//            if(recieve_message)
+
+            runOnUiThread(new Runnable() {
+                @Override
+                public void run() {
+                    mstEt.getText().clear(); // clear edit text
+                    messageAdapter.add(recieve_message);
+                    // scroll the ListView to the last added element
+                    listView.setSelection(listView.getCount() - 1);
+                }
+            });
+        } catch (JsonProcessingException e) {
+            Toast.makeText(this, "No Connection", Toast.LENGTH_SHORT).show();
+            e.printStackTrace();
+        }
+    }
+
+    public void sendMessage(){
+        String message = mstEt.getText().toString();
+        if (message.length() > 0) {
+//            messageAdapter.add(new MessageModel(message, false, new MemberData("Chounry","https://wowsciencecamp.org/wp-content/uploads/2018/07/dummy-user-img-1-400x400_x_acf_cropped.png")));
+            scaledrone.publish(roomName, message);
+
+        }
     }
 }

@@ -37,6 +37,7 @@ public class ChatOutFragment extends Fragment {
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View v = inflater.inflate(R.layout.fragment_chat_out,container,false);
         listView = v.findViewById(R.id.item_chat_id);
+
         ChatModelist = new ArrayList<>();
 
         ChatModel model = new ChatModel(R.drawable.house1, "shimi", "11:11", R.drawable.house);

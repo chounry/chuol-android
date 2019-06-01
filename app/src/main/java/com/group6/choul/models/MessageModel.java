@@ -2,17 +2,18 @@ package com.group6.choul.models;
 
 
 public class MessageModel {
-    private String message, user_img;
+    private String message;
+    private MemberData memberData;
     private boolean response;
 
-    public MessageModel(String message,  String user_img, boolean response) {
+    public MessageModel(String message, boolean response, MemberData memberData) {
         this.message = message;
-        this.user_img = user_img;
         this.response = response;
+        this.memberData = memberData;
     }
-    public MessageModel(String message, boolean response) {
-        this.message = message;
-        this.response = response;
+
+    public MemberData getMemberData() {
+        return memberData;
     }
 
     public boolean isResponse() {
@@ -29,13 +30,5 @@ public class MessageModel {
 
     public void setMessage(String message) {
         this.message = message;
-    }
-
-    public String getUser_img() {
-        return user_img;
-    }
-
-    public void setUser_img(String user_img) {
-        this.user_img = user_img;
     }
 }
