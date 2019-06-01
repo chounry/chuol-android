@@ -151,17 +151,17 @@
                     android:textSize="14sp" />
 
                 <Spinner
-                    android:id="@+id/currency_spinner"
+                    android:id="@+id/currency_sp"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:background="@drawable/spinner_border"
 
                     android:entries="@array/currencies"
                     android:paddingVertical="15dp"
-                    android:prompt="@string/currency_promt"></Spinner>
+                    android:prompt="@string/currency_promt"></Spinner>x
 
                 <Spinner
-                    android:id="@+id/duration_spinner"
+                    android:id="@+id/duration_sp"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginBottom="20dp"

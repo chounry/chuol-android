@@ -1,78 +1,104 @@
 package com.group6.choul.fragments;
 
-import android.annotation.SuppressLint;
-import android.content.Context;
-import android.content.Intent;
 import android.os.Build;
 import android.os.Bundle;
 
 
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.AdapterView;
-import android.widget.AdapterView.OnItemClickListener;
-import android.widget.ListView;
+import android.widget.TextView;
 
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.annotation.RequiresApi;
 import androidx.fragment.app.Fragment;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
+import com.android.volley.Request;
+import com.android.volley.RequestQueue;
+import com.android.volley.Response;
+import com.android.volley.VolleyError;
+import com.android.volley.toolbox.StringRequest;
+import com.android.volley.toolbox.Volley;
 import com.group6.choul.R;
-import com.group6.choul.RoomDetailActivity;
 import com.group6.choul.adapters.RoomListAdapter;
-import com.group6.choul.models.HomeModel;
+import com.group6.choul.models.RoomModel;
+
+import org.json.JSONArray;
+import org.json.JSONObject;
 
 import java.util.ArrayList;
 import java.util.List;
 
 public class RoomListFragment extends Fragment {
 
-    private ListView listView ;
-    private List<HomeModel> HomeModelist;
+    private RecyclerView roomRecyclerView;
+    private List<RoomModel> roomModelist;
     private RoomListAdapter adapter;
-    private Context context;
+    private String url = "http://192.168.100.208:8000/api/rooms/get";
 
-    public RoomListFragment(){}
-
-    @SuppressLint("ValidFragment")
-    public RoomListFragment(Context context){
-        this.context = context;
-    }
 
     @RequiresApi(api = Build.VERSION_CODES.M)
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        View v = inflater.inflate(R.layout.fragment_post_list,container,false);
-//        listView = v.findViewById(R.id.);
-//        HomeModelist = new ArrayList<>();
+        View v = inflater.inflate(R.layout.fragment_post_list, container, false);
+        getActivity().overridePendingTransition(0, 0);
+        roomRecyclerView = v.findViewById(R.id.post_recyclerView);
+        roomModelist = new ArrayList<>();
 
-//        HomeModel model = new HomeModel("Full Of Bag", "$2000", "445 Mount Eden Road, Mount Eden, Auckland", "Phnom Penh", "Villa", "https://www.holprop.co.uk/cache/tav-img/9062838.jpg");
-//        HomeModel model1 = new HomeModel("Table", "$1000", "Toul Kork, Phnom Penh", "Phnom Penh", "Villa", "https://t-ec.bstatic.com/images/hotel/max1024x768/121/121383537.jpg");
-//        HomeModel model2 = new HomeModel("Full of Nothing", "$2000", "Toul Kork, Phnom Penh", "Phnom Penh", "Villa", "https://s-ec.bstatic.com/images/hotel/max1024x768/134/134402091.jpg");
-//
-//        HomeModelist.add(model);
-//        HomeModelist.add(model1);
-//        HomeModelist.add(model2);
-//
-//        adapter = new RoomListAdapter(getContext(),HomeModelist);
-//        listView.setAdapter(adapter);
-//
-//        listView.setOnItemClickListener(new OnItemClickListener() {
-//            @Override
-//            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-//                Object item = parent.getItemAtPosition(position);
-//                Intent intent = new Intent(getActivity(), RoomDetailActivity.class);
-//                startActivity(intent);
-//            }
-//        });
 
+        adapter = new RoomListAdapter(getContext(), roomModelist);
+        roomRecyclerView.setHasFixedSize(true);
+        adapter.setHasStableIds(true);
+        roomRecyclerView.setItemViewCacheSize(20);
+        roomRecyclerView.setLayoutManager(new LinearLayoutManager((getContext())));
+        roomRecyclerView.setAdapter(adapter);
+
+        getData(url);
         return v;
+
     }
 
+    private void getData(String url) {
+        final String ImgUrl = "http://192.168.100.208:8000";
+        RequestQueue requestQueue = Volley.newRequestQueue(getActivity());
+        StringRequest request = new StringRequest(Request.Method.GET, url, new Response.Listener<String>() {
+            @Override
+            public void onResponse(String response) {
+                Log.e("Some", "Some");
+                Log.e("all data", response);
+                try {
+                    JSONArray jsonResponse = new JSONArray(response);
+                    for (int i = 0; i < jsonResponse.length(); i++) {
+                        JSONObject each = jsonResponse.getJSONObject(i);
+                        RoomModel room = new RoomModel();
+                        room.setTitle(each.getString("title"));
+                        room.setAddress(each.getString("address"));
+                        room.setPrice(each.getString("price"));
+                        room.setLocation(each.getString("location"));
+                        room.setImg_url(ImgUrl + each.getString("img"));
+                        roomModelist.add(room);
+                        adapter.notifyDataSetChanged();
+                    }
+                } catch (Exception e) {
+                    Log.e("Json Error", e.toString());
+                }
+
+            }
+        },
+                new Response.ErrorListener() {
+                    @Override
+                    public void onErrorResponse(VolleyError error) {
+                        Log.e("MYError", error.toString());
+                    }
+                });
+        requestQueue.add(request);
 
 
+    }
 }

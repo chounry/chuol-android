@@ -26,9 +26,9 @@
 
     <string name="duration_promt">Choose Currency</string>
     <string-array name="duration">
-        <item>15 Days</item>
-        <item>30 Days</item>
-        <item>60 Days</item>
+        <item>15 </item>
+        <item>30</item>
+        <item>60</item>
     </string-array>
 
     <string name="sale_rent_promt">Choose Currency</string>
@@ -41,4 +41,5 @@
         <item>Free Wifi</item>
         <item>Parking Space Available</item>
     </string-array>
+
 </resources>

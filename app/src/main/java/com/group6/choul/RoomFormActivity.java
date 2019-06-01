@@ -2,6 +2,7 @@ package com.group6.choul;
 
 import android.Manifest;
 import android.app.AlertDialog;
+import android.app.Dialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
@@ -41,6 +42,9 @@ import com.google.android.flexbox.AlignItems;
 import com.google.android.flexbox.FlexDirection;
 import com.google.android.flexbox.FlexWrap;
 import com.google.android.flexbox.FlexboxLayoutManager;
+import com.google.android.gms.common.ConnectionResult;
+import com.google.android.gms.common.GoogleApiAvailability;
+import com.google.android.gms.maps.model.LatLng;
 import com.group6.choul.adapters.ImgFormAdapter;
 import com.group6.choul.models.ImgFormModel;
 
@@ -66,14 +70,18 @@ public class RoomFormActivity extends AppCompatActivity implements BSImagePicker
     private List<String> service_aval;
 
     private ImageButton map_imgBtn;
+    private double lat,lng;
     private LinearLayout upload_img_btn;
     private RecyclerView recyclerView;
     private Button service_btn,submit_btn;
     private Toolbar myToolbar;
     private Switch contact_swtich;
-    private EditText title_et, price_et, description_et, phone_et, phone_opt_et, address_et,size_r;
-    private String title, price, description, phone, phone_opt, address,size,city;
-    private Spinner cityspinner;
+    private EditText title_et, price_et, description_et, phone_et, phone_option_et, address_et,size_r;
+    private String title, price, description, phone, phone_opt, address,size,city,currency,duration;
+    private Spinner cityspinner,currency_spinner,duration_spinner;
+    private static final String TAG = "RoomFromActivity";
+
+    private static final int ERROR_DIALOG_REQUEST = 9001;
 
     private final String UPLOAD_URL = "http://192.168.100.208:8000/api/rooms/create";
 
@@ -90,13 +98,16 @@ public class RoomFormActivity extends AppCompatActivity implements BSImagePicker
         myToolbar = findViewById(R.id.my_toolbar);
         contact_swtich = findViewById(R.id.contact_switch);
         price_et = findViewById(R.id.price_et);
+        currency_spinner = findViewById(R.id.currency_sp);
+        duration_spinner = findViewById(R.id.duration_sp);
+        phone_option_et = findViewById(R.id.phone_opt_et);
 
         title_et = findViewById(R.id.title_et);
         price_et = findViewById(R.id.price_et);
         description_et = findViewById(R.id.description_et);
         address_et = findViewById(R.id.address_et);
         phone_et = findViewById(R.id.phone_et);
-        phone_opt_et = findViewById(R.id.phone_opt_et);
+        phone_option_et = findViewById(R.id.phone_opt_et);
         size_r = findViewById(R.id.size_et);
         cityspinner = findViewById(R.id.city_spinner);
         // <------- handle toolbar
@@ -150,10 +161,12 @@ public class RoomFormActivity extends AppCompatActivity implements BSImagePicker
                 price = price_et.getText().toString();
                 description = description_et.getText().toString();
                 phone = phone_et.getText().toString();
-                phone_opt = phone_opt_et.getText().toString();
+                phone_opt = phone_option_et.getText().toString();
                 address = address_et.getText().toString();
                 size = size_r.getText().toString();
                 city = cityspinner.getSelectedItem().toString();
+                currency = currency_spinner.getSelectedItem().toString();
+                duration = duration_spinner.getSelectedItem().toString();
 
 
                 if(!title.isEmpty() && !price.isEmpty() && !phone.isEmpty() && !address.isEmpty() && !size.isEmpty() &&
@@ -163,7 +176,10 @@ public class RoomFormActivity extends AppCompatActivity implements BSImagePicker
 
             }
 
+
         });
+
+
 
         // handle multiple select services
         checkedItems = new boolean[listItems.length]; // var for multiple select
@@ -219,18 +235,59 @@ public class RoomFormActivity extends AppCompatActivity implements BSImagePicker
                 mDialog.show();
             }
         });
+        //init map
+        if(isServicesOK()){
+            init();
+        }
 
+    }
 
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
 
+        if (requestCode == 1) {
+            if(resultCode == MapFormActivity.RESULT_OK){
+                lat = data.getDoubleExtra("lat",10);
+                lng = data.getDoubleExtra("lng",10);
+                Log.d("Latlng", "lat:"+lat+"lng"+lng);
+            }
+            if (resultCode == MapFormActivity.RESULT_CANCELED) {
+                //Write your code if there's no result
+            }
+        }
+    }//onActivityResult
+    private void init(){
         map_imgBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 Intent intent = new Intent(getApplicationContext(), MapFormActivity.class);
-                startActivity(intent);
+                startActivityForResult(intent,1 );
             }
         });
-
     }
+
+    public boolean isServicesOK(){
+        Log.d(TAG, "isServicesOK: checking google services version");
+
+        int available = GoogleApiAvailability.getInstance().isGooglePlayServicesAvailable(RoomFormActivity.this);
+
+        if(available == ConnectionResult.SUCCESS){
+            //everything is fine and the user can make map requests
+            Log.d(TAG, "isServicesOK: Google Play Services is working");
+            return true;
+        }
+        else if(GoogleApiAvailability.getInstance().isUserResolvableError(available)){
+            //an error occured but we can resolve it
+            Log.d(TAG, "isServicesOK: an error occured but we can fix it");
+            Dialog dialog = GoogleApiAvailability.getInstance().getErrorDialog(RoomFormActivity.this, available, ERROR_DIALOG_REQUEST);
+            dialog.show();
+        }else{
+            Toast.makeText(this, "You can't make map requests", Toast.LENGTH_SHORT).show();
+        }
+        return false;
+    }
+
+
 
     private void showActionBar() {
         LayoutInflater inflator = (LayoutInflater) this.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
@@ -270,14 +327,20 @@ public class RoomFormActivity extends AppCompatActivity implements BSImagePicker
                     .addParameter("description", description)
                     .addParameter("phone", phone)
                     .addParameter("address", address)
+                    .addParameter("phone_option",phone_opt)
                     .addParameter("size",size)
                     .addParameter("city",city)
+                    .addParameter("lat",lat+"")
+                    .addParameter("lng",lng+"")
+                    .addParameter("currency",currency)
+                    .addParameter("duration",duration)
+
+
                     .setNotificationConfig(new UploadNotificationConfig())
                     .setMaxRetries(2); // try request at least 2 time before give up
 
             for(int i = 0;i < service_aval.size();i++){
                 // add many imgs to the request
-                String path = filePath.get(i).getPath();
                 mUploadRequest.addParameter( "services"+"["+i+"]",service_aval.get(i));
             }
 
@@ -289,7 +352,6 @@ public class RoomFormActivity extends AppCompatActivity implements BSImagePicker
             }
 
             mUploadRequest.startUpload();
-
             Toast.makeText(this,"Upload successful", Toast.LENGTH_SHORT).show();
         } catch (Exception exc) {
             Toast.makeText(this,"Multipart Error" + exc.getMessage(), Toast.LENGTH_SHORT).show();

@@ -1,16 +1,12 @@
 package com.group6.choul.fragments;
 
-import android.content.Intent;
 import android.os.Build;
 import android.os.Bundle;
 
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.AdapterView;
 import android.widget.EditText;
-import android.widget.LinearLayout;
-import android.widget.ListView;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
@@ -18,16 +14,8 @@ import androidx.annotation.Nullable;
 import androidx.annotation.RequiresApi;
 import androidx.fragment.app.Fragment;
 
-import com.group6.choul.FilterActivity;
-import com.group6.choul.HouseDetailActivity;
 import com.group6.choul.R;
-import com.group6.choul.adapters.HouseListAdapter;
 import com.group6.choul.adapters.SignupAdapter;
-import com.group6.choul.models.HomeModel;
-import com.group6.choul.models.SignupModel;
-
-import java.util.ArrayList;
-import java.util.List;
 
 public class SignupFragement extends Fragment {
     private EditText editText;

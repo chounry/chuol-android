@@ -1,15 +1,12 @@
 package com.group6.choul.fragments;
 
-import android.content.Intent;
 import android.os.Build;
 import android.os.Bundle;
 
-import android.os.SystemClock;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.AdapterView;
-import android.widget.ListView;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -18,10 +15,18 @@ import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.group6.choul.HouseDetailActivity;
+import com.android.volley.Request;
+import com.android.volley.RequestQueue;
+import com.android.volley.Response;
+import com.android.volley.VolleyError;
+import com.android.volley.toolbox.StringRequest;
+import com.android.volley.toolbox.Volley;
 import com.group6.choul.R;
-import com.group6.choul.models.HomeModel;
+import com.group6.choul.models.HouseModel;
 import com.group6.choul.adapters.HouseListAdapter;
+
+import org.json.JSONArray;
+import org.json.JSONObject;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -29,8 +34,9 @@ import java.util.List;
 public class HouseListFragment extends Fragment {
 
     private RecyclerView houseRecyclerView ;
-    private List<HomeModel> homeModelist;
+    private List<HouseModel> homeModelist;
     private HouseListAdapter adapter;
+    private String url=  "http://192.168.100.208:8000/api/houses/get";
 
     @RequiresApi(api = Build.VERSION_CODES.M)
     @Nullable
@@ -42,14 +48,6 @@ public class HouseListFragment extends Fragment {
         homeModelist = new ArrayList<>();
 
 
-        HomeModel model = new HomeModel("Full Of Bag", "$2000", "445 Mount Eden Road", "Phnom Penh", "Villa","https://images.pexels.com/photos/186077/pexels-photo-186077.jpeg?auto=compress&cs=tinysrgb&dpr=1&w=500" );
-        HomeModel model1 = new HomeModel("Table", "$1000", "Toul Kork, Phnom Penh", "Phnom Penh", "Villa", "https://images.unsplash.com/photo-1475855581690-80accde3ae2b?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&w=1000&q=80");
-        HomeModel model2 = new HomeModel("Full of Nothing", "$2000", "Toul Kork, Phnom Penh", "Phnom Penh", "Villa", "https://media.istockphoto.com/photos/beautiful-luxury-home-exterior-with-green-grass-and-landscaped-yard-picture-id856794670?k=6&m=856794670&s=612x612&w=0&h=gneLQSj2K6CzxU4r7DG_HUjd00ZMiZnYhYW_R0goPZ4=");
-
-        homeModelist.add(model);
-        homeModelist.add(model1);
-        homeModelist.add(model2);
-
         adapter = new HouseListAdapter(homeModelist, getContext());
         houseRecyclerView.setHasFixedSize(true);
         adapter.setHasStableIds(true);
@@ -57,15 +55,68 @@ public class HouseListFragment extends Fragment {
         houseRecyclerView.setLayoutManager(new LinearLayoutManager((getContext())));
         houseRecyclerView.setAdapter(adapter);
 
-//        houseRecyclerView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-//            @Override
-//            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-//                Object item = parent.getItemAtPosition(position);
-//                Intent intent = new Intent(getActivity(), HouseDetailActivity.class);
-//                startActivity(intent);
-//            }
-//        });
+
+        getData(url);
         return v;
     }
+
+    private void getData(String url ){
+        final String baseImgUrl = "http://192.168.100.208:8000";
+        RequestQueue requestQueue = Volley.newRequestQueue(getActivity());
+        StringRequest request = new StringRequest(Request.Method.GET, url, new Response.Listener<String>() {
+            @Override
+            public void onResponse(String response) {
+                Log.e("Some","Some");
+                Log.e("all data",response);
+                try{
+                    JSONArray jsonResponse = new JSONArray(response);
+                    for(int i = 0 ;i < jsonResponse.length();i++){
+                        JSONObject each = jsonResponse.getJSONObject(i);
+                        HouseModel tmp = new HouseModel();
+                        tmp.setTitle(each.getString("title"));
+                        tmp.setAddress(each.getString("address"));
+                        tmp.setPrice(each.getString("price"));
+                        tmp.setType(each.getString("house_type"));
+                        tmp.setLocation(each.getString("location"));
+                        tmp.setFor_sale_rent_status(each.getString("for_sale_status"));
+                        tmp.setId(each.getInt("house_id"));
+                        tmp.setImg_url(baseImgUrl + each.getString("img"));
+                        homeModelist.add(tmp);
+                        adapter.notifyDataSetChanged();
+                    }
+                }catch (Exception e){
+                    Log.e("Json Error", e.toString());
+                }
+
+            }
+        },
+
+        new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                Log.e("MYError", error.toString());
+            }
+        });
+
+// request.setRetryPolicy(new RetryPolicy() {
+// @Override
+// public int getCurrentTimeout() {
+// return 50000;
+// }
+//
+// @Override
+// public int getCurrentRetryCount() {
+// return 50000;
+// }
+//
+// @Override
+// public void retry(VolleyError error) throws VolleyError {
+//
+// }
+// });
+
+        requestQueue.add(request);
+    }
+
 
 }

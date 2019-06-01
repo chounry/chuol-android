@@ -22,6 +22,7 @@
                 android:src="@drawable/slide1" />
 
             <TextView
+                android:id="@+id/for_sale_rent_tv"
                 android:background="@color/forRent"
                 android:layout_width="200dp"
                 android:layout_height="wrap_content"
@@ -39,6 +40,20 @@
                 android:textColor="#fff"
                 android:textSize="13sp"
                 android:textStyle="bold" />
+
+            <TextView
+                android:id="@+id/HouseSave"
+                android:layout_width="80dp"
+                android:layout_height="30dp"
+                android:background="#E6B975"
+                android:padding="5dp"
+                android:textAlignment="center"
+                android:drawableLeft="@drawable/favorite"
+                android:text="Save"
+                android:layout_marginTop="10dp"
+                android:layout_alignParentRight="true"
+                android:layout_marginRight="10dp"
+                />
 
             <LinearLayout
                 android:layout_width="match_parent"

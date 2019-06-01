@@ -1,5 +1,6 @@
 package com.group6.choul;
 
+import android.app.Dialog;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.Bitmap;
@@ -31,6 +32,8 @@ import com.google.android.flexbox.AlignItems;
 import com.google.android.flexbox.FlexDirection;
 import com.google.android.flexbox.FlexWrap;
 import com.google.android.flexbox.FlexboxLayoutManager;
+import com.google.android.gms.common.ConnectionResult;
+import com.google.android.gms.common.GoogleApiAvailability;
 import com.group6.choul.adapters.ImgFormAdapter;
 import com.group6.choul.models.ImgFormModel;
 
@@ -50,15 +53,18 @@ public class HouseFormActivity extends AppCompatActivity implements BSImagePicke
     private LinearLayout upload_img_btn;
     private RecyclerView recyclerView;
     private Button submit_btn;
-    private EditText title_et, price_et, description_et, phone_et, phone_opt_et, address_et, bathroom_h, bedroom_h, floor_h, size_et,house_yard_size_et;
+    private EditText title_et, price_et, description_et, phone_et, phone_option, address_et, bathroom_h, bedroom_h, floor_h, size_et,house_yard_size_et;
 
     private List<ImgFormModel> img_models_list;
     private List<Uri> imgs_uri;
     private ImgFormAdapter img_adapter;
-    private String title,type_house,price, description, phone, phone_opt, address, bathroom, bedroom, floor, house_size, yard_size,forSale_status,city_id;
-    private Spinner for_sale_status,type,city;
+    private String title,type_house,price, description, phone, phone_opt, address, bathroom, bedroom, floor, house_size, yard_size,forSale_status,city_id,currency,duration;
+    private Spinner for_sale_status,type,city,currency_spinner,duration_spinner;
     private Switch contact_swtich;
+    private static final String TAG = "HouseFromActivity";
+    private double lat,lng;
 
+    private static final int ERROR_DIALOG_REQUEST = 9001;
     private final String UPLOAD_URL = "http://192.168.100.208:8000/api/houses/create";
 
     @Override
@@ -77,7 +83,6 @@ public class HouseFormActivity extends AppCompatActivity implements BSImagePicke
         description_et = findViewById(R.id.description_et);
         address_et = findViewById(R.id.address_et);
         phone_et = findViewById(R.id.phone_et);
-        phone_opt_et = findViewById(R.id.phone_opt_et);
         contact_swtich = findViewById(R.id.contact_switch_house);
         bathroom_h = findViewById(R.id.bathroom_et);
         bedroom_h = findViewById(R.id.bedroom_et);
@@ -87,6 +92,10 @@ public class HouseFormActivity extends AppCompatActivity implements BSImagePicke
         for_sale_status = findViewById(R.id.for_what_spinner);
         type = findViewById(R.id.house_type_spinner);
         city = findViewById(R.id.city_spinner);
+        phone_option = findViewById(R.id.phone_opt_et);
+        currency_spinner = findViewById(R.id.currency_sp);
+        duration_spinner = findViewById(R.id.duration_sp);
+
 
         contact_swtich.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -141,7 +150,7 @@ public class HouseFormActivity extends AppCompatActivity implements BSImagePicke
                 price = price_et.getText().toString();
                 description = description_et.getText().toString();
                 phone = phone_et.getText().toString();
-                phone_opt = phone_opt_et.getText().toString();
+                phone_opt = phone_option.getText().toString();
                 address = address_et.getText().toString();
                 bedroom = bedroom_h.getText().toString();
                 bathroom = bathroom_h.getText().toString();
@@ -151,6 +160,8 @@ public class HouseFormActivity extends AppCompatActivity implements BSImagePicke
                 forSale_status = for_sale_status.getSelectedItem().toString();
                 type_house = type.getSelectedItem().toString();
                 city_id = city.getSelectedItem().toString();
+                currency = currency_spinner.getSelectedItem().toString();
+                duration = duration_spinner.getSelectedItem().toString();
 //                if(!title.isEmpty() && !price.isEmpty() && !phone.isEmpty() && !address.isEmpty() && !bedroom.isEmpty() &&
 //                        !bathroom.isEmpty() && !floor.isEmpty() && !house_size.isEmpty() && forSale_status.isEmpty()){
                     uploadMultipart(imgs_uri);
@@ -158,6 +169,55 @@ public class HouseFormActivity extends AppCompatActivity implements BSImagePicke
 //
             }
         });
+        //init map
+        if(isServicesOK()){
+            init();
+        }
+
+    }
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+
+        if (requestCode == 1) {
+            if(resultCode == MapFormActivity.RESULT_OK){
+                lat = data.getDoubleExtra("lat",10);
+                lng = data.getDoubleExtra("lng",10);
+                Log.d("Latlng", "lat:"+lat+"lng"+lng);
+            }
+            if (resultCode == MapFormActivity.RESULT_CANCELED) {
+                //Write your code if there's no result
+            }
+        }
+    }//onActivityResult
+    private void init(){
+        map_imgBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(getApplicationContext(), MapFormActivity.class);
+                startActivityForResult(intent,1 );
+            }
+        });
+    }
+
+    public boolean isServicesOK(){
+        Log.d(TAG, "isServicesOK: checking google services version");
+
+        int available = GoogleApiAvailability.getInstance().isGooglePlayServicesAvailable(HouseFormActivity.this);
+
+        if(available == ConnectionResult.SUCCESS){
+            //everything is fine and the user can make map requests
+            Log.d(TAG, "isServicesOK: Google Play Services is working");
+            return true;
+        }
+        else if(GoogleApiAvailability.getInstance().isUserResolvableError(available)){
+            //an error occured but we can resolve it
+            Log.d(TAG, "isServicesOK: an error occured but we can fix it");
+            Dialog dialog = GoogleApiAvailability.getInstance().getErrorDialog(HouseFormActivity.this, available, ERROR_DIALOG_REQUEST);
+            dialog.show();
+        }else{
+            Toast.makeText(this, "You can't make map requests", Toast.LENGTH_SHORT).show();
+        }
+        return false;
     }
 
     private void showActionBar() {
@@ -206,6 +266,11 @@ public class HouseFormActivity extends AppCompatActivity implements BSImagePicke
                     .addParameter("for_sale_status", forSale_status)
                     .addParameter("type", type_house)
                     .addParameter("city_id",city_id)
+                    .addParameter("lat",lat+"")
+                    .addParameter("lng",lng+"")
+                    .addParameter("phone_option",phone_opt)
+                    .addParameter("currency",currency)
+                    .addParameter("duration",duration)
                     .setNotificationConfig(new UploadNotificationConfig())
                     .setMaxRetries(2); // try request at least 2 time before give up
 

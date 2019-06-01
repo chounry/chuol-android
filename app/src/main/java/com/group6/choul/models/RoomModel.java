@@ -1,15 +1,19 @@
 package com.group6.choul.models;
 
-public class HomeModel {
-    private String title, price, address, location, type,img_url;
+public class RoomModel {
 
-    public HomeModel(String title, String price, String address, String location, String type, String img_url) {
+    private String title, price, address, location, img_url;
+    private int id;
+    public RoomModel( String title, String price, String address, String location, String img_url, int id) {
         this.title = title;
         this.price = price;
         this.address = address;
         this.location = location;
-        this.type = type;
         this.img_url = img_url;
+        this.id = id;
+    }
+
+    public RoomModel() {
 
     }
 
@@ -45,19 +49,15 @@ public class HomeModel {
         this.location = location;
     }
 
-    public String getType() {
-        return type;
-    }
-
-    public void setType(String type) {
-        this.type = type;
-    }
-
     public String getImg_url() {
         return img_url;
     }
 
     public void setImg_url(String img_url) {
         this.img_url = img_url;
+    }
+
+    public void setId(int id) {
+        this.id = id;
     }
 }
