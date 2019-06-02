@@ -28,7 +28,7 @@ public class HouseListAdapter extends RecyclerView.Adapter<MyHomeRecyClerView>{
     private View.OnClickListener mOnClickListener;
 
 
-    public HouseListAdapter(List<HouseModel> modelList, Context context) {
+    public HouseListAdapter(List<HouseModel> modelList, Context context,RecyclerView recyclerViewHome) {
         this.modelList = modelList;
         this.context = context;
         this.recyclerViewHome = recyclerViewHome;

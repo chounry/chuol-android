@@ -14,7 +14,8 @@
         android:background="?attr/colorPrimary"
         android:elevation="4dp"
         android:theme="@style/ThemeOverlay.AppCompat.ActionBar"
-        app:popupTheme="@style/ThemeOverlay.AppCompat.Light"/>
+        app:popupTheme="@style/ThemeOverlay.AppCompat.Light"
+        android:focusableInTouchMode="true"/>
 
 
     <!-- Topic -->
@@ -189,7 +190,7 @@
             android:layout_weight="2"
             android:layout_height="wrap_content"
             android:hint="Write a Message"
-            android:textSize="13sp"
+            android:textSize="14sp"
             android:padding="4dp"
             android:background="@drawable/message_edit_text_shape"/>
 
@@ -197,8 +198,8 @@
             android:id="@+id/send_btn"
             android:background="#00FFFFFF"
             android:layout_marginLeft="8dp"
-            android:layout_width="30dp"
-            android:layout_height="30dp"
+            android:layout_width="35dp"
+            android:layout_height="35dp"
             android:src="@drawable/ic_send_black_24dp"/>
     </LinearLayout>
 

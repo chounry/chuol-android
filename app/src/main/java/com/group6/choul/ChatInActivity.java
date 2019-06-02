@@ -44,7 +44,7 @@ import retrofit2.Response;
 
 public class ChatInActivity extends AppCompatActivity implements RoomListener {
 
-    private String channelID = "bmmInf5rlCF9mAFG",roomID,estate_id;
+    private String channelID = "DGIuZ5gOpwXwUfB1",roomID,estate_id;
     private Scaledrone scaledrone;
 
     private EditText mstEt;
@@ -86,6 +86,7 @@ public class ChatInActivity extends AppCompatActivity implements RoomListener {
         // Action bar thing ------------
 
         listView = findViewById(R.id.message_listView);
+
         sendBtn = findViewById(R.id.send_btn);
         messageModelList = new ArrayList<>();
 
@@ -121,6 +122,7 @@ public class ChatInActivity extends AppCompatActivity implements RoomListener {
                         messageAdapter = new MessageListAdapter(ChatInActivity.this, messageModelList);
                         listView.setDivider(null);
                         listView.setAdapter(messageAdapter);
+                        listView.setSelection(listView.getCount() - 1);
                     }
                 }
             }
@@ -147,6 +149,8 @@ public class ChatInActivity extends AppCompatActivity implements RoomListener {
 
             @Override
             public void onFailure(Exception ex) {
+                Log.e("Scale Drone ","Connection Lost");
+                initMessage();
                 System.err.println(ex);
             }
 
@@ -155,9 +159,10 @@ public class ChatInActivity extends AppCompatActivity implements RoomListener {
                 System.err.println(reason);
             }
         });
+    }
 
-
-
+    public void toastMessage(String message){
+        Toast.makeText(this, message, Toast.LENGTH_SHORT).show();
     }
 
     @Override
@@ -185,6 +190,7 @@ public class ChatInActivity extends AppCompatActivity implements RoomListener {
             final MessageModel recieve_message = new MessageModel(message.getData().asText(), belongsToCurrentUser, data);
             if(belongsToCurrentUser){
                 // we save when the message is the client user
+//                Log.e("User id",data.getUser_id() + " "+user_id);
                 saveMyMessage(recieve_message.getMessage());
             }
             runOnUiThread(new Runnable() {
@@ -197,7 +203,7 @@ public class ChatInActivity extends AppCompatActivity implements RoomListener {
                 }
             });
         } catch (JsonProcessingException e) {
-            Toast.makeText(this, "No Connection", Toast.LENGTH_SHORT).show();
+            initMessage();
             e.printStackTrace();
         }
     }

@@ -18,7 +18,6 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.annotation.RequiresApi;
 import androidx.fragment.app.Fragment;
-import androidx.recyclerview.widget.LinearLayoutManager;
 
 
 import com.android.volley.AuthFailureError;
@@ -30,11 +29,9 @@ import com.android.volley.VolleyLog;
 import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
 import com.group6.choul.R;
-import com.group6.choul.adapters.RoomListAdapter;
-import com.group6.choul.adapters.Savepost_adapter;
+import com.group6.choul.adapters.SavePostAdapter;
 import com.group6.choul.login_register_handling.TokenManager;
 import com.group6.choul.models.HouseModel;
-import com.group6.choul.models.RoomModel;
 
 
 import org.json.JSONArray;
@@ -47,7 +44,7 @@ import java.util.List;
 public class SavedPostFragment extends Fragment {
     private ListView listView;
     private List<HouseModel> saveModelList;
-    private Savepost_adapter adapter;
+    private SavePostAdapter adapter;
     private String url = "http://192.168.100.208:8000/api/estates/get_saved_post";
     private TokenManager tokenManager;
     private int user_id;
@@ -60,7 +57,7 @@ public class SavedPostFragment extends Fragment {
         getActivity().overridePendingTransition(0, 0);
         listView = v.findViewById(R.id.save_listview);
         saveModelList = new ArrayList<>();
-        adapter = new Savepost_adapter(getContext(),saveModelList);
+        adapter = new SavePostAdapter(getContext(),saveModelList);
         listView.setAdapter(adapter);
         tokenManager = TokenManager.getInstance(getActivity().getSharedPreferences("prefs", Context.MODE_PRIVATE));
         user_id = tokenManager.getUserId();

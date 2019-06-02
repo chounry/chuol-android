@@ -16,6 +16,8 @@ public class ChatModel {
     String message;
     @Json(name = "estate_id")
     int chat_room_id;
+    @Json(name = "user_img")
+    String user_img;
 
 
     public ChatModel() {
@@ -66,5 +68,9 @@ public class ChatModel {
 
     public int getChatRoom_id() {
         return chat_room_id;
+    }
+
+    public String getUser_img() {
+        return user_img;
     }
 }

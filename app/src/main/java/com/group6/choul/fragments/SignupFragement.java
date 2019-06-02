@@ -78,7 +78,7 @@ public class SignupFragement extends Fragment {
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        View v = inflater.inflate(R.layout.signup_fragement,container,false);
+        View v = inflater.inflate(R.layout.fragment_signup,container,false);
         fname_til = v.findViewById(R.id.fname_til);
         lname_til = v.findViewById(R.id.lname_til);
         email_til = v.findViewById(R.id.email_til);

@@ -34,7 +34,7 @@
             app:arrowPosition="10dp"
             app:arrowLocation="left"
             app:arrowCenter="true"
-            app:bubbleColor="#F5F5F5"/>
+            app:bubbleColor="#E9E9E9"/>
     </LinearLayout>
 
 </LinearLayout>
