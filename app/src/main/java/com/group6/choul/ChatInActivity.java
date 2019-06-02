@@ -1,6 +1,7 @@
 package com.group6.choul;
 
 import android.content.Context;
+import android.content.Intent;
 import android.os.Build;
 import android.os.Bundle;
 
@@ -23,9 +24,11 @@ import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.group6.choul.adapters.MessageListAdapter;
 import com.group6.choul.login_register_handling.ApiService;
+import com.group6.choul.login_register_handling.RetrofitBuilder;
 import com.group6.choul.login_register_handling.TokenManager;
 import com.group6.choul.models.MemberDataForChat;
 import com.group6.choul.models.MessageModel;
+import com.group6.choul.models.ResponseStatus;
 import com.scaledrone.lib.Listener;
 import com.scaledrone.lib.Message;
 import com.scaledrone.lib.Room;
@@ -35,10 +38,13 @@ import com.scaledrone.lib.Scaledrone;
 import java.util.ArrayList;
 import java.util.List;
 
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
+
 public class ChatInActivity extends AppCompatActivity implements RoomListener {
 
-    private String channelID = "DGIuZ5gOpwXwUfB1";
-    private String roomName = "observable-room";
+    private String channelID = "bmmInf5rlCF9mAFG",roomID,estate_id;
     private Scaledrone scaledrone;
 
     private EditText mstEt;
@@ -49,7 +55,12 @@ public class ChatInActivity extends AppCompatActivity implements RoomListener {
 
     private ApiService service;
     private TokenManager tokenManager;
-//    private Call<>
+    private Intent fromChatOutFragment;
+    private Call<List<MessageModel>> callGetMessages;
+    private Call<ResponseStatus> callCreateMessage;
+
+
+    private int user_id;
 
     @RequiresApi(api = Build.VERSION_CODES.LOLLIPOP)
     @Override
@@ -59,8 +70,14 @@ public class ChatInActivity extends AppCompatActivity implements RoomListener {
         mstEt = findViewById(R.id.msg_et);
         sendBtn = findViewById(R.id.send_btn);
 
-        tokenManager = TokenManager.getInstance(getSharedPreferences("prefs",MODE_PRIVATE));
+        fromChatOutFragment = getIntent();
+        estate_id = fromChatOutFragment.getStringExtra("ESTATE_ID");
+        roomID = "observable-"+estate_id;
 
+//        roomID = "observable-myRoomName";
+
+        tokenManager = TokenManager.getInstance(getSharedPreferences("prefs",MODE_PRIVATE));
+        user_id = tokenManager.getUserId();
 
         //------------ Action bar thing
         Toolbar myToolbar = findViewById(R.id.my_toolbar);
@@ -72,7 +89,6 @@ public class ChatInActivity extends AppCompatActivity implements RoomListener {
         sendBtn = findViewById(R.id.send_btn);
         messageModelList = new ArrayList<>();
 
-
         sendBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -80,21 +96,48 @@ public class ChatInActivity extends AppCompatActivity implements RoomListener {
             }
         });
 
-        messageAdapter = new MessageListAdapter(this, messageModelList);
-        listView.setDivider(null);
-        listView.setAdapter(messageAdapter);
+        initMessage();
     }
 
 
     private void initMessage(){
-        MemberDataForChat data = new MemberDataForChat("","https://wowsciencecamp.org/wp-content/uploads/2018/07/dummy-user-img-1-400x400_x_acf_cropped.png");
+        // get the associated message to display
+        String username = tokenManager.getUserName();
+        MemberDataForChat data = new MemberDataForChat(username,"https://wowsciencecamp.org/wp-content/uploads/2018/07/dummy-user-img-1-400x400_x_acf_cropped.png",user_id);
+//
+//        messageAdapter = new MessageListAdapter(ChatInActivity.this, messageModelList);
+//        listView.setDivider(null);
+//        listView.setAdapter(messageAdapter);
+        service = RetrofitBuilder.createService(ApiService.class);
+        callGetMessages = service.get_messages(Integer.parseInt(estate_id), user_id);
+        callGetMessages.enqueue(new Callback<List<MessageModel>>() {
+            @Override
+            public void onResponse(Call<List<MessageModel>> call, Response<List<MessageModel>> response) {
+                if(response.isSuccessful()) {
+                    messageModelList = response.body();
+                    for (int i = 0; i < messageModelList.size(); i++) {
+                        messageModelList.get(i).setBelongsToCurrentUser(user_id);
+                        messageModelList.get(i).setMemberData(data);
+                        messageAdapter = new MessageListAdapter(ChatInActivity.this, messageModelList);
+                        listView.setDivider(null);
+                        listView.setAdapter(messageAdapter);
+                    }
+                }
+            }
+
+            @Override
+            public void onFailure(Call<List<MessageModel>> call, Throwable t) {
+
+            }
+        });
+
         scaledrone = new Scaledrone(channelID, data);
         scaledrone.connect(new Listener() {
             @Override
             public void onOpen() {
-                System.out.println("Scaledrone connection open");
+                Log.e("On Open ", "Success");
                 // Since the MainActivity itself already implement RoomListener we can pass it as a target
-                scaledrone.subscribe(roomName, ChatInActivity.this);
+                scaledrone.subscribe(roomID, ChatInActivity.this);
             }
 
             @Override
@@ -113,12 +156,13 @@ public class ChatInActivity extends AppCompatActivity implements RoomListener {
             }
         });
 
+
+
     }
 
     @Override
     public void onOpen(Room room) {
-        Log.e("Scale Drom onOpen Status : ", "Successful");
-
+        Log.e("Scale Drom onOpen Status : ", room.getName());
     }
 
     @Override
@@ -133,14 +177,15 @@ public class ChatInActivity extends AppCompatActivity implements RoomListener {
         try {
             // member.clientData is a MemberData object, let's parse it as such
             final MemberDataForChat data = mapper.treeToValue(message.getMember().getClientData(), MemberDataForChat.class);
-            Log.e("MData ", data.getName());
+
             // if the clientID of the message sender is the same as our's it was sent by us
-            boolean belongsToCurrentUser = message.getClientID().equals(scaledrone.getClientID());
+            boolean belongsToCurrentUser = data.getUser_id() == user_id;
             // since the message body is a simple string in our case we can use json.asText() to parse it as such
             // if it was instead an object we could use a similar pattern to data parsing
             final MessageModel recieve_message = new MessageModel(message.getData().asText(), belongsToCurrentUser, data);
             if(belongsToCurrentUser){
-
+                // we save when the message is the client user
+                saveMyMessage(recieve_message.getMessage());
             }
             runOnUiThread(new Runnable() {
                 @Override
@@ -158,16 +203,36 @@ public class ChatInActivity extends AppCompatActivity implements RoomListener {
     }
 
     public void sendMessage(){
-        String message = mstEt.getText().toString();
-        if (message.length() > 0) {
+        String message = mstEt.getText().toString().trim();
+        if (!message.isEmpty()) {
 //            messageAdapter.add(new MessageModel(message, false, new MemberData("Chounry","https://wowsciencecamp.org/wp-content/uploads/2018/07/dummy-user-img-1-400x400_x_acf_cropped.png")));
-            scaledrone.publish(roomName, message);
+            scaledrone.publish(roomID, message);
 
         }
     }
 
-    public void saveMyMessage(){
+    public void saveMyMessage(String msg){
+        MessageModel tmpMsg = messageModelList.get(0);
+        callCreateMessage = service.create_message(
+                msg,
+                user_id,
+                tmpMsg.getToUserId(user_id),
+                estate_id
+            );
+        callCreateMessage.enqueue(new Callback<ResponseStatus>() {
+            @Override
+            public void onResponse(Call<ResponseStatus> call, Response<ResponseStatus> response) {
 
+                if(response.isSuccessful()){
+                    Toast.makeText(ChatInActivity.this, response.body().getStatus(), Toast.LENGTH_SHORT).show();
+                }
+            }
+
+            @Override
+            public void onFailure(Call<ResponseStatus> call, Throwable t) {
+                Log.e("request error ",t.getMessage());
+            }
+        });
     }
 
     private void showActionBar() {

@@ -82,8 +82,10 @@ public class ChatOutFragment extends Fragment {
         listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                Object item = parent.getItemAtPosition(position);
+                ChatModel item = ((ArrayList<ChatModel>)parent.getItemAtPosition(position)).get(position);
+                Log.e("ES ",item.getChatRoom_id() +" ");
                 Intent intent = new Intent(getActivity(), ChatInActivity.class);
+                intent.putExtra("ESTATE_ID",item.getChatRoom_id()+"");
                 startActivity(intent);
             }
         });

@@ -49,7 +49,7 @@ public class MessageListAdapter extends BaseAdapter {
         MessageModel m = modelList.get(position);
         View v = View.inflate(this.context,R.layout.item_respsone_msg,null);
 
-        if(!m.isResponse()) {
+        if(!m.isBelongsToCurrentUser()) {
             // if the message is a receive message
             v = View.inflate(this.context, R.layout.item_recieve_msg,  null);
             ImageView imgView = v.findViewById(R.id.profile_image);
