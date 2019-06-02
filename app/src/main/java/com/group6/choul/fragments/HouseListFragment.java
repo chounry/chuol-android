@@ -85,8 +85,6 @@ public class HouseListFragment extends Fragment {
         StringRequest request = new StringRequest(Request.Method.GET, url, new Response.Listener<String>() {
             @Override
             public void onResponse(String response) {
-
-                Log.e("all data",response);
                 try{
                     JSONArray jsonResponse = new JSONArray(response);
                     for(int i = 0 ;i < jsonResponse.length();i++){
@@ -107,10 +105,8 @@ public class HouseListFragment extends Fragment {
                 }catch (Exception e){
                     Log.e("Json Error", e.toString());
                 }
-
             }
         },
-
         new Response.ErrorListener() {
             @Override
             public void onErrorResponse(VolleyError error) {

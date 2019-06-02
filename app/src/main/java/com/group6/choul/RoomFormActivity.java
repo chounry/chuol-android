@@ -17,6 +17,8 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.Button;
 
+import android.widget.CheckBox;
+import android.widget.CompoundButton;
 import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.ImageView;
@@ -46,6 +48,7 @@ import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.GoogleApiAvailability;
 import com.google.android.gms.maps.model.LatLng;
 import com.group6.choul.adapters.ImgFormAdapter;
+import com.group6.choul.login_register_handling.TokenManager;
 import com.group6.choul.models.ImgFormModel;
 
 import net.gotev.uploadservice.MultipartUploadRequest;
@@ -79,9 +82,13 @@ public class RoomFormActivity extends AppCompatActivity implements BSImagePicker
     private EditText title_et, price_et, description_et, phone_et, phone_option_et, address_et,size_r;
     private String title, price, description, phone, phone_opt, address,size,city,currency,duration;
     private Spinner cityspinner,currency_spinner,duration_spinner;
+    private CheckBox checkBoxTerm;
     private static final String TAG = "RoomFromActivity";
 
     private static final int ERROR_DIALOG_REQUEST = 9001;
+
+    private TokenManager tokenManager;
+    private int user_id;
 
     private final String UPLOAD_URL = "http://192.168.100.208:8000/api/rooms/create";
 
@@ -95,7 +102,6 @@ public class RoomFormActivity extends AppCompatActivity implements BSImagePicker
         submit_btn = findViewById(R.id.submit_btn);
         service_btn = findViewById(R.id.select_service_btn);
         upload_img_btn = findViewById(R.id.upload_img_btn);
-        myToolbar = findViewById(R.id.my_toolbar);
         contact_swtich = findViewById(R.id.contact_switch);
         price_et = findViewById(R.id.price_et);
         currency_spinner = findViewById(R.id.currency_sp);
@@ -110,7 +116,27 @@ public class RoomFormActivity extends AppCompatActivity implements BSImagePicker
         phone_option_et = findViewById(R.id.phone_opt_et);
         size_r = findViewById(R.id.size_et);
         cityspinner = findViewById(R.id.city_spinner);
+        checkBoxTerm = findViewById(R.id.ckboxTerm);
+
+        tokenManager = TokenManager.getInstance(getSharedPreferences("prefs",MODE_PRIVATE));
+        user_id = tokenManager.getUserId();
+
+        checkBoxTerm.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener(){
+
+            @Override
+            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+//                if(isChecked){
+//                    checkBoxTerm.setTag("Y");
+//
+//                }
+                if(isChecked==false){
+                    checkBoxTerm.setTag("N");
+                    Toast.makeText(RoomFormActivity.this, "You can't make map requests", Toast.LENGTH_SHORT).show();
+                }
+            }
+        });
         // <------- handle toolbar
+        myToolbar = findViewById(R.id.my_toolbar);
         setSupportActionBar(myToolbar);
         showActionBar();
         // <------- handle toolbar
@@ -133,7 +159,7 @@ public class RoomFormActivity extends AppCompatActivity implements BSImagePicker
             public void onClick(View v) {
                 BSImagePicker multiSelectionPicker = new BSImagePicker.Builder("com.yourdomain.yourpackage.fileprovider")
                         .isMultiSelect() //Set this if you want to use multi selection mode.
-                        .setMinimumMultiSelectCount(1) //Default: 1.
+                        .setMinimumMultiSelectCount(2) //Default: 2
                         .setMaximumMultiSelectCount(10) //Default: Integer.MAX_VALUE (i.e. User can select as many images as he/she wants)
                         .setMultiSelectBarBgColor(android.R.color.white) //Default: #FFFFFF. You can also set it to a translucent color.
                         .setMultiSelectTextColor(R.color.primary_text) //Default: #212121(Dark grey). This is the message in the multi-select bottom bar.
@@ -170,13 +196,11 @@ public class RoomFormActivity extends AppCompatActivity implements BSImagePicker
 
 
                 if(!title.isEmpty() && !price.isEmpty() && !phone.isEmpty() && !address.isEmpty() && !size.isEmpty() &&
-                        !city.isEmpty()){
+                        !city.isEmpty() && checkBoxTerm.isChecked()){
                     uploadMultipart(imgs_uri);
                 }
 
             }
-
-
         });
 
 
@@ -278,7 +302,7 @@ public class RoomFormActivity extends AppCompatActivity implements BSImagePicker
         }
         else if(GoogleApiAvailability.getInstance().isUserResolvableError(available)){
             //an error occured but we can resolve it
-            Log.d(TAG, "isServicesOK: an error occured but we can fix it");
+            Log.d(TAG, "isServicesOK: an error occure but we can fix it");
             Dialog dialog = GoogleApiAvailability.getInstance().getErrorDialog(RoomFormActivity.this, available, ERROR_DIALOG_REQUEST);
             dialog.show();
         }else{
@@ -297,6 +321,7 @@ public class RoomFormActivity extends AppCompatActivity implements BSImagePicker
         backBtn.setOnClickListener(new View.OnClickListener(){
             @Override
             public void onClick(View v) {
+                startActivity(new Intent(RoomFormActivity.this, MainActivity.class));
                 finish();
             }
         });
@@ -334,8 +359,7 @@ public class RoomFormActivity extends AppCompatActivity implements BSImagePicker
                     .addParameter("lng",lng+"")
                     .addParameter("currency",currency)
                     .addParameter("duration",duration)
-
-
+                    .addParameter("user_id",user_id+"")
                     .setNotificationConfig(new UploadNotificationConfig())
                     .setMaxRetries(2); // try request at least 2 time before give up
 
@@ -368,6 +392,7 @@ public class RoomFormActivity extends AppCompatActivity implements BSImagePicker
 
     @Override
     public void onMultiImageSelected(List<Uri> uriList, String tag) {
+        Log.e("test select img", uriList.size()+"");
         // first clear out all the last img
         img_models_list.clear();
 

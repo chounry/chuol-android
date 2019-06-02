@@ -11,6 +11,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.LinearLayout;
+import android.widget.TextView;
 
 
 import androidx.annotation.NonNull;
@@ -19,8 +20,10 @@ import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentTransaction;
 
 import com.basgeekball.awesomevalidation.AwesomeValidation;
+import com.group6.choul.AboutusActivity;
 import com.group6.choul.PersonalInfoActivity;
 import com.group6.choul.R;
+import com.group6.choul.Termofuse;
 import com.group6.choul.login_register_handling.AccessToken;
 import com.group6.choul.login_register_handling.ApiService;
 import com.group6.choul.login_register_handling.RetrofitBuilder;
@@ -35,6 +38,7 @@ import static android.content.Context.MODE_PRIVATE;
 
 public class SettingFragment extends Fragment{
     private LinearLayout linearSignOut, linearPersonal;
+    private TextView aboutUs, termOfUse;
 
     ApiService service;
     TokenManager tokenManager;
@@ -46,6 +50,9 @@ public class SettingFragment extends Fragment{
         View v = inflater.inflate(R.layout.fragment_m_setting,container,false);
         linearSignOut = v.findViewById(R.id.linear_signout);
         linearPersonal = v.findViewById(R.id.linear_personal);
+        aboutUs = v.findViewById(R.id.aboutUs);
+        termOfUse = v.findViewById(R.id.termofUse);
+
 
         ButterKnife.bind(getActivity());
         tokenManager = TokenManager.getInstance(getActivity().getSharedPreferences("prefs",MODE_PRIVATE));
@@ -80,6 +87,24 @@ public class SettingFragment extends Fragment{
                 startActivity(intent);
             }
         });
+
+        aboutUs.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(getActivity(), AboutusActivity.class);
+                startActivity(intent);
+            }
+        });
+
+        termOfUse.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(getActivity(), Termofuse.class);
+                startActivity(intent);
+            }
+        });
+
+
 
         return v;
     }

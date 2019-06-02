@@ -28,7 +28,7 @@ public class HouseModel {
         this.text = text;
     }
 
-    public int setEstatId() {
+    public int getEstate_id() {
         return estate_id;
     }
 

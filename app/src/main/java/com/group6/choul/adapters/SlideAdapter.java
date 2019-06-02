@@ -12,18 +12,23 @@ import androidx.viewpager.widget.PagerAdapter;
 import androidx.viewpager.widget.ViewPager;
 
 import com.group6.choul.R;
+import com.group6.choul.models.ImageModel;
+import com.squareup.picasso.Picasso;
+
+import java.util.ArrayList;
 
 public class SlideAdapter extends PagerAdapter {
     private Context context;
     private LayoutInflater layoutInflater;
-    private Integer[] images = {R.drawable.room1,R.drawable.room2,R.drawable.room3};
+    private ArrayList<ImageModel> images;
 
-    public SlideAdapter(Context context){
+    public SlideAdapter(Context context,ArrayList<ImageModel> images){
         this.context = context;
+        this.images = images;
     }
     @Override
     public int getCount() {
-        return images.length;
+        return images.size();
     }
 
     @Override
@@ -37,7 +42,7 @@ public class SlideAdapter extends PagerAdapter {
         layoutInflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
         View view = layoutInflater.inflate(R.layout.custom_slide_layout,null);
         ImageView imageView = view.findViewById(R.id.imageView);
-        imageView.setImageResource(images[position]);
+        Picasso.get().load(images.get(position).getImg()).into(imageView);
 
         ViewPager vp = (ViewPager) container;
         vp.addView(view,0);

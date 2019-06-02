@@ -37,7 +37,9 @@ import com.google.android.flexbox.FlexboxLayoutManager;
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.GoogleApiAvailability;
 import com.group6.choul.adapters.ImgFormAdapter;
+import com.group6.choul.login_register_handling.TokenManager;
 import com.group6.choul.models.ImgFormModel;
+import com.squareup.haha.perflib.Main;
 
 import net.gotev.uploadservice.MultipartUploadRequest;
 import net.gotev.uploadservice.UploadNotificationConfig;
@@ -69,8 +71,11 @@ public class HouseFormActivity extends AppCompatActivity implements BSImagePicke
     private static final String TAG = "HouseFromActivity";
     private double lat,lng;
 
+    private TokenManager tokenManager;
+    private int user_id;
+
     private static final int ERROR_DIALOG_REQUEST = 9001;
-    private final String UPLOAD_URL = "http://192.168.100.197:8000/api/houses/create";
+    private final String UPLOAD_URL = "http://192.168.100.208:8000/api/houses/create";
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -99,9 +104,10 @@ public class HouseFormActivity extends AppCompatActivity implements BSImagePicke
         type = findViewById(R.id.house_type_spinner);
         city = findViewById(R.id.city_spinner);
         currency_spinner = findViewById(R.id.currency_sp);
-        duration_spinner = findViewById(R.id.duration_sp);
+        duration_spinner = findViewById(R.id.duration_spinner);
 
-
+        tokenManager = TokenManager.getInstance(getSharedPreferences("prefs",MODE_PRIVATE));
+        user_id = tokenManager.getUserId();
 
         // <------- handle toolbar
         setSupportActionBar(myToolbar);
@@ -159,9 +165,10 @@ public class HouseFormActivity extends AppCompatActivity implements BSImagePicke
                 city_id = city.getSelectedItem().toString();
                 currency = currency_spinner.getSelectedItem().toString();
                 duration = duration_spinner.getSelectedItem().toString();
-//                if(!title.isEmpty() && !price.isEmpty() && !phone.isEmpty() && !address.isEmpty() && !bedroom.isEmpty() &&
-//                        !bathroom.isEmpty() && !floor.isEmpty() && !house_size.isEmpty() && forSale_status.isEmpty()){
+                if(!title.isEmpty() && !price.isEmpty() && !phone.isEmpty() && !address.isEmpty() && !bedroom.isEmpty() &&
+                        !bathroom.isEmpty() && !floor.isEmpty() && !house_size.isEmpty() && forSale_status.isEmpty()) {
                     uploadMultipart(imgs_uri);
+                }
               }
 
         });
@@ -176,8 +183,10 @@ public class HouseFormActivity extends AppCompatActivity implements BSImagePicke
 
         if (requestCode == 1) {
             if(resultCode == MapFormActivity.RESULT_OK){
-                lat = data.getDoubleExtra("lat",10);
-                lng = data.getDoubleExtra("lng",10);
+                lat = data.getDoubleExtra("lat",3);
+                lng = data.getDoubleExtra("lng",3);
+                lat = Math.floor(lat * 100000) / 100000;
+                lng = Math.floor(lng * 100000) / 100000;
                 Log.d("Latlng", "lat:"+lat+"lng"+lng);
             }
             if (resultCode == MapFormActivity.RESULT_CANCELED) {
@@ -225,6 +234,7 @@ public class HouseFormActivity extends AppCompatActivity implements BSImagePicke
         backBtn.setOnClickListener(new View.OnClickListener(){
             @Override
             public void onClick(View v) {
+                startActivity(new Intent(HouseFormActivity.this, MainActivity.class));
                 finish();
             }
         });
@@ -267,6 +277,7 @@ public class HouseFormActivity extends AppCompatActivity implements BSImagePicke
                     .addParameter("phone_option",phone_opt)
                     .addParameter("currency",currency)
                     .addParameter("duration",duration)
+                    .addParameter("user_id",user_id+"")
                     .setNotificationConfig(new UploadNotificationConfig())
                     .setMaxRetries(2); // try request at least 2 time before give up
 
@@ -277,7 +288,8 @@ public class HouseFormActivity extends AppCompatActivity implements BSImagePicke
             }
 
             mUploadRequest.startUpload();
-
+            startActivity(new Intent(HouseFormActivity.this, MainActivity.class));
+            finish();
             Toast.makeText(this,"Upload successful", Toast.LENGTH_SHORT).show();
         } catch (Exception exc) {
             Toast.makeText(this,"Multipart Error" + exc.getMessage(), Toast.LENGTH_SHORT).show();

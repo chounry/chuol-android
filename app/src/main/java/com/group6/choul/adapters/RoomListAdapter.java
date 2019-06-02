@@ -1,6 +1,7 @@
 package com.group6.choul.adapters;
 
 import android.content.Context;
+import android.content.Intent;
 import android.media.session.MediaSession;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -23,6 +24,8 @@ import com.android.volley.toolbox.HttpHeaderParser;
 import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
 import com.group6.choul.R;
+import com.group6.choul.RoomDetailActivity;
+import com.group6.choul.RoomFormActivity;
 import com.group6.choul.login_register_handling.TokenManager;
 import com.group6.choul.models.RoomModel;
 import com.squareup.picasso.Picasso;
@@ -37,10 +40,13 @@ public class RoomListAdapter extends RecyclerView.Adapter<RoomListAdapter.MyRoom
 
     private Context context;
     private List<RoomModel> modeList;
+    private View.OnClickListener mOnClickListener;
+    private RecyclerView recyclerViewRoom;
 
-    public RoomListAdapter(Context context , List<RoomModel> modeList){
+    public RoomListAdapter(Context context , List<RoomModel> modeList, RecyclerView recyclerViewRoom){
         this.context = context;
         this.modeList = modeList;
+        this.recyclerViewRoom = recyclerViewRoom;
     }
 
     @NonNull
@@ -48,6 +54,17 @@ public class RoomListAdapter extends RecyclerView.Adapter<RoomListAdapter.MyRoom
     public MyRoomRecyClerView onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         View myView = LayoutInflater.from(parent.getContext()).inflate(R.layout.item_room_each,null);
 
+
+        mOnClickListener = new View.OnClickListener(){
+            @Override
+            public void onClick(View v) {
+                int itemPos = recyclerViewRoom.getChildLayoutPosition(v);
+                Intent intent = new Intent(context, RoomDetailActivity.class);
+                intent.putExtra("ESTATE_ID",modeList.get(itemPos).getEstate_id()+"");
+                context.startActivity(intent);
+            }
+        };
+        myView.setOnClickListener(mOnClickListener);
         return new MyRoomRecyClerView(myView,context);
     }
 
@@ -71,7 +88,7 @@ public class RoomListAdapter extends RecyclerView.Adapter<RoomListAdapter.MyRoom
         return this.modeList.size();
     }
 
-    class MyRoomRecyClerView extends RecyclerView.ViewHolder{
+    class MyRoomRecyClerView extends RecyclerView.ViewHolder {
 
         TextView textviewTitle;
         TextView textviewPrice;
@@ -82,7 +99,7 @@ public class RoomListAdapter extends RecyclerView.Adapter<RoomListAdapter.MyRoom
         String text = "Save";
         Context context;
         TokenManager tokenManager;
-        int user_id,estate_id;
+        int user_id, estate_id;
 
         public MyRoomRecyClerView(@NonNull View itemView, Context context) {
             super(itemView);
@@ -91,33 +108,23 @@ public class RoomListAdapter extends RecyclerView.Adapter<RoomListAdapter.MyRoom
             textviewAddress = itemView.findViewById(R.id.address_room);
             textviewPrice = itemView.findViewById(R.id.price_room);
             textviewTitle = itemView.findViewById(R.id.title_room);
-            txtSave = itemView.findViewById(R.id.RoomSave);
+            txtSave = itemView.findViewById(R.id.room_save_tv);
             this.context = context;
 
-            tokenManager = TokenManager.getInstance(context.getSharedPreferences("prefs",context.MODE_PRIVATE));
-            user_id  = tokenManager.getUserId();
+            tokenManager = TokenManager.getInstance(context.getSharedPreferences("prefs", context.MODE_PRIVATE));
+            user_id = tokenManager.getUserId();
 
             txtSave.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    if (text == "Save"){
-                        int pos = getAdapterPosition();
-                        estate_id = modeList.get(pos).getEstate_id();
-                        addToSave();
-
-                        text = "unsave";
-                        txtSave.setText(text);
-                    }
-                    else{
-                        text = "Save";
-                        txtSave.setText(text);
-                    }
-
+                    int pos = getAdapterPosition();
+                    estate_id = modeList.get(pos).getEstate_id();
+                    addToSave();
                 }
             });
         }
 
-        public void addToSave(){
+        public void addToSave() {
             try {
                 RequestQueue requestQueue = Volley.newRequestQueue(context);
                 String URL = "http://192.168.100.208:8000/api/estates/add_to_saved";
@@ -129,7 +136,13 @@ public class RoomListAdapter extends RecyclerView.Adapter<RoomListAdapter.MyRoom
                 StringRequest stringRequest = new StringRequest(Request.Method.POST, URL, new Response.Listener<String>() {
                     @Override
                     public void onResponse(String response) {
-                        Log.i("VOLLEY", response);
+                        try {
+                            JSONObject responeJson = new JSONObject(response);
+                            txtSave.setText(responeJson.getString("status"));
+                        } catch (Exception e) {
+                            Log.e("HOUSE LIST JSON ", e.toString());
+                        }
+
                     }
                 }, new Response.ErrorListener() {
                     @Override
@@ -159,19 +172,16 @@ public class RoomListAdapter extends RecyclerView.Adapter<RoomListAdapter.MyRoom
                             responseString = String.valueOf(response.statusCode);
                             // can get more details such as response.headers
                         }
-                        return Response.success(responseString, HttpHeaderParser.parseCacheHeaders(response));
+                        return super.parseNetworkResponse(response);
                     }
                 };
 
                 requestQueue.add(stringRequest);
-            }
-
-            catch (JSONException e) {
+            } catch (JSONException e) {
                 e.printStackTrace();
             }
         }
     }
-
 }
 
 

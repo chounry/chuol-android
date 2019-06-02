@@ -18,18 +18,19 @@
             android:src="@drawable/slide1" />
 
         <TextView
-            android:id="@+id/RoomSave"
+            android:id="@+id/room_save_tv"
             android:layout_width="wrap_content"
-            android:layout_height="30dp"
-            android:background="#E6B975"
-            android:padding="5dp"
+            android:layout_height="25dp"
+            android:background="#FFB818"
+            android:paddingHorizontal="15dp"
+            android:gravity="center_vertical"
             android:textAlignment="center"
-            android:drawableLeft="@drawable/favorite"
+            android:textStyle="bold"
+            android:textColor="#fff"
             android:text="Save"
             android:layout_marginTop="10dp"
             android:layout_alignParentRight="true"
-            android:layout_marginRight="10dp"
-            />
+            android:layout_marginRight="10dp" />
 
         <LinearLayout
             android:layout_width="match_parent"
