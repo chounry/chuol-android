@@ -22,7 +22,9 @@ import androidx.appcompat.widget.Toolbar;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.group6.choul.adapters.MessageListAdapter;
-import com.group6.choul.models.MemberData;
+import com.group6.choul.login_register_handling.ApiService;
+import com.group6.choul.login_register_handling.TokenManager;
+import com.group6.choul.models.MemberDataForChat;
 import com.group6.choul.models.MessageModel;
 import com.scaledrone.lib.Listener;
 import com.scaledrone.lib.Message;
@@ -45,18 +47,23 @@ public class ChatInActivity extends AppCompatActivity implements RoomListener {
     private List<MessageModel> messageModelList;
     private MessageListAdapter messageAdapter;
 
+    private ApiService service;
+    private TokenManager tokenManager;
+//    private Call<>
+
     @RequiresApi(api = Build.VERSION_CODES.LOLLIPOP)
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_chat_in);
-
         mstEt = findViewById(R.id.msg_et);
         sendBtn = findViewById(R.id.send_btn);
 
+        tokenManager = TokenManager.getInstance(getSharedPreferences("prefs",MODE_PRIVATE));
+
 
         //------------ Action bar thing
-        Toolbar myToolbar = (Toolbar) findViewById(R.id.my_toolbar);
+        Toolbar myToolbar = findViewById(R.id.my_toolbar);
         setSupportActionBar(myToolbar);
         showActionBar();
         // Action bar thing ------------
@@ -72,35 +79,15 @@ public class ChatInActivity extends AppCompatActivity implements RoomListener {
                 sendMessage();
             }
         });
-//        MessageModel receive1 = new MessageModel("Hi","https://img.icons8.com/bubbles/2x/user.png",false);
-//        MessageModel receive2 = new MessageModel("What is your name?","https://img.icons8.com/bubbles/2x/user.png",false);
-//        MessageModel response1 = new MessageModel("Hi my name is Something",true);
-//        MessageModel receive3 = new MessageModel("Oh","https://img.icons8.com/bubbles/2x/user.png",false);
 
-
-
-//        messageModelList.add(receive1);
-//        messageModelList.add(receive2);
-//        messageModelList.add(response1);
-//        messageModelList.add(receive3);
-        messageAdapter = new MessageListAdapter(this,messageModelList);
+        messageAdapter = new MessageListAdapter(this, messageModelList);
         listView.setDivider(null);
         listView.setAdapter(messageAdapter);
     }
 
-    private void showActionBar() {
-        LayoutInflater inflator = (LayoutInflater) this.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-        View v = inflator.inflate(R.layout.custom_action_bar, null);
-        ImageButton backBtn = v.findViewById(R.id.nav_back_btn);
 
-        backBtn.setOnClickListener(new View.OnClickListener(){
-            @Override
-            public void onClick(View v) {
-                finish();
-            }
-        });
-
-        MemberData data = new MemberData("Phone","https://wowsciencecamp.org/wp-content/uploads/2018/07/dummy-user-img-1-400x400_x_acf_cropped.png");
+    private void initMessage(){
+        MemberDataForChat data = new MemberDataForChat("","https://wowsciencecamp.org/wp-content/uploads/2018/07/dummy-user-img-1-400x400_x_acf_cropped.png");
         scaledrone = new Scaledrone(channelID, data);
         scaledrone.connect(new Listener() {
             @Override
@@ -126,14 +113,7 @@ public class ChatInActivity extends AppCompatActivity implements RoomListener {
             }
         });
 
-        ActionBar actionBar = getSupportActionBar();
-        actionBar.setDisplayHomeAsUpEnabled(false);
-        actionBar.setDisplayShowHomeEnabled (false);
-        actionBar.setDisplayShowCustomEnabled(true);
-        actionBar.setDisplayShowTitleEnabled(false);
-        actionBar.setCustomView(v);
     }
-
 
     @Override
     public void onOpen(Room room) {
@@ -152,14 +132,16 @@ public class ChatInActivity extends AppCompatActivity implements RoomListener {
         final ObjectMapper mapper = new ObjectMapper();
         try {
             // member.clientData is a MemberData object, let's parse it as such
-            final MemberData data = mapper.treeToValue(message.getMember().getClientData(), MemberData.class);
+            final MemberDataForChat data = mapper.treeToValue(message.getMember().getClientData(), MemberDataForChat.class);
+            Log.e("MData ", data.getName());
             // if the clientID of the message sender is the same as our's it was sent by us
             boolean belongsToCurrentUser = message.getClientID().equals(scaledrone.getClientID());
             // since the message body is a simple string in our case we can use json.asText() to parse it as such
             // if it was instead an object we could use a similar pattern to data parsing
             final MessageModel recieve_message = new MessageModel(message.getData().asText(), belongsToCurrentUser, data);
-//            if(recieve_message)
+            if(belongsToCurrentUser){
 
+            }
             runOnUiThread(new Runnable() {
                 @Override
                 public void run() {
@@ -182,5 +164,29 @@ public class ChatInActivity extends AppCompatActivity implements RoomListener {
             scaledrone.publish(roomName, message);
 
         }
+    }
+
+    public void saveMyMessage(){
+
+    }
+
+    private void showActionBar() {
+        LayoutInflater inflator = (LayoutInflater) this.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+        View v = inflator.inflate(R.layout.custom_action_bar, null);
+        ImageButton backBtn = v.findViewById(R.id.nav_back_btn);
+
+        backBtn.setOnClickListener(new View.OnClickListener(){
+            @Override
+            public void onClick(View v) {
+                finish();
+            }
+        });
+
+        ActionBar actionBar = getSupportActionBar();
+        actionBar.setDisplayHomeAsUpEnabled(false);
+        actionBar.setDisplayShowHomeEnabled (false);
+        actionBar.setDisplayShowCustomEnabled(true);
+        actionBar.setDisplayShowTitleEnabled(false);
+        actionBar.setCustomView(v);
     }
 }

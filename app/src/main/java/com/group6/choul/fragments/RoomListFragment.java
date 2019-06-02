@@ -70,8 +70,6 @@ public class RoomListFragment extends Fragment {
         StringRequest request = new StringRequest(Request.Method.GET, url, new Response.Listener<String>() {
             @Override
             public void onResponse(String response) {
-                Log.e("Some", "Some");
-                Log.e("all data", response);
                 try {
                     JSONArray jsonResponse = new JSONArray(response);
                     for (int i = 0; i < jsonResponse.length(); i++) {
@@ -81,6 +79,8 @@ public class RoomListFragment extends Fragment {
                         room.setAddress(each.getString("address"));
                         room.setPrice(each.getString("price"));
                         room.setLocation(each.getString("location"));
+                        room.setEstate_id(each.getInt("estate_id"));
+                        room.setRoom_id(each.getInt("room_id"));
                         room.setImg_url(ImgUrl + each.getString("img"));
                         roomModelist.add(room);
                         adapter.notifyDataSetChanged();

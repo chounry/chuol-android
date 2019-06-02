@@ -80,13 +80,13 @@ class MyHomeRecyClerView extends RecyclerView.ViewHolder{
 
     public MyHomeRecyClerView(@NonNull View itemView) {
         super(itemView);
-        imageView = itemView.findViewById(R.id.imgView);
+        imageView = itemView.findViewById(R.id.imgView_house);
 
         for_sale_rent_status = itemView.findViewById(R.id.for_sale_rent_tv);
         textviewType = itemView.findViewById(R.id.type);
-        textviewLocation = itemView.findViewById(R.id.location);
-        textviewAddress = itemView.findViewById(R.id.address);
-        textviewPrice = itemView.findViewById(R.id.price);
+        textviewLocation = itemView.findViewById(R.id.location_home);
+        textviewAddress = itemView.findViewById(R.id.address_home);
+        textviewPrice = itemView.findViewById(R.id.price_home);
         textviewTitle = itemView.findViewById(R.id.title_home);
     }
 }

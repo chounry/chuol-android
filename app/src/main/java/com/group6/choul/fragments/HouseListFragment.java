@@ -1,5 +1,7 @@
 package com.group6.choul.fragments;
 
+import android.content.Context;
+import android.media.session.MediaSession;
 import android.os.Build;
 import android.os.Bundle;
 
@@ -15,19 +17,31 @@ import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.android.volley.AuthFailureError;
 import com.android.volley.Request;
 import com.android.volley.RequestQueue;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
+import com.android.volley.VolleyLog;
 import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
+import com.android.volley.Request;
+import com.android.volley.RequestQueue;
+import com.android.volley.Response;
+import com.android.volley.RetryPolicy;
+import com.android.volley.VolleyError;
+import com.android.volley.toolbox.StringRequest;
+import com.android.volley.toolbox.Volley;
+import com.group6.choul.HouseDetailActivity;
 import com.group6.choul.R;
+import com.group6.choul.login_register_handling.TokenManager;
 import com.group6.choul.models.HouseModel;
 import com.group6.choul.adapters.HouseListAdapter;
 
 import org.json.JSONArray;
 import org.json.JSONObject;
 
+import java.io.UnsupportedEncodingException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -37,6 +51,9 @@ public class HouseListFragment extends Fragment {
     private List<HouseModel> homeModelist;
     private HouseListAdapter adapter;
     private String url=  "http://192.168.100.208:8000/api/houses/get";
+    private int user_id;
+
+    private TokenManager tokenManager;
 
     @RequiresApi(api = Build.VERSION_CODES.M)
     @Nullable
@@ -47,6 +64,8 @@ public class HouseListFragment extends Fragment {
         houseRecyclerView = v.findViewById(R.id.post_recyclerView);
         homeModelist = new ArrayList<>();
 
+        tokenManager = TokenManager.getInstance(getActivity().getSharedPreferences("prefs", Context.MODE_PRIVATE));
+        user_id = tokenManager.getUserId();
 
         adapter = new HouseListAdapter(homeModelist, getContext());
         houseRecyclerView.setHasFixedSize(true);
@@ -66,7 +85,7 @@ public class HouseListFragment extends Fragment {
         StringRequest request = new StringRequest(Request.Method.GET, url, new Response.Listener<String>() {
             @Override
             public void onResponse(String response) {
-                Log.e("Some","Some");
+
                 Log.e("all data",response);
                 try{
                     JSONArray jsonResponse = new JSONArray(response);
@@ -79,7 +98,8 @@ public class HouseListFragment extends Fragment {
                         tmp.setType(each.getString("house_type"));
                         tmp.setLocation(each.getString("location"));
                         tmp.setFor_sale_rent_status(each.getString("for_sale_status"));
-                        tmp.setId(each.getInt("house_id"));
+                        tmp.setEstaeId(each.getInt("estate_id"));
+
                         tmp.setImg_url(baseImgUrl + each.getString("img"));
                         homeModelist.add(tmp);
                         adapter.notifyDataSetChanged();
@@ -98,25 +118,7 @@ public class HouseListFragment extends Fragment {
             }
         });
 
-// request.setRetryPolicy(new RetryPolicy() {
-// @Override
-// public int getCurrentTimeout() {
-// return 50000;
-// }
-//
-// @Override
-// public int getCurrentRetryCount() {
-// return 50000;
-// }
-//
-// @Override
-// public void retry(VolleyError error) throws VolleyError {
-//
-// }
-// });
-
         requestQueue.add(request);
     }
-
 
 }

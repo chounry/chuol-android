@@ -15,7 +15,7 @@
             android:layout_height="wrap_content">
 
             <ImageView
-                android:id="@+id/imgView"
+                android:id="@+id/imgView_house"
                 android:layout_width="match_parent"
                 android:layout_height="200dp"
                 android:scaleType="centerCrop"
@@ -73,7 +73,7 @@
                     android:textSize="20dp" />
 
                 <TextView
-                    android:id="@+id/price"
+                    android:id="@+id/price_home"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:text="$20000"
@@ -96,7 +96,7 @@
                             android:textColor="#D4D4D4" />
 
                         <TextView
-                            android:id="@+id/address"
+                            android:id="@+id/address_home"
                             android:layout_width="0dp"
                             android:layout_height="wrap_content"
                             android:layout_weight="0.7"
@@ -116,7 +116,7 @@
                             android:textColor="#D4D4D4" />
 
                         <TextView
-                            android:id="@+id/location"
+                            android:id="@+id/location_home"
                             android:layout_width="0dp"
                             android:layout_height="wrap_content"
                             android:layout_weight="0.7"
@@ -134,7 +134,7 @@
                             android:textColor="#D4D4D4" />
 
                         <TextView
-                            android:id="@+id/type"
+                            android:id="@+id/type_home"
                             android:layout_width="0dp"
                             android:layout_height="wrap_content"
                             android:layout_weight="0.7"

@@ -1,15 +1,28 @@
 package com.group6.choul.models;
 
-public class ChatModel {
-    private String name,time;
-    private int img_id, imgProfile;
+import com.fasterxml.jackson.annotation.JsonPropertyOrder;
+import com.group6.choul.R;
+import com.squareup.moshi.Json;
 
-    public ChatModel(int imgProfile, String name, String time, int img_id) {
-        this.imgProfile = imgProfile;
-        this.name = name;
-        this.time = time;
-        this.img_id = img_id;
+public class ChatModel {
+    private int img_id, imgProfile;
+    @Json(name = "name")
+    String name;
+    @Json(name = "time")
+    String time;
+    @Json(name = "title")
+    String title;
+    @Json(name = "message")
+    String message;
+    @Json(name = "estate_id")
+    int chat_room_id;
+
+
+    public ChatModel() {
+        this.imgProfile = R.drawable.rick;
+        this.img_id = R.drawable.house;
     }
+
 
     public String getName() {
         return name;
@@ -41,5 +54,17 @@ public class ChatModel {
 
     public void setTime(String time) {
         this.time = time;
+    }
+
+    public String getTitle() {
+        return title;
+    }
+
+    public String getMessage() {
+        return message;
+    }
+
+    public int getChatRoom_id() {
+        return chat_room_id;
     }
 }

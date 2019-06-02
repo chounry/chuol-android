@@ -1,23 +1,33 @@
 package com.group6.choul.models;
 
 
+import com.squareup.moshi.Json;
+
 public class MessageModel {
-    private String message;
-    private MemberData memberData;
+
+    @Json(name = "content")
+    String message;
+    private MemberDataForChat memberData;
     private boolean response;
 
-    public MessageModel(String message, boolean response, MemberData memberData) {
+    public MessageModel(){}
+
+    public MessageModel(String message, boolean response, MemberDataForChat memberData) {
         this.message = message;
         this.response = response;
         this.memberData = memberData;
     }
 
-    public MemberData getMemberData() {
+    public MemberDataForChat getMemberData() {
         return memberData;
     }
 
     public boolean isResponse() {
         return response;
+    }
+
+    public void setCustromResponse() {
+
     }
 
     public void setResponse(boolean response) {

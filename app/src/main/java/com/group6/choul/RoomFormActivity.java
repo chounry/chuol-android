@@ -353,6 +353,8 @@ public class RoomFormActivity extends AppCompatActivity implements BSImagePicker
 
             mUploadRequest.startUpload();
             Toast.makeText(this,"Upload successful", Toast.LENGTH_SHORT).show();
+            startActivity(new Intent(this,MainActivity.class));
+            finish();
         } catch (Exception exc) {
             Toast.makeText(this,"Multipart Error" + exc.getMessage(), Toast.LENGTH_SHORT).show();
         }
