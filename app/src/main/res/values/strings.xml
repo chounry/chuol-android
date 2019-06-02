@@ -16,6 +16,28 @@
         <item>Siem Reap</item>
         <item>Phnom Penh</item>
         <item>Kampong Charm</item>
+        <item>Banteay Meanchey</item>
+        <item>Battambang</item>
+        <item>Kampong Chhnang</item>
+        <item>Kampong Speu</item>
+        <item>Kampong Thom</item>
+        <item>Kampot</item>
+        <item>Kandal</item>
+        <item>Koh Kong</item>
+        <item>Kep</item>
+        <item>Kratié</item>
+        <item>Mondulkiri</item>
+        <item>Oddar Meanchey</item>
+        <item>Pailin</item>
+        <item>Sihanoukville</item>
+        <item>Preah Vihear</item>
+        <item>Pursat</item>
+        <item>Prey Veng</item>
+        <item>Ratanakiri</item>
+        <item>Stung Treng</item>
+        <item>Svay Rieng</item>
+        <item>Takéo</item>
+        <item>Tbong Khmum</item>
     </string-array>
 
     <string name="currency_promt">Choose Currency</string>
@@ -40,6 +62,7 @@
     <string-array name="service_items">
         <item>Free Wifi</item>
         <item>Parking Space Available</item>
+        <item>AC</item>
     </string-array>
 
 </resources>

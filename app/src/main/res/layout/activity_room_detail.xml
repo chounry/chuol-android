@@ -25,7 +25,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:textColor="#000"
-                android:textSize="25sp"
+                android:textSize="20sp"
                 android:paddingLeft="20sp"
                 android:textStyle="bold"
                 android:text="Room for 2 beds"/>
@@ -35,7 +35,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:textStyle="bold"
-            android:textSize="25sp"
+            android:textSize="20sp"
             android:layout_marginLeft="20dp"
             android:textColor="#48C0E8"
             android:text="100$"
@@ -56,7 +56,7 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="15sp"
             android:textStyle="bold"
-            android:textSize="10sp"
+            android:textSize="15sp"
             android:layout_marginLeft="20dp"
 
             android:text="This House is 100 m length and 200 m wide and it a betiful house and it new."
@@ -85,14 +85,14 @@
                     android:layout_height="wrap_content"
                     android:text="Street:"
                     android:layout_marginLeft="20dp"
-                    android:textSize="10sp"
+                    android:textSize="15sp"
                     android:textColor="#000"
                     />
                 <TextView
                     android:id="@+id/room_street"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:textSize="10sp"
+                    android:textSize="15sp"
                     android:layout_marginLeft="15dp"
                     android:text="Preah Monivong Blvd, SangkatSrah Chork, Khan Daun Penh"/>
             </LinearLayout>
@@ -106,14 +106,14 @@
                     android:layout_height="wrap_content"
                     android:text="City:"
                     android:layout_marginLeft="20dp"
-                    android:textSize="10sp"
+                    android:textSize="15sp"
                     android:textColor="#000"
                     />
                 <TextView
                     android:id="@+id/room_city"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:textSize="10sp"
+                    android:textSize="15sp"
                     android:layout_marginLeft="20dp"
                     android:text="Phnom Penh"/>
             </LinearLayout>
@@ -141,12 +141,12 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:text="AC:"
-                    android:textSize="10sp"
+                    android:textSize="15sp"
                     />
                 <ImageView
                     android:id="@+id/img_AC"
                     android:layout_width="0dp"
-                    android:layout_height="15dp"
+                    android:layout_height="20dp"
                     android:layout_weight="0.7"
                     android:src="@drawable/ic_check"
                     android:textAlignment="center"
@@ -158,12 +158,12 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:text="Parking:"
-                    android:textSize="10sp"
+                    android:textSize="15sp"
                     />
                 <ImageView
                     android:id="@+id/img_parking"
                     android:layout_width="0dp"
-                    android:layout_height="15dp"
+                    android:layout_height="20dp"
                     android:layout_weight="0.7"
                     android:src="@drawable/ic_check"
                     android:textAlignment="center"
@@ -174,12 +174,12 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:text="Wifi:"
-                    android:textSize="10sp"
+                    android:textSize="15sp"
                     />
                 <ImageView
                     android:id="@+id/img_wifi"
                     android:layout_width="0dp"
-                    android:layout_height="15dp"
+                    android:layout_height="20dp"
                     android:src="@drawable/ic_check"
                     android:layout_weight="0.7"
                     android:textAlignment="center"
@@ -211,7 +211,7 @@
                     android:layout_height="wrap_content"
                     android:text="Email:"
                     android:layout_marginLeft="20dp"
-                    android:textSize="10sp"
+                    android:textSize="15sp"
                     android:textColor="#000"
                     />
 
@@ -221,7 +221,7 @@
                     android:layout_height="wrap_content"
                     android:layout_marginLeft="18dp"
                     android:text="Chhaykounghay@gmail.com"
-                    android:textSize="10sp" />
+                    android:textSize="15sp" />
             </LinearLayout>
 
             <LinearLayout
@@ -233,7 +233,7 @@
                     android:layout_height="wrap_content"
                     android:text="Phone:"
                     android:layout_marginLeft="20dp"
-                    android:textSize="10sp"
+                    android:textSize="15sp"
                     android:textColor="#000"
                     />
                 <TextView
@@ -241,7 +241,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginLeft="15dp"
-                    android:textSize="10sp"
+                    android:textSize="15sp"
                     android:text="012 333 444"/>
 
             </LinearLayout>
