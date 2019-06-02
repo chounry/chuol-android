@@ -1,18 +1,47 @@
 package com.group6.choul.models;
 
-public class HomeModel {
-    private String title, price, address, location, type,img_url;
+public class HouseModel {
+    private String title, price, address, location, type,img_url, for_sale_rent_status;
+    private int estate_id;
+    private String text;
+    public HouseModel(){
 
-//    bedroom','bathroom','floor','house_size','yard_size','for_sale_status',,'estate_id
+    }
 
-    public HomeModel(String title, String price, String address, String location, String type, String img_url) {
+    public HouseModel(String title, String price, String address, String location, String type, String img_url, String sale_rent_status,String text) {
         this.title = title;
         this.price = price;
         this.address = address;
         this.location = location;
         this.type = type;
         this.img_url = img_url;
+        this.text = text;
+        this.for_sale_rent_status = sale_rent_status;
 
+    }
+
+    public String getText() {
+        return text;
+    }
+
+    public void setText(String text) {
+        this.text = text;
+    }
+
+    public int setEstatId() {
+        return estate_id;
+    }
+
+    public void setEstaeId(int estate_id) {
+        this.estate_id = estate_id;
+    }
+
+    public String getFor_sale_rent_status() {
+        return for_sale_rent_status;
+    }
+
+    public void setFor_sale_rent_status(String for_sale_rent_status) {
+        this.for_sale_rent_status = for_sale_rent_status;
     }
 
     public String getTitle() {

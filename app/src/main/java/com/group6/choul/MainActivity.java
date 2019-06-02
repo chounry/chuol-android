@@ -9,15 +9,20 @@ import android.graphics.drawable.ColorDrawable;
 
 import android.os.Bundle;
 
+import android.text.SpannableString;
+import android.text.style.UnderlineSpan;
+import android.util.Log;
 import android.util.Log;
 import android.view.Gravity;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
+import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -32,6 +37,8 @@ import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
 
 
+import com.google.android.gms.common.ConnectionResult;
+import com.google.android.gms.common.GoogleApiAvailability;
 import com.google.android.material.navigation.NavigationView;
 import com.group6.choul.fragments.ChatOutFragment;
 import com.group6.choul.fragments.HomeFragment;
@@ -61,6 +68,8 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     public ApiService service;
     public Call<UserModel> call;
 
+
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -68,7 +77,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 
         ButterKnife.bind(this);
         tokenManager = TokenManager.getInstance(getSharedPreferences("prefs", MODE_PRIVATE));
-        
+
         formSelectDialog = new Dialog(this);
         loginDialog = new Dialog(this);
         drawerLayoutHome = findViewById(R.id.drawer_home);
@@ -186,7 +195,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
             public void onClick(View v) {
                 Intent intent = new Intent(getApplicationContext(), HouseFormActivity.class);
                 startActivity(intent);
-
+                finish();
                 formSelectDialog.cancel();
             }
         });
@@ -197,7 +206,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 
                 Intent intent = new Intent(getApplicationContext(), RoomFormActivity.class);
                 startActivity(intent);
-
+                finish();
                 formSelectDialog.cancel();
             }
         });
@@ -216,6 +225,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                 Intent intent = new Intent(getApplicationContext(), LoginRegisterActivity.class);
                 startActivity(intent);
                 finish();
+                loginDialog.cancel();
             }
         });
 

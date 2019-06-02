@@ -33,7 +33,7 @@ import com.group6.choul.login_register_handling.ApiService;
 import com.group6.choul.login_register_handling.RetrofitBuilder;
 import com.group6.choul.login_register_handling.TokenManager;
 import com.group6.choul.login_register_handling.Utils;
-import com.group6.choul.models.HomeModel;
+import com.group6.choul.models.HouseModel;
 import com.group6.choul.models.SignupModel;
 
 import java.util.ArrayList;
@@ -125,7 +125,7 @@ public class SignupFragement extends Fragment {
 
                     @Override
                     public void onFailure(Call<AccessToken> call, Throwable t) {
-
+                        Log.e("something",t.getMessage());
                     }
                 });
             }

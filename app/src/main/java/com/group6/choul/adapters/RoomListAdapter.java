@@ -1,24 +1,40 @@
 package com.group6.choul.adapters;
 
 import android.content.Context;
-import android.content.Intent;
+import android.media.session.MediaSession;
+import android.util.Log;
+import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.BaseAdapter;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-import androidx.coordinatorlayout.widget.CoordinatorLayout;
+import androidx.annotation.NonNull;
+import androidx.recyclerview.widget.RecyclerView;
 
-import com.group6.choul.HouseDetailActivity;
+import com.android.volley.AuthFailureError;
+import com.android.volley.NetworkResponse;
+import com.android.volley.Request;
+import com.android.volley.RequestQueue;
+import com.android.volley.Response;
+import com.android.volley.VolleyError;
+import com.android.volley.VolleyLog;
+import com.android.volley.toolbox.HttpHeaderParser;
+import com.android.volley.toolbox.StringRequest;
+import com.android.volley.toolbox.Volley;
 import com.group6.choul.R;
-import com.group6.choul.models.HomeModel;
+import com.group6.choul.login_register_handling.TokenManager;
 import com.group6.choul.models.RoomModel;
 import com.squareup.picasso.Picasso;
 
+import org.json.JSONException;
+import org.json.JSONObject;
+
+import java.io.UnsupportedEncodingException;
 import java.util.List;
 
-public class RoomListAdapter  extends BaseAdapter {
+public class RoomListAdapter extends RecyclerView.Adapter<RoomListAdapter.MyRoomRecyClerView> {
+
     private Context context;
     private List<RoomModel> modeList;
 
@@ -26,39 +42,136 @@ public class RoomListAdapter  extends BaseAdapter {
         this.context = context;
         this.modeList = modeList;
     }
-    @Override
-    public int getCount() {
-        return modeList.size();
-    }
 
+    @NonNull
     @Override
-    public Object getItem(int position) {
-        return modeList.get(position);
-    }
+    public MyRoomRecyClerView onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
+        View myView = LayoutInflater.from(parent.getContext()).inflate(R.layout.item_room_each,null);
 
-    @Override
-    public long getItemId(int position) {
-        return position;
+        return new MyRoomRecyClerView(myView,context);
     }
 
 
     @Override
-    public View getView(int position, View convertView, ViewGroup parent) {
-        View v = View.inflate(context, R.layout.item_room_each,null);
-
-
-        TextView textviewTitle = v.findViewById(R.id.title_home);
-        TextView textviewPrice = v.findViewById(R.id.price);
-        TextView textviewAddress = v.findViewById(R.id.address);
-        TextView textviewLocation = v.findViewById(R.id.location);
-        ImageView imageView = v.findViewById(R.id.imgView);
+    public void onBindViewHolder(@NonNull MyRoomRecyClerView holder, int position) {
         RoomModel obj = modeList.get(position);
+        Picasso.get().load(obj.getImg_url()).into(holder.imageView);
+        holder.textviewTitle.setText(obj.getTitle());
+        holder.textviewPrice.setText(obj.getPrice());
+        holder.textviewAddress.setText(obj.getAddress());
+        holder.textviewLocation.setText(obj.getLocation());
+        Picasso.get().load(obj.getImg_url()).into(holder.imageView);
 
-        Picasso.get().load(obj.getImg_url()).into(imageView);
-        textviewTitle.setText(obj.getTitle());
-        textviewPrice.setText(obj.getPrice());
-        textviewAddress.setText(obj.getAddress());
-        textviewLocation.setText(obj.getLocation());
-        return v;
     }
+
+
+
+    @Override
+    public int getItemCount() {
+        return this.modeList.size();
+    }
+
+    class MyRoomRecyClerView extends RecyclerView.ViewHolder{
+
+        TextView textviewTitle;
+        TextView textviewPrice;
+        TextView textviewAddress;
+        TextView textviewLocation;
+        ImageView imageView;
+        TextView txtSave;
+        String text = "Save";
+        Context context;
+        TokenManager tokenManager;
+        int user_id,estate_id;
+
+        public MyRoomRecyClerView(@NonNull View itemView, Context context) {
+            super(itemView);
+            imageView = itemView.findViewById(R.id.imgView_room);
+            textviewLocation = itemView.findViewById(R.id.location_room);
+            textviewAddress = itemView.findViewById(R.id.address_room);
+            textviewPrice = itemView.findViewById(R.id.price_room);
+            textviewTitle = itemView.findViewById(R.id.title_room);
+            txtSave = itemView.findViewById(R.id.RoomSave);
+            this.context = context;
+
+            tokenManager = TokenManager.getInstance(context.getSharedPreferences("prefs",context.MODE_PRIVATE));
+            user_id  = tokenManager.getUserId();
+
+            txtSave.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    if (text == "Save"){
+                        int pos = getAdapterPosition();
+                        estate_id = modeList.get(pos).getEstate_id();
+                        addToSave();
+
+                        text = "unsave";
+                        txtSave.setText(text);
+                    }
+                    else{
+                        text = "Save";
+                        txtSave.setText(text);
+                    }
+
+                }
+            });
+        }
+
+        public void addToSave(){
+            try {
+                RequestQueue requestQueue = Volley.newRequestQueue(context);
+                String URL = "http://192.168.100.208:8000/api/estates/add_to_saved";
+                JSONObject jsonBody = new JSONObject();
+                jsonBody.put("user_id", user_id);
+                jsonBody.put("estate_id", estate_id);
+                final String requestBody = jsonBody.toString();
+
+                StringRequest stringRequest = new StringRequest(Request.Method.POST, URL, new Response.Listener<String>() {
+                    @Override
+                    public void onResponse(String response) {
+                        Log.i("VOLLEY", response);
+                    }
+                }, new Response.ErrorListener() {
+                    @Override
+                    public void onErrorResponse(VolleyError error) {
+                        Log.e("VOLLEY", error.toString());
+                    }
+                }) {
+                    @Override
+                    public String getBodyContentType() {
+                        return "application/json; charset=utf-8";
+                    }
+
+                    @Override
+                    public byte[] getBody() throws AuthFailureError {
+                        try {
+                            return requestBody == null ? null : requestBody.getBytes("utf-8");
+                        } catch (UnsupportedEncodingException uee) {
+                            VolleyLog.wtf("Unsupported Encoding while trying to get the bytes of %s using %s", requestBody, "utf-8");
+                            return null;
+                        }
+                    }
+
+                    @Override
+                    protected Response<String> parseNetworkResponse(NetworkResponse response) {
+                        String responseString = "";
+                        if (response != null) {
+                            responseString = String.valueOf(response.statusCode);
+                            // can get more details such as response.headers
+                        }
+                        return Response.success(responseString, HttpHeaderParser.parseCacheHeaders(response));
+                    }
+                };
+
+                requestQueue.add(stringRequest);
+            }
+
+            catch (JSONException e) {
+                e.printStackTrace();
+            }
+        }
+    }
+
 }
+
+
