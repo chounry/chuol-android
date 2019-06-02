@@ -52,7 +52,7 @@ public class RoomListFragment extends Fragment {
         roomModelist = new ArrayList<>();
 
 
-        adapter = new RoomListAdapter(getContext(), roomModelist);
+        adapter = new RoomListAdapter(getContext(), roomModelist, roomRecyclerView);
         roomRecyclerView.setHasFixedSize(true);
         adapter.setHasStableIds(true);
         roomRecyclerView.setItemViewCacheSize(20);

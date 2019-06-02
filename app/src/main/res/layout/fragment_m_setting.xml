@@ -107,6 +107,7 @@
                     android:layout_marginTop="40dp" />
 
                 <TextView
+                    android:id="@+id/aboutUs"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:text="About us"
@@ -115,6 +116,7 @@
                     android:layout_marginLeft="4dp"/>
 
                 <TextView
+                    android:id="@+id/termofUse"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:text="Term of  use and conditions"

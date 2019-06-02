@@ -33,6 +33,8 @@
         <activity android:name=".RoomFormActivity" android:launchMode="singleTop"/>
         <activity android:name=".LoginRegisterActivity" android:launchMode="singleTop"/>
         <activity android:name=".PersonalInfoActivity" android:launchMode="singleTop"/>
+        <activity android:name=".AboutusActivity" android:launchMode="singleTop"/>
+        <activity android:name=".Termofuse" android:launchMode="singleTop"/>
         <activity android:name=".MainActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />

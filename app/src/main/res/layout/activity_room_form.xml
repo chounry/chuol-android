@@ -250,6 +250,7 @@
                     android:orientation="horizontal">
 
                     <CheckBox
+                        android:id="@+id/ckboxTerm"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:text="Agree of Term &amp; Condition"
@@ -271,6 +272,7 @@
                     android:orientation="horizontal">
 
                     <CheckBox
+                        android:id="@+id/ckboxPrivate"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:text="Agree of Private Policy"

@@ -21,6 +21,7 @@
             android:layout_height="wrap_content"
             android:orientation="horizontal">
             <TextView
+                android:id="@+id/room_title"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:textColor="#000"
@@ -28,19 +29,9 @@
                 android:paddingLeft="20sp"
                 android:textStyle="bold"
                 android:text="Room for 2 beds"/>
-            <TextView
-                android:layout_width="70dp"
-                android:layout_height="wrap_content"
-                android:textColor="#FFFF"
-                android:textSize="10dp"
-                android:layout_marginLeft="20dp"
-                android:textAlignment="center"
-                android:textStyle="bold"
-                android:padding="2dp"
-                android:background="@drawable/forrent"
-                android:text="For Rent"/>
         </LinearLayout>
         <TextView
+            android:id="@+id/room_price"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:textStyle="bold"
@@ -60,6 +51,7 @@
             android:text="Description"
             />
         <TextView
+            android:id="@+id/room_description"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="15sp"
@@ -97,6 +89,7 @@
                     android:textColor="#000"
                     />
                 <TextView
+                    android:id="@+id/room_street"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:textSize="10sp"
@@ -117,6 +110,7 @@
                     android:textColor="#000"
                     />
                 <TextView
+                    android:id="@+id/room_city"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:textSize="10sp"
@@ -150,8 +144,9 @@
                     android:textSize="10sp"
                     />
                 <ImageView
+                    android:id="@+id/img_AC"
                     android:layout_width="0dp"
-                    android:layout_height="wrap_content"
+                    android:layout_height="15dp"
                     android:layout_weight="0.7"
                     android:src="@drawable/ic_check"
                     android:textAlignment="center"
@@ -166,8 +161,9 @@
                     android:textSize="10sp"
                     />
                 <ImageView
+                    android:id="@+id/img_parking"
                     android:layout_width="0dp"
-                    android:layout_height="wrap_content"
+                    android:layout_height="15dp"
                     android:layout_weight="0.7"
                     android:src="@drawable/ic_check"
                     android:textAlignment="center"
@@ -181,8 +177,9 @@
                     android:textSize="10sp"
                     />
                 <ImageView
+                    android:id="@+id/img_wifi"
                     android:layout_width="0dp"
-                    android:layout_height="wrap_content"
+                    android:layout_height="15dp"
                     android:src="@drawable/ic_check"
                     android:layout_weight="0.7"
                     android:textAlignment="center"
@@ -219,6 +216,7 @@
                     />
 
                 <TextView
+                    android:id="@+id/room_email"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginLeft="18dp"
@@ -239,6 +237,7 @@
                     android:textColor="#000"
                     />
                 <TextView
+                    android:id="@+id/room_phone"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginLeft="15dp"
@@ -256,7 +255,7 @@
             <TableRow>
 
                 <Button
-
+                    android:id="@+id/btn_room_contact"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
                     android:background="@drawable/buttoncontact"

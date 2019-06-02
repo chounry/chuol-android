@@ -1,6 +1,7 @@
 package com.group6.choul.adapters;
 
 import android.content.Context;
+import android.content.Intent;
 import android.media.session.MediaSession;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -23,6 +24,8 @@ import com.android.volley.toolbox.HttpHeaderParser;
 import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
 import com.group6.choul.R;
+import com.group6.choul.RoomDetailActivity;
+import com.group6.choul.RoomFormActivity;
 import com.group6.choul.login_register_handling.TokenManager;
 import com.group6.choul.models.RoomModel;
 import com.squareup.picasso.Picasso;
@@ -37,10 +40,13 @@ public class RoomListAdapter extends RecyclerView.Adapter<RoomListAdapter.MyRoom
 
     private Context context;
     private List<RoomModel> modeList;
+    private View.OnClickListener mOnClickListener;
+    private RecyclerView recyclerViewRoom;
 
-    public RoomListAdapter(Context context , List<RoomModel> modeList){
+    public RoomListAdapter(Context context , List<RoomModel> modeList, RecyclerView recyclerViewRoom){
         this.context = context;
         this.modeList = modeList;
+        this.recyclerViewRoom = recyclerViewRoom;
     }
 
     @NonNull
@@ -48,6 +54,17 @@ public class RoomListAdapter extends RecyclerView.Adapter<RoomListAdapter.MyRoom
     public MyRoomRecyClerView onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         View myView = LayoutInflater.from(parent.getContext()).inflate(R.layout.item_room_each,null);
 
+
+        mOnClickListener = new View.OnClickListener(){
+            @Override
+            public void onClick(View v) {
+                int itemPos = recyclerViewRoom.getChildLayoutPosition(v);
+                Intent intent = new Intent(context, RoomDetailActivity.class);
+                intent.putExtra("ESTATE_ID",modeList.get(itemPos).getEstate_id()+"");
+                context.startActivity(intent);
+            }
+        };
+        myView.setOnClickListener(mOnClickListener);
         return new MyRoomRecyClerView(myView,context);
     }
 
