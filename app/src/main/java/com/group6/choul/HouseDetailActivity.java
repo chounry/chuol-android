@@ -56,7 +56,7 @@ public class HouseDetailActivity extends AppCompatActivity implements OnMapReady
     private String url = "http://192.168.100.208:8000/api/houses/get_detail";
     private ArrayList<ImageModel> images;
     private String estate_id;
-    private String lat,lng;
+    private double lat,lng;
 
     @RequiresApi(api = Build.VERSION_CODES.M)
     @Override
@@ -64,9 +64,10 @@ public class HouseDetailActivity extends AppCompatActivity implements OnMapReady
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_house_detail);
         this.getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_ALWAYS_HIDDEN);
-
+        images = new ArrayList<>();
         viewPager = findViewById(R.id.slide);
         recyclerViewHome = findViewById(R.id.related_recycler_home);
+        estate_id = getIntent().getStringExtra("ESTATE_ID");
 
 
         SlideAdapter sladapter = new SlideAdapter(getApplicationContext(),images);
@@ -167,8 +168,8 @@ public class HouseDetailActivity extends AppCompatActivity implements OnMapReady
                         price = responeJson.getString("price");
                         phone_option = responeJson.getString ("phone_option");
                         currency = responeJson.getString("currency");
-                        lat = responeJson.getString("lat");
-                        lng = responeJson.getString("lng");
+                        lat = responeJson.getDouble("lat");
+                        lng = responeJson.getDouble("lng");
                         bathroom = responeJson.getString("bathroom");
                         bedroom =responeJson.getString("bedroom");
                         floor =responeJson.getString("floor");
@@ -215,7 +216,7 @@ public class HouseDetailActivity extends AppCompatActivity implements OnMapReady
         mMap = googleMap;
 
         // Add a marker in Sydney, Australia, and move the camera.
-        LatLng sydney = new LatLng(Double.parseDouble(lat), Double.parseDouble(lng));
+        LatLng sydney = new LatLng(lat, lng);
         mMap.addMarker(new MarkerOptions().position(sydney).title("Marker in Phnom Penh"));
         mMap.moveCamera(CameraUpdateFactory.newLatLng(sydney));
     }
