@@ -67,7 +67,7 @@ public class HouseListFragment extends Fragment {
         tokenManager = TokenManager.getInstance(getActivity().getSharedPreferences("prefs", Context.MODE_PRIVATE));
         user_id = tokenManager.getUserId();
 
-        adapter = new HouseListAdapter(homeModelist, getContext());
+        adapter = new HouseListAdapter(homeModelist, getContext(),houseRecyclerView);
         houseRecyclerView.setHasFixedSize(true);
         adapter.setHasStableIds(true);
         houseRecyclerView.setItemViewCacheSize(20);

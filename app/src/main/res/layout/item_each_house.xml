@@ -42,7 +42,7 @@
                 android:textStyle="bold" />
 
             <TextView
-                android:id="@+id/HouseSave"
+                android:id="@+id/houseSave"
                 android:layout_width="80dp"
                 android:layout_height="30dp"
                 android:background="#E6B975"

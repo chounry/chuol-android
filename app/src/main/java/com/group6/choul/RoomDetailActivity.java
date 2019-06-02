@@ -54,7 +54,7 @@ public class RoomDetailActivity extends AppCompatActivity implements OnMapReadyC
     private String url = "http://192.168.100.208:8000/api/rooms/get_detail";
     private String estate_id;
     private ArrayList<ImageModel> images;
-    private String lat,lng;
+    private double lat,lng;
 
     @RequiresApi(api = Build.VERSION_CODES.M)
     @Override
@@ -166,8 +166,8 @@ public class RoomDetailActivity extends AppCompatActivity implements OnMapReadyC
                         parking = responeJson.getString("parking_space_avalible");
                         Wifi = responeJson.getString("free_wifi");
                         currency = responeJson.getString("currency");
-                        lat = responeJson.getString("lat");
-                        lng = responeJson.getString("lng");
+                        lat = responeJson.getDouble("lat");
+                        lng = responeJson.getDouble("lng");
 
                         setInfo(title,price,description,street,city,AC,parking,Wifi,email,phone,phone_option,currency);
                     } catch (Exception e) {
@@ -210,7 +210,7 @@ public class RoomDetailActivity extends AppCompatActivity implements OnMapReadyC
         mMap = googleMap;
 
         // Add a marker in Sydney, Australia, and move the camera.
-        LatLng sydney = new LatLng(Double.parseDouble(lat), Double.parseDouble(lng));
+        LatLng sydney = new LatLng(lat, lng);
         mMap.addMarker(new MarkerOptions().position(sydney).title("Marker in Phnom Penh"));
         mMap.moveCamera(CameraUpdateFactory.newLatLng(sydney));
     }
