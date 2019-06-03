@@ -25,17 +25,15 @@
             android:name="com.google.android.geo.API_KEY"
             android:value="AIzaSyB1dbxszCAqSCrePrLOveBD1XWaBHIM8PU" />
 
-        <activity android:name=".HouseDetailActivity" android:launchMode="singleTop"/>
-        <activity android:name=".RoomDetailActivity" android:launchMode="singleTop"/>
-        <activity android:name=".PostHistoryActivity" android:launchMode="singleTop"/>
-        <activity android:name=".ChatInActivity" android:launchMode="singleTop"/>
-        <activity android:name=".HouseFormActivity" android:launchMode="singleTop"/>
-        <activity android:name=".RoomFormActivity" android:launchMode="singleTop"/>
-        <activity android:name=".LoginRegisterActivity" android:launchMode="singleTop"/>
-        <activity android:name=".PersonalInfoActivity" android:launchMode="singleTop"/>
-        <activity android:name=".AboutusActivity" android:launchMode="singleTop"/>
-        <activity android:name=".Termofuse" android:launchMode="singleTop"/>
-        <activity android:name=".MainActivity">
+        <activity android:screenOrientation="portrait" android:name=".HouseDetailActivity" android:launchMode="singleTop"/>
+        <activity android:screenOrientation="portrait" android:name=".RoomDetailActivity" android:launchMode="singleTop"/>
+        <activity android:screenOrientation="portrait" android:name=".PostHistoryActivity" android:launchMode="singleTop"/>
+        <activity android:screenOrientation="portrait" android:name=".ChatInActivity" android:launchMode="singleTop"/>
+        <activity android:screenOrientation="portrait" android:name=".HouseFormActivity" android:launchMode="singleTop"/>
+        <activity android:screenOrientation="portrait" android:name=".RoomFormActivity" android:launchMode="singleTop"/>
+        <activity android:screenOrientation="portrait" android:name=".LoginRegisterActivity" android:launchMode="singleTop"/>
+        <activity android:screenOrientation="portrait" android:name=".PersonalInfoActivity" android:launchMode="singleTop"/>
+        <activity android:screenOrientation="portrait" android:name=".MainActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 

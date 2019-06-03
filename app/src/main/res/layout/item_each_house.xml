@@ -42,18 +42,19 @@
                 android:textStyle="bold" />
 
             <TextView
-                android:id="@+id/houseSave"
-                android:layout_width="80dp"
-                android:layout_height="30dp"
-                android:background="#E6B975"
-                android:padding="5dp"
+                android:id="@+id/HouseSave"
+                android:layout_width="wrap_content"
+                android:layout_height="20dp"
+                android:background="#FFB818"
+                android:paddingHorizontal="15dp"
+                android:textColor="#fff"
                 android:textAlignment="center"
-                android:drawableLeft="@drawable/favorite"
+                android:gravity="center_vertical"
                 android:text="Save"
+                android:textStyle="bold"
                 android:layout_marginTop="10dp"
                 android:layout_alignParentRight="true"
-                android:layout_marginRight="10dp"
-                />
+                android:layout_marginRight="10dp" />
 
             <LinearLayout
                 android:layout_width="match_parent"

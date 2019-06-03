@@ -28,8 +28,8 @@
             android:id="@+id/relLayout1">
 
             <ImageView
-                android:layout_width="15dp"
-                android:layout_height="15dp"
+                android:layout_width="30dp"
+                android:layout_height="30dp"
                 android:id="@+id/ic_magnify"
                 android:layout_centerVertical="true"
                 android:layout_marginLeft="10dp"
@@ -41,6 +41,7 @@
                 android:layout_toRightOf="@+id/ic_magnify"
                 android:layout_centerVertical="true"
                 android:textSize="15sp"
+                android:layout_marginLeft="7dp"
                 android:textColor="#000"
                 android:id="@+id/input_search"
                 android:background="@null"

@@ -1,6 +1,7 @@
 package com.group6.choul.login_register_handling;
 
 import com.group6.choul.models.ChatModel;
+import com.group6.choul.models.MessageModel;
 import com.group6.choul.models.ResponseStatus;
 import com.group6.choul.models.UserModel;
 
@@ -37,4 +38,12 @@ public interface ApiService {
     @POST("messages/get")
     @FormUrlEncoded
     Call<List<ChatModel>> get_chat_room(@Field("user_id") int user_id);
+
+    @POST("messages/detail")
+    @FormUrlEncoded
+    Call<List<MessageModel>> get_messages(@Field("estate_id") int estate_id,@Field("user_id") int user_id);
+
+    @POST("messages/create")
+    @FormUrlEncoded
+    Call<ResponseStatus> create_message(@Field("content") String content,@Field("from_self_user_id")int from_self_user_id,@Field("to_user_user_id") int to_user_user_id,@Field("estate_id")String estate_id);
 }

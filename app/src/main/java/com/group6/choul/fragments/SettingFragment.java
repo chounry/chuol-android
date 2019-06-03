@@ -66,7 +66,6 @@ public class SettingFragment extends Fragment{
                     @Override
                     public void onResponse(Call<AccessToken> call, Response<AccessToken> response) {
                         tokenManager.deleteToken();
-
                         FragmentTransaction fragmentTransaction =  getFragmentManager().beginTransaction();
                         Fragment homeFragment = new HomeFragment();
                         fragmentTransaction.replace(R.id.container_home, homeFragment);

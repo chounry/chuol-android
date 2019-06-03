@@ -173,7 +173,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     }
     /*
 
-   ===================== MY Functions =====================================
+   ============================ MY Functions =====================================
      */
     private void loadFragment(Fragment fragment){
         FragmentManager fm = getSupportFragmentManager();

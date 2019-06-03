@@ -1,17 +1,13 @@
 package com.group6.choul.fragments;
 
-import android.content.Context;
 import android.content.Intent;
 import android.os.Build;
 import android.os.Bundle;
 
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
-import android.widget.EditText;
-import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
@@ -24,7 +20,6 @@ import com.basgeekball.awesomevalidation.ValidationStyle;
 import com.google.android.material.textfield.TextInputLayout;
 import com.group6.choul.MainActivity;
 import com.group6.choul.R;
-import com.group6.choul.adapters.SignupAdapter;
 import com.group6.choul.login_register_handling.AccessToken;
 import com.group6.choul.login_register_handling.ApiError;
 import com.group6.choul.login_register_handling.ApiService;
@@ -37,13 +32,11 @@ import java.util.Map;
 
 import butterknife.ButterKnife;
 import okhttp3.ResponseBody;
-import okhttp3.internal.Util;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 
 import static android.content.Context.MODE_PRIVATE;
-import static com.facebook.share.internal.DeviceShareDialogFragment.TAG;
 
 public class SigninFragement extends Fragment {
 
@@ -59,7 +52,7 @@ public class SigninFragement extends Fragment {
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        View v = inflater.inflate(R.layout.signin_fragement,container,false);
+        View v = inflater.inflate(R.layout.fragment_signin,container,false);
         loginBtn = v.findViewById(R.id.login_btn);
         email_til = v.findViewById(R.id.email_til);
         password_til = v.findViewById(R.id.password_til);

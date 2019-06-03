@@ -1,6 +1,7 @@
 package com.group6.choul;
 
 import android.content.Context;
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -35,7 +36,6 @@ public class LoginRegisterActivity extends AppCompatActivity {
         tabPageView = findViewById(R.id.viewPage_home);
         tabLayout = findViewById(R.id.login_signup_tab_layout);
         tab_adapter = new SignupAdapter(getSupportFragmentManager(),tabLayout.getTabCount());
-
         tabPageView.setAdapter(tab_adapter);
         tabPageView.setOffscreenPageLimit(0);
 
@@ -64,10 +64,10 @@ public class LoginRegisterActivity extends AppCompatActivity {
         backBtn.setOnClickListener(new View.OnClickListener(){
             @Override
             public void onClick(View v) {
+                startActivity(new Intent(LoginRegisterActivity.this, MainActivity.class));
                 finish();
             }
         });
-
 
         ActionBar actionBar = getSupportActionBar();
         actionBar.setDisplayHomeAsUpEnabled(false);

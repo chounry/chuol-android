@@ -77,7 +77,13 @@ public class HouseListAdapter extends RecyclerView.Adapter<HouseListAdapter.MyHo
         holder.textviewAddress.setText(obj.getAddress());
         holder.textviewLocation.setText(obj.getLocation());
         holder.textviewType.setText(obj.getType());
+
         holder.for_sale_rent_status.setText(obj.getFor_sale_rent_status());
+        holder.for_sale_rent_status.setBackgroundColor(context.getResources().getColor(R.color.forRent));
+        if(obj.getFor_sale_rent_status().equals("For Sale"))
+            holder.for_sale_rent_status.setBackgroundColor(context.getResources().getColor(R.color.forSale));
+
+
         Picasso.get().load(obj.getImg_url()).into(holder.imageView);
     }
 
