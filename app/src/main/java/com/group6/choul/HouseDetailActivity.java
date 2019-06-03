@@ -53,7 +53,7 @@ public class HouseDetailActivity extends AppCompatActivity implements OnMapReady
     private RelatedAdapter adapter;
     private List<RelatedModel> modelList;
     private RecyclerView recyclerViewHome;
-    private String url = "http://192.168.100.208:8000/api/houses/get_detail";
+    private String url = "http://172.23.12.108:8000/api/houses/get_detail";
     private ArrayList<ImageModel> images;
     private String estate_id;
     private double lat,lng;
@@ -138,7 +138,7 @@ public class HouseDetailActivity extends AppCompatActivity implements OnMapReady
     }
     private void getData(String url) {
         try {
-            String url_for_img = "http://192.168.100.208:8000";
+            String url_for_img = "http://172.23.12.108:8000";
             RequestQueue requestQueue = Volley.newRequestQueue(this);
             JSONObject jsonBody = new JSONObject();
             jsonBody.put("estate_id", estate_id);

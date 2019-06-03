@@ -71,7 +71,7 @@ public class HouseFormActivity extends AppCompatActivity implements BSImagePicke
     private double lat,lng;
 
     private static final int ERROR_DIALOG_REQUEST = 9001;
-    private final String UPLOAD_URL = "http://192.168.100.208:8000/api/houses/create";
+    private final String UPLOAD_URL = "http://172.23.12.108:8000/api/houses/create";
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {

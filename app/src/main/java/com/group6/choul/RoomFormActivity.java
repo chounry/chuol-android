@@ -86,7 +86,7 @@ public class RoomFormActivity extends AppCompatActivity implements BSImagePicker
 
     private static final int ERROR_DIALOG_REQUEST = 9001;
 
-    private final String UPLOAD_URL = "http://192.168.100.208:8000/api/rooms/create";
+    private final String UPLOAD_URL = "http://172.23.12.108:8000/api/rooms/create";
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
