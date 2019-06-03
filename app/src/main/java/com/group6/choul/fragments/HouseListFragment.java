@@ -50,7 +50,7 @@ public class HouseListFragment extends Fragment {
     private RecyclerView houseRecyclerView ;
     private List<HouseModel> homeModelist;
     private HouseListAdapter adapter;
-    private String url=  "http://192.168.100.208:8000/api/houses/get";
+    private String url=  "http://172.23.12.108:8000/api/houses/get";
     private int user_id;
 
     private TokenManager tokenManager;
@@ -80,7 +80,7 @@ public class HouseListFragment extends Fragment {
     }
 
     private void getData(String url ){
-        final String baseImgUrl = "http://192.168.100.208:8000";
+        final String baseImgUrl = "http://172.23.12.108:8000";
         RequestQueue requestQueue = Volley.newRequestQueue(getActivity());
         StringRequest request = new StringRequest(Request.Method.GET, url, new Response.Listener<String>() {
             @Override

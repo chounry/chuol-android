@@ -39,7 +39,7 @@ public class RoomListFragment extends Fragment {
     private RecyclerView roomRecyclerView;
     private List<RoomModel> roomModelist;
     private RoomListAdapter adapter;
-    private String url = "http://192.168.100.208++++:8000/api/rooms/get";
+    private String url = "http://172.23.12.108:8000/api/rooms/get";
 
 
     @RequiresApi(api = Build.VERSION_CODES.M)
@@ -65,7 +65,7 @@ public class RoomListFragment extends Fragment {
     }
 
     private void getData(String url) {
-        final String ImgUrl = "http://192.168.100.208:8000";
+        final String ImgUrl = "http://172.23.12.108:8000";
         RequestQueue requestQueue = Volley.newRequestQueue(getActivity());
         StringRequest request = new StringRequest(Request.Method.GET, url, new Response.Listener<String>() {
             @Override

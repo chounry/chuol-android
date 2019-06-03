@@ -116,7 +116,7 @@ public class HouseListAdapter extends RecyclerView.Adapter<HouseListAdapter.MyHo
         textviewAddress = itemView.findViewById(R.id.address_home);
         textviewPrice = itemView.findViewById(R.id.price_home);
         textviewTitle = itemView.findViewById(R.id.title_home);
-        txtSave = itemView.findViewById(R.id.houseSave);
+        txtSave = itemView.findViewById(R.id.HouseSave);
         this.context = context;
 
         tokenManager = TokenManager.getInstance(context.getSharedPreferences("prefs",context.MODE_PRIVATE));
