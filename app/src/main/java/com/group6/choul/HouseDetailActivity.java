@@ -66,7 +66,7 @@ public class HouseDetailActivity extends AppCompatActivity implements OnMapReady
     private RelatedAdapter adapter;
     private List<RelatedModel> modelList;
     private RecyclerView recyclerViewHome;
-    private String url = "http://192.168.100.208:8000/api/houses/get_detail";
+    private String url = "http://172.20.10.6:8000/api/houses/get_detail";
     private ArrayList<ImageModel> images;
     private String estate_id;
     private double lat,lng;
@@ -105,6 +105,7 @@ public class HouseDetailActivity extends AppCompatActivity implements OnMapReady
         map = findViewById(R.id.map);
 
         modelList = new ArrayList<>();
+
         LinearLayoutManager layoutManager = new LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false);
 
         recyclerViewHome.setHasFixedSize(true);

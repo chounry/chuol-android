@@ -50,7 +50,7 @@ public class HouseListFragment extends Fragment {
     private RecyclerView houseRecyclerView ;
     private List<HouseModel> homeModelist;
     private HouseListAdapter adapter;
-    private String url=  "http://192.168.100.208:8000/api/houses/get";
+    private String url=  "http://172.20.10.6:8000/api/houses/get";
     private int user_id;
 
     private TokenManager tokenManager;

@@ -75,7 +75,7 @@ public class HouseFormActivity extends AppCompatActivity implements BSImagePicke
     private int user_id;
 
     private static final int ERROR_DIALOG_REQUEST = 9001;
-    private final String UPLOAD_URL = "http://192.168.100.208:8000/api/houses/create";
+    private final String UPLOAD_URL = "http://172.20.10.6:8000/api/houses/create";
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -165,10 +165,10 @@ public class HouseFormActivity extends AppCompatActivity implements BSImagePicke
                 city_id = city.getSelectedItem().toString();
                 currency = currency_spinner.getSelectedItem().toString();
                 duration = duration_spinner.getSelectedItem().toString();
-                if(!title.isEmpty() && !price.isEmpty() && !phone.isEmpty() && !address.isEmpty() && !bedroom.isEmpty() &&
-                        !bathroom.isEmpty() && !floor.isEmpty() && !house_size.isEmpty() && forSale_status.isEmpty()) {
+//                if(!title.isEmpty() && !price.isEmpty() && !phone.isEmpty() && !address.isEmpty() && !bedroom.isEmpty() &&
+//                        !bathroom.isEmpty() && !floor.isEmpty() && !house_size.isEmpty() && forSale_status.isEmpty()) {
                     uploadMultipart(imgs_uri);
-                }
+//                }
               }
 
         });
@@ -288,8 +288,8 @@ public class HouseFormActivity extends AppCompatActivity implements BSImagePicke
             }
 
             mUploadRequest.startUpload();
-            startActivity(new Intent(HouseFormActivity.this, MainActivity.class));
-            finish();
+//            startActivity(new Intent(HouseFormActivity.this, MainActivity.class));
+//            finish();
             Toast.makeText(this,"Upload successful", Toast.LENGTH_SHORT).show();
         } catch (Exception exc) {
             Toast.makeText(this,"Multipart Error" + exc.getMessage(), Toast.LENGTH_SHORT).show();

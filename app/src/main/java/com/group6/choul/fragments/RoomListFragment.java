@@ -39,7 +39,7 @@ public class RoomListFragment extends Fragment {
     private RecyclerView roomRecyclerView;
     private List<RoomModel> roomModelist;
     private RoomListAdapter adapter;
-    private String url = "http://192.168.100.208:8000/api/rooms/get";
+    private String url = "http://172.20.10.6:8000/api/rooms/get";
 
 
     @RequiresApi(api = Build.VERSION_CODES.M)

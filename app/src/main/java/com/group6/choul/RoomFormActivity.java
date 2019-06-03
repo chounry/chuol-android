@@ -90,7 +90,7 @@ public class RoomFormActivity extends AppCompatActivity implements BSImagePicker
     private TokenManager tokenManager;
     private int user_id;
 
-    private final String UPLOAD_URL = "http://192.168.100.208:8000/api/rooms/create";
+    private final String UPLOAD_URL = "http://172.20.10.6:8000/api/rooms/create";
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {

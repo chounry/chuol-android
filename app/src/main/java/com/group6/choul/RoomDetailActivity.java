@@ -57,7 +57,7 @@ public class RoomDetailActivity extends AppCompatActivity implements OnMapReadyC
     private RelatedAdapter adapter;
     private List<RelatedModel> modelList;
     private RecyclerView recyclerViewHome;
-    private String url = "http://192.168.100.208:8000/api/rooms/get_detail";
+    private String url = "http://172.20.10.6:8000/api/rooms/get_detail";
     private String estate_id;
     private ArrayList<ImageModel> images;
     private double lat,lng;

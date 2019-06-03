@@ -45,7 +45,7 @@ public class SavedPostFragment extends Fragment {
     private ListView listView;
     private List<HouseModel> saveModelList;
     private SavePostAdapter adapter;
-    private String url = "http://192.168.100.208:8000/api/estates/get_saved_post";
+    private String url = "http://172.20.10.6:8000/api/estates/get_saved_post";
     private TokenManager tokenManager;
     private int user_id;
 
@@ -62,14 +62,13 @@ public class SavedPostFragment extends Fragment {
         tokenManager = TokenManager.getInstance(getActivity().getSharedPreferences("prefs", Context.MODE_PRIVATE));
         user_id = tokenManager.getUserId();
 
-
         getData(url);
         return v;
     }
     private void getData(String url) {
         try {
 
-            final String ImgUrl = "http://192.168.100.208:8000";
+            final String ImgUrl = "http://172.20.10.6:8000";
             RequestQueue requestQueue = Volley.newRequestQueue(getActivity());
             JSONObject jsonBody = new JSONObject();
             jsonBody.put("user_id", user_id);
