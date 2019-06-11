@@ -22,7 +22,7 @@ public class ChatModel {
 
     public ChatModel() {
         this.imgProfile = R.drawable.house;
-        this.img_id = R.drawable.user;
+        this.img_id = R.drawable.ic_account_circle_black_24dp;
     }
 
 

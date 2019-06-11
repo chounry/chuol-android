@@ -1,8 +1,11 @@
 package com.group6.choul.login_register_handling;
 
 
+import android.content.Context;
+
 import com.facebook.stetho.okhttp3.StethoInterceptor;
 import com.group6.choul.BuildConfig;
+import com.group6.choul.R;
 
 import java.io.IOException;
 
@@ -15,9 +18,10 @@ import retrofit2.converter.moshi.MoshiConverterFactory;
 
 public class RetrofitBuilder {
 
-    public static final String BASE_URL = "http://172.23.12.108:8000/api/";
+    public static String BASE_URL = "http://192.168.100.124:8000/api/";
     private static OkHttpClient client = buildClient();
     private static Retrofit retrofit  = buildRetrofit(client);
+
 
     private static OkHttpClient buildClient(){
         OkHttpClient.Builder builder = new OkHttpClient.Builder()
@@ -48,11 +52,11 @@ public class RetrofitBuilder {
     }
 
     public static <T> T createService(Class<T> service){
+
         return retrofit.create(service);
     }
 
     public static <T> T createServiceWithAuth(Class<T> service, final TokenManager tokenManager){
-
         OkHttpClient newClient = client.newBuilder().addInterceptor(new Interceptor() {
             @Override
             public Response intercept(Chain chain) throws IOException {

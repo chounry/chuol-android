@@ -3,6 +3,7 @@ package com.group6.choul;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.ImageButton;
@@ -12,6 +13,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 import androidx.viewpager.widget.ViewPager;
 
+import com.google.android.material.appbar.AppBarLayout;
 import com.google.android.material.tabs.TabLayout;
 import com.group6.choul.adapters.PageAdapter;
 import com.group6.choul.adapters.SignupAdapter;
@@ -20,6 +22,7 @@ public class LoginRegisterActivity extends AppCompatActivity {
 
     private SignupAdapter tab_adapter;
     private TabLayout tabLayout;
+    private AppBarLayout myAppBar;
     private ViewPager tabPageView;
 
     @Override
@@ -27,10 +30,13 @@ public class LoginRegisterActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login_register);
 
-        // <------- handle toolbar
+
+//         <------- handle toolbar
         Toolbar myToolbar = findViewById(R.id.my_toolbar);
-        setSupportActionBar(myToolbar);
-        showActionBar();
+//        setSupportActionBar(myToolbar);
+//        getSupportActionBar().setElevation(0);
+//        showActionBar();
+        Log.e("Action bar ", myToolbar+"");
         // <------- handle toolbar
 
         tabPageView = findViewById(R.id.viewPage_home);
@@ -74,6 +80,7 @@ public class LoginRegisterActivity extends AppCompatActivity {
         actionBar.setDisplayShowHomeEnabled(false);
         actionBar.setDisplayShowCustomEnabled(true);
         actionBar.setDisplayShowTitleEnabled(false);
+
         actionBar.setCustomView(v);
     }
 }

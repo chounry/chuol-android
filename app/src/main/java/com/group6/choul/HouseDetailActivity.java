@@ -66,9 +66,9 @@ public class HouseDetailActivity extends AppCompatActivity implements OnMapReady
     private RelatedAdapter adapter;
     private List<RelatedModel> modelList;
     private RecyclerView recyclerViewHome;
-    private String url = "http://172.23.12.108:8000/api/houses/get_detail";
     private ArrayList<ImageModel> images;
-    private String estate_id;
+    private String estate_id,dataUrl,baseUrl;
+
     private double lat,lng;
 
     private ImageButton send_btn;
@@ -81,6 +81,9 @@ public class HouseDetailActivity extends AppCompatActivity implements OnMapReady
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_house_detail);
+        baseUrl = getResources().getString(R.string.server_address);
+        dataUrl = baseUrl + "/api/houses/get_detail";
+
         this.getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_ALWAYS_HIDDEN);
         images = new ArrayList<>();
         viewPager = findViewById(R.id.slide);
@@ -104,22 +107,17 @@ public class HouseDetailActivity extends AppCompatActivity implements OnMapReady
 //        mItemSelected = findViewById(R.id.tvItemSelected);
         map = findViewById(R.id.map);
 
-        modelList = new ArrayList<RelatedModel>();
+        modelList = new ArrayList<>();
 
         LinearLayoutManager layoutManager = new LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false);
 
         recyclerViewHome.setHasFixedSize(true);
         recyclerViewHome.setLayoutManager(layoutManager);
-        for(int i = 0;i < 2;i++){
-            modelList.add(new RelatedModel("luxury house","$100000","https://www.thehousedesigners.com/images/plans/BFD/renderings/1625%20front%20elevation%20color%20art.jpg" ));
-            modelList.add(new RelatedModel("Castle","$200000","https://cdn.houseplansservices.com/content/a9q3532m04494dgk5f1v5moh6n/w991.jpg?v=2" ));
-            modelList.add(new RelatedModel("House","$300000","https://media.treehugger.com/assets/images/2018/10/the-hive-small-house-studio-512-1.jpg.600x315_q90_crop-smart.jpg" ));
 
-        }
         adapter = new RelatedAdapter(modelList);
         recyclerViewHome.setAdapter(adapter);
 
-        getData(url);
+        getData(dataUrl);
 
         send_btn.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -176,7 +174,6 @@ public class HouseDetailActivity extends AppCompatActivity implements OnMapReady
     }
     private void getData(String url) {
         try {
-            String url_for_img = "http://172.23.12.108:8000";
             RequestQueue requestQueue = Volley.newRequestQueue(this);
             JSONObject jsonBody = new JSONObject();
             jsonBody.put("estate_id", estate_id);
@@ -192,7 +189,7 @@ public class HouseDetailActivity extends AppCompatActivity implements OnMapReady
                         JSONArray img_arr = responeJson.getJSONArray("img");
                         for (int i = 0; i< img_arr.length();i++){
 
-                            ImageModel img = new ImageModel(url_for_img +img_arr.get(i).toString());
+                            ImageModel img = new ImageModel(baseUrl +img_arr.get(i).toString());
                             images.add(img);
                         }
                         estate_id = responeJson.getString("estate_id");

@@ -47,6 +47,7 @@ import com.google.android.flexbox.FlexboxLayoutManager;
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.GoogleApiAvailability;
 import com.google.android.gms.maps.model.LatLng;
+import com.google.android.material.textfield.TextInputLayout;
 import com.group6.choul.adapters.ImgFormAdapter;
 import com.group6.choul.login_register_handling.TokenManager;
 import com.group6.choul.models.ImgFormModel;
@@ -62,18 +63,7 @@ import java.util.UUID;
 public class RoomFormActivity extends AppCompatActivity implements BSImagePicker.OnSingleImageSelectedListener,
         BSImagePicker.OnMultiImageSelectedListener,
         BSImagePicker.ImageLoaderDelegate{
-
-    private static final int STORAGE_PERMISSION_CODE = 123;
-    private String[] listItems = {"Free Wifi","Available Parking Space"};
-    private boolean[] checkedItems;
-    private ArrayList<Integer> mUserItems = new ArrayList<>(); // store the index of 'listItem' that use have selected
-    private List<ImgFormModel> img_models_list;
-    private RecyclerView.Adapter img_adapter;
-    private List<Uri> imgs_uri;
-    private List<String> service_aval;
-
     private ImageButton map_imgBtn;
-    private double lat,lng;
     private LinearLayout upload_img_btn;
     private RecyclerView recyclerView;
     private Button service_btn,submit_btn;
@@ -87,15 +77,27 @@ public class RoomFormActivity extends AppCompatActivity implements BSImagePicker
 
     private static final int ERROR_DIALOG_REQUEST = 9001;
 
+
+    private static final int STORAGE_PERMISSION_CODE = 123;
+    private String[] listItems = {"Free Wifi","Available Parking Space"};
+    private boolean[] checkedItems;
+    private ArrayList<Integer> mUserItems = new ArrayList<>(); // store the index of 'listItem' that use have selected
+    private List<ImgFormModel> img_models_list;
+    private RecyclerView.Adapter img_adapter;
+    private List<Uri> imgs_uri;
+    private List<String> service_aval;
+    private double lat,lng;
     private TokenManager tokenManager;
     private int user_id;
+    private TextInputLayout priceTil;
 
-    private final String UPLOAD_URL = "http://172.23.12.108:8000/api/rooms/create";
+    private String upload_url;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_room_form);
+        upload_url = getResources().getString(R.string.server_address) + "/api/rooms/create";
 
         map_imgBtn = findViewById(R.id.map_imgBtn);
         recyclerView = findViewById(R.id.img_recyler_view);
@@ -107,7 +109,6 @@ public class RoomFormActivity extends AppCompatActivity implements BSImagePicker
         currency_spinner = findViewById(R.id.currency_sp);
         duration_spinner = findViewById(R.id.duration_sp);
         phone_option_et = findViewById(R.id.phone_opt_et);
-
         title_et = findViewById(R.id.title_et);
         price_et = findViewById(R.id.price_et);
         description_et = findViewById(R.id.description_et);
@@ -117,6 +118,7 @@ public class RoomFormActivity extends AppCompatActivity implements BSImagePicker
         size_r = findViewById(R.id.size_et);
         cityspinner = findViewById(R.id.city_spinner);
         checkBoxTerm = findViewById(R.id.ckboxTerm);
+        priceTil = findViewById(R.id.price_til);
 
         tokenManager = TokenManager.getInstance(getSharedPreferences("prefs",MODE_PRIVATE));
         user_id = tokenManager.getUserId();
@@ -146,9 +148,9 @@ public class RoomFormActivity extends AppCompatActivity implements BSImagePicker
         contact_swtich.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                price_et.setVisibility(View.VISIBLE);
+                priceTil.setVisibility(View.VISIBLE);
                 if(contact_swtich.isChecked()){
-                    price_et.setVisibility(View.GONE);
+                    priceTil.setVisibility(View.GONE);
                 }
             }
         });
@@ -312,6 +314,16 @@ public class RoomFormActivity extends AppCompatActivity implements BSImagePicker
     }
 
 
+    private void goBack(){
+        startActivity(new Intent(RoomFormActivity.this, MainActivity.class));
+        finish();
+    }
+
+    @Override
+    public void onBackPressed() {
+        super.onBackPressed();
+        goBack();
+    }
 
     private void showActionBar() {
         LayoutInflater inflator = (LayoutInflater) this.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
@@ -321,8 +333,7 @@ public class RoomFormActivity extends AppCompatActivity implements BSImagePicker
         backBtn.setOnClickListener(new View.OnClickListener(){
             @Override
             public void onClick(View v) {
-                startActivity(new Intent(RoomFormActivity.this, MainActivity.class));
-                finish();
+                goBack();
             }
         });
 
@@ -346,7 +357,7 @@ public class RoomFormActivity extends AppCompatActivity implements BSImagePicker
             String uploadId = UUID.randomUUID().toString();
 
             //Creating a multi part request
-            MultipartUploadRequest mUploadRequest = new MultipartUploadRequest(this, uploadId, UPLOAD_URL)
+            MultipartUploadRequest mUploadRequest = new MultipartUploadRequest(this, uploadId, upload_url)
                     .addParameter("title", title) //Adding text parameter to the request
                     .addParameter("price", price)
                     .addParameter("description", description)

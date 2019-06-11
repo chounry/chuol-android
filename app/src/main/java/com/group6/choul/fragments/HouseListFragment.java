@@ -50,7 +50,7 @@ public class HouseListFragment extends Fragment {
     private RecyclerView houseRecyclerView ;
     private List<HouseModel> homeModelist;
     private HouseListAdapter adapter;
-    private String url=  "http://172.23.12.108:8000/api/houses/get";
+    private String url;
     private int user_id;
 
     private TokenManager tokenManager;
@@ -60,9 +60,10 @@ public class HouseListFragment extends Fragment {
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View v = inflater.inflate(R.layout.fragment_post_list,container,false);
-        getActivity().overridePendingTransition(0, 0);
+        url = getActivity().getResources().getString(R.string.server_address) + "/api/houses/get";
         houseRecyclerView = v.findViewById(R.id.post_recyclerView);
         homeModelist = new ArrayList<>();
+
 
         tokenManager = TokenManager.getInstance(getActivity().getSharedPreferences("prefs", Context.MODE_PRIVATE));
         user_id = tokenManager.getUserId();
@@ -80,7 +81,7 @@ public class HouseListFragment extends Fragment {
     }
 
     private void getData(String url ){
-        final String baseImgUrl = "http://172.23.12.108:8000";
+        final String baseImgUrl = getResources().getString(R.string.server_address);
         RequestQueue requestQueue = Volley.newRequestQueue(getActivity());
         StringRequest request = new StringRequest(Request.Method.GET, url, new Response.Listener<String>() {
             @Override
