@@ -27,12 +27,48 @@
             android:layout_height="wrap_content"
             android:layout_gravity="center"
             android:layout_marginTop="25dp"
+            android:layout_marginBottom="25dp"
             android:gravity="center"
             android:text="Personal Information"
             android:textAlignment="center"
             android:textColor="#0E0D0D"
             android:textSize="20sp"
             android:textStyle="bold" />
+        
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:orientation="vertical">
+
+            <de.hdodenhof.circleimageview.CircleImageView
+                android:id="@+id/profile_img_view"
+                android:layout_width="170dp"
+                android:layout_height="170dp"
+                android:layout_marginBottom="15dp"
+                android:src="@drawable/default_user" />
+
+            <Button
+                android:id="@+id/select_img_btn"
+                android:background="@drawable/upload_img_bg_btn"
+                android:layout_width="120dp"
+                android:layout_height="30dp"
+                android:layout_marginBottom="10dp"
+                android:text="Select Image"
+                android:textColor="#fff"
+                android:textAllCaps="false"/>
+
+            <Button
+                android:id="@+id/cancel_img_btn"
+                android:background="@drawable/cancel_img_bg_btn"
+                android:layout_width="120dp"
+                android:layout_height="30dp"
+                android:paddingVertical="0dp"
+                android:text="Cancel"
+                android:textColor="#fff"
+                android:textAllCaps="false"
+                android:visibility="gone"/>
+        </LinearLayout>
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -57,7 +93,6 @@
                     android:id="@+id/et_fname"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-
                     android:textSize="16sp" />
             </LinearLayout>
             <LinearLayout
@@ -117,34 +152,34 @@
                     android:textSize="16sp" />
             </LinearLayout>
 
-            <TextView
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:text="Profile Picture"
-                android:textSize="18sp"
-                android:layout_marginTop="30dp"/>
+            <!--<TextView-->
+                <!--android:layout_width="match_parent"-->
+                <!--android:layout_height="wrap_content"-->
+                <!--android:text="Profile Picture"-->
+                <!--android:textSize="16sp"-->
+                <!--android:layout_marginTop="30dp"/>-->
 
-            <LinearLayout
-                android:id="@+id/add_img_btn"
-                android:layout_width="match_parent"
-                android:layout_height="150dp"
-                android:orientation="vertical"
-                android:layout_gravity="center"
-                android:gravity="center"
-                android:background="@drawable/frame">
+            <!--<LinearLayout-->
+                <!--android:id="@+id/add_img_btn"-->
+                <!--android:layout_width="150dp"-->
+                <!--android:layout_height="wrap_content"-->
+                <!--android:orientation="vertical"-->
+                <!--android:layout_gravity="center"-->
+                <!--android:gravity="center"-->
+                <!--android:background="@drawable/frame">-->
 
-                <ImageView
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:src="@drawable/ic_add_photo" />
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="Add Image"
-                    android:textSize="20sp"
-                    android:layout_marginTop="5dp"/>
+                <!--<ImageView-->
+                    <!--android:layout_width="match_parent"-->
+                    <!--android:layout_height="200dp"-->
+                    <!--android:src="@drawable/rick" />-->
+                <!--&lt;!&ndash;<TextView&ndash;&gt;-->
+                    <!--&lt;!&ndash;android:layout_width="wrap_content"&ndash;&gt;-->
+                    <!--&lt;!&ndash;android:layout_height="wrap_content"&ndash;&gt;-->
+                    <!--&lt;!&ndash;android:text="Add Image"&ndash;&gt;-->
+                    <!--&lt;!&ndash;android:textSize="20sp"&ndash;&gt;-->
+                    <!--&lt;!&ndash;android:layout_marginTop="5dp"/>&ndash;&gt;-->
 
-            </LinearLayout>
+            <!--</LinearLayout>-->
 
             <Button
                 android:id="@+id/submit_btn"

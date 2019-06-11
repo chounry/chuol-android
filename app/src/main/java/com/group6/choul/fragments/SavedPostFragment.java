@@ -45,7 +45,7 @@ public class SavedPostFragment extends Fragment {
     private ListView listView;
     private List<HouseModel> saveModelList;
     private SavePostAdapter adapter;
-    private String url = "http://172.20.10.6:8000/api/estates/get_saved_post";
+    private String url;
     private TokenManager tokenManager;
     private int user_id;
 
@@ -54,7 +54,7 @@ public class SavedPostFragment extends Fragment {
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View v = inflater.inflate(R.layout.fragment_saved_post,container,false);
-        getActivity().overridePendingTransition(0, 0);
+        url = getResources().getString(R.string.server_address) + "/api/estates/get_saved_post";
         listView = v.findViewById(R.id.save_listview);
         saveModelList = new ArrayList<>();
         adapter = new SavePostAdapter(getContext(),saveModelList);
@@ -68,7 +68,7 @@ public class SavedPostFragment extends Fragment {
     private void getData(String url) {
         try {
 
-            final String ImgUrl = "http://172.20.10.6:8000";
+            final String ImgUrl = getResources().getString(R.string.server_address);
             RequestQueue requestQueue = Volley.newRequestQueue(getActivity());
             JSONObject jsonBody = new JSONObject();
             jsonBody.put("user_id", user_id);

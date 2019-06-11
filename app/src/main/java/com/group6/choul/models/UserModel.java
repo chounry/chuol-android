@@ -15,13 +15,15 @@ public class UserModel {
     String phone;
     @Json(name = "email")
     String email;
+    @Json(name = "img_loc")
+    String user_profile_img;
 
     public int getId() {
         return id;
     }
 
     public String getUsername() {
-        return username;
+        return fname + " " + lname;
     }
 
     public String getFname() {
@@ -38,5 +40,9 @@ public class UserModel {
 
     public String getEmail() {
         return email;
+    }
+
+    public String getUser_profile_img() {
+        return user_profile_img;
     }
 }

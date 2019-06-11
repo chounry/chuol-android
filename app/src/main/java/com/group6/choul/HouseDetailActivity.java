@@ -66,9 +66,9 @@ public class HouseDetailActivity extends AppCompatActivity implements OnMapReady
     private RelatedAdapter adapter;
     private List<RelatedModel> modelList;
     private RecyclerView recyclerViewHome;
-    private String url = "http://172.20.10.6:8000/api/houses/get_detail";
     private ArrayList<ImageModel> images;
-    private String estate_id;
+    private String estate_id,dataUrl,baseUrl;
+
     private double lat,lng;
 
     private ImageButton send_btn;
@@ -81,6 +81,9 @@ public class HouseDetailActivity extends AppCompatActivity implements OnMapReady
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_house_detail);
+        baseUrl = getResources().getString(R.string.server_address);
+        dataUrl = baseUrl + "/api/houses/get_detail";
+
         this.getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_ALWAYS_HIDDEN);
         images = new ArrayList<>();
         viewPager = findViewById(R.id.slide);
@@ -114,7 +117,7 @@ public class HouseDetailActivity extends AppCompatActivity implements OnMapReady
         adapter = new RelatedAdapter(modelList);
         recyclerViewHome.setAdapter(adapter);
 
-        getData(url);
+        getData(dataUrl);
 
         send_btn.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -171,7 +174,6 @@ public class HouseDetailActivity extends AppCompatActivity implements OnMapReady
     }
     private void getData(String url) {
         try {
-            String url_for_img = "http://192.168.100.208:8000";
             RequestQueue requestQueue = Volley.newRequestQueue(this);
             JSONObject jsonBody = new JSONObject();
             jsonBody.put("estate_id", estate_id);
@@ -187,7 +189,7 @@ public class HouseDetailActivity extends AppCompatActivity implements OnMapReady
                         JSONArray img_arr = responeJson.getJSONArray("img");
                         for (int i = 0; i< img_arr.length();i++){
 
-                            ImageModel img = new ImageModel(url_for_img +img_arr.get(i).toString());
+                            ImageModel img = new ImageModel(baseUrl +img_arr.get(i).toString());
                             images.add(img);
                         }
                         estate_id = responeJson.getString("estate_id");

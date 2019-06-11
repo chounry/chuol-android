@@ -36,6 +36,7 @@ import com.google.android.flexbox.FlexWrap;
 import com.google.android.flexbox.FlexboxLayoutManager;
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.GoogleApiAvailability;
+import com.google.android.material.textfield.TextInputLayout;
 import com.group6.choul.adapters.ImgFormAdapter;
 import com.group6.choul.login_register_handling.TokenManager;
 import com.group6.choul.models.ImgFormModel;
@@ -61,6 +62,7 @@ public class HouseFormActivity extends AppCompatActivity implements BSImagePicke
     private RecyclerView recyclerView;
     private Button submit_btn;
     private EditText title_et, price_et, description_et, phone_et, phone_opt_et, address_et, bathroom_h, bedroom_h, floor_h, size_et,house_yard_size_et;
+    private TextInputLayout priceTil;
 
     private List<ImgFormModel> img_models_list;
     private List<Uri> imgs_uri;
@@ -70,24 +72,23 @@ public class HouseFormActivity extends AppCompatActivity implements BSImagePicke
     private Switch contact_swtich;
     private static final String TAG = "HouseFromActivity";
     private double lat,lng;
-
     private TokenManager tokenManager;
     private int user_id;
 
     private static final int ERROR_DIALOG_REQUEST = 9001;
-    private final String UPLOAD_URL = "http://172.20.10.6:8000/api/houses/create";
+    private String upload_url;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_house_form);
+        upload_url = getResources().getString(R.string.server_address) + "/api/houses/create";
 
         recyclerView = findViewById(R.id.img_recyler_view);
         myToolbar = findViewById(R.id.my_toolbar);
         map_imgBtn = findViewById(R.id.map_imgBtn);
         upload_img_btn = findViewById(R.id.upload_img_btn);
         submit_btn = findViewById(R.id.submit_btn);
-
         title_et = findViewById(R.id.title_et);
         price_et = findViewById(R.id.price_et);
         description_et = findViewById(R.id.description_et);
@@ -105,6 +106,7 @@ public class HouseFormActivity extends AppCompatActivity implements BSImagePicke
         city = findViewById(R.id.city_spinner);
         currency_spinner = findViewById(R.id.currency_sp);
         duration_spinner = findViewById(R.id.duration_spinner);
+        priceTil = findViewById(R.id.price_til);
 
         tokenManager = TokenManager.getInstance(getSharedPreferences("prefs",MODE_PRIVATE));
         user_id = tokenManager.getUserId();
@@ -119,7 +121,7 @@ public class HouseFormActivity extends AppCompatActivity implements BSImagePicke
             public void onClick(View v) {
                 BSImagePicker multiSelectionPicker = new BSImagePicker.Builder("com.yourdomain.yourpackage.fileprovider")
                         .isMultiSelect() //Set this if you want to use multi selection mode.
-                        .setMinimumMultiSelectCount(1) //Default: 1.
+                        .setMinimumMultiSelectCount(2) //Default: 1.
                         .setMaximumMultiSelectCount(10) //Default: Integer.MAX_VALUE (i.e. User can select as many images as he/she wants)
                         .setMultiSelectBarBgColor(android.R.color.white) //Default: #FFFFFF. You can also set it to a translucent color.
                         .setMultiSelectTextColor(R.color.primary_text) //Default: #212121(Dark grey). This is the message in the multi-select bottom bar.
@@ -172,6 +174,17 @@ public class HouseFormActivity extends AppCompatActivity implements BSImagePicke
               }
 
         });
+        contact_swtich.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                priceTil.setVisibility(View.VISIBLE);
+                if(contact_swtich.isChecked()){
+                    priceTil.setVisibility(View.GONE);
+                }
+            }
+        });
+
+
         //init map
         if(isServicesOK()){
             init();
@@ -225,6 +238,18 @@ public class HouseFormActivity extends AppCompatActivity implements BSImagePicke
         return false;
     }
 
+
+    private void goBack(){
+        startActivity(new Intent(HouseFormActivity.this, MainActivity.class));
+        finish();
+    }
+
+    @Override
+    public void onBackPressed() {
+        super.onBackPressed();
+        goBack();
+    }
+
     private void showActionBar() {
         LayoutInflater inflator = (LayoutInflater) this.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
         View v = inflator.inflate(R.layout.custom_action_bar, null);
@@ -234,8 +259,7 @@ public class HouseFormActivity extends AppCompatActivity implements BSImagePicke
         backBtn.setOnClickListener(new View.OnClickListener(){
             @Override
             public void onClick(View v) {
-                startActivity(new Intent(HouseFormActivity.this, MainActivity.class));
-                finish();
+                goBack();
             }
         });
         ActionBar actionBar = getSupportActionBar();
@@ -258,7 +282,7 @@ public class HouseFormActivity extends AppCompatActivity implements BSImagePicke
             String uploadId = UUID.randomUUID().toString();
 
             //Creating a multi part request
-            MultipartUploadRequest mUploadRequest = new MultipartUploadRequest(this, uploadId, UPLOAD_URL)
+            MultipartUploadRequest mUploadRequest = new MultipartUploadRequest(this, uploadId, upload_url)
                     .addParameter("title", title)
                     .addParameter("price", price)
                     .addParameter("description", description)

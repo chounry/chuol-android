@@ -33,42 +33,52 @@
                 android:text="Room Information"
                 android:layout_marginVertical="15dp"
                 android:gravity="center"
+                android:textStyle="bold"
                 android:textSize="20sp"
                 android:textColor="#000"/>
 
             <LinearLayout
-
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="15dp"
                 android:layout_marginBottom="15dp"
                 android:orientation="vertical"
                 android:paddingHorizontal="15dp">
-                <EditText
-                    android:id="@+id/title_et"
+                <com.google.android.material.textfield.TextInputLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginBottom="20dp"
-                    android:hint="Title"
-                    android:textSize="14sp" />
+                    android:hint="Title">
+                    <EditText
+                        android:id="@+id/title_et"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginBottom="20dp"
+                        android:textSize="14sp" />
+                </com.google.android.material.textfield.TextInputLayout>
 
-                <EditText
-                    android:id="@+id/description_et"
+                <com.google.android.material.textfield.TextInputLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginBottom="20dp"
-                    android:hint="Description (Optional)"
-                    android:textSize="14sp" />
+                    android:hint="Description (Optional)">
+                    <EditText
+                        android:id="@+id/description_et"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginBottom="20dp"
+                        android:textSize="14sp" />
+                </com.google.android.material.textfield.TextInputLayout>
 
-
-                <EditText
-
-                    android:id="@+id/size_et"
+                <com.google.android.material.textfield.TextInputLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginBottom="20dp"
-                    android:hint="Room Size : eg 10m x 6m"
-                    android:textSize="14sp" />
+                    android:hint="Room Size : eg 10m x 6m">
+                    <EditText
+                        android:id="@+id/size_et"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginBottom="20dp"
+                        android:textSize="14sp" />
+                </com.google.android.material.textfield.TextInputLayout>
 
                 <Button
                     android:id="@+id/select_service_btn"
@@ -83,35 +93,48 @@
                     android:textAllCaps="false"
                     android:textColor="#BBBBBB"
                     android:textSize="14sp"
-                    android:gravity="start"
+                    android:gravity="center_vertical"
+                    android:singleLine="true"
                     android:layout_gravity="start" />
 
-                <EditText
-                    android:id="@+id/phone_et"
+                <com.google.android.material.textfield.TextInputLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginBottom="20dp"
-                    android:hint="Phone Number #1"
-                    android:inputType="phone"
-                    android:textSize="14sp" />
+                    android:hint="Phone Number #1">
+                    <EditText
+                        android:id="@+id/phone_et"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginBottom="20dp"
+                        android:inputType="phone"
+                        android:textSize="14sp" />
+                </com.google.android.material.textfield.TextInputLayout>
 
-                <EditText
-                    android:id="@+id/phone_opt_et"
+                <com.google.android.material.textfield.TextInputLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginBottom="20dp"
-                    android:hint="Phone Number #2 (Optional)"
-                    android:inputType="phone"
-                    android:textSize="14sp" />
+                    android:hint="Phone Number #2 (Optional)">
+                    <EditText
+                        android:id="@+id/phone_opt_et"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginBottom="20dp"
+                        android:inputType="phone"
+                        android:textSize="14sp" />
+                </com.google.android.material.textfield.TextInputLayout>
 
-                <EditText
-                    android:id="@+id/address_et"
+
+                <com.google.android.material.textfield.TextInputLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginBottom="20dp"
-                    android:hint="Address : eg Preah Monivong Blvd, Sangkat Srah Chork, Khan Daun Penh #6"
-                    android:textSize="14sp" />
-
+                    android:hint="Address : eg Preah Monivong Blvd, Sangkat Srah Chork, Khan Daun Penh #6">
+                    <EditText
+                        android:id="@+id/address_et"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginBottom="20dp"
+                        android:textSize="14sp" />
+                </com.google.android.material.textfield.TextInputLayout>
 
                 <Spinner
                     android:id="@+id/city_spinner"
@@ -143,13 +166,18 @@
                         android:theme="@style/SCBSwitch" />
                 </LinearLayout>
 
-                <EditText
-                    android:id="@+id/price_et"
+                <com.google.android.material.textfield.TextInputLayout
+                    android:id="@+id/price_til"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginBottom="20dp"
-                    android:hint="Price"
-                    android:textSize="14sp" />
+                    android:hint="Price">
+                    <EditText
+                        android:id="@+id/price_et"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginBottom="20dp"
+                        android:textSize="14sp" />
+                </com.google.android.material.textfield.TextInputLayout>
 
                 <Spinner
                     android:id="@+id/currency_sp"

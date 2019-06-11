@@ -7,10 +7,16 @@ import com.group6.choul.models.UserModel;
 
 import java.util.List;
 
+import javax.annotation.Nullable;
+
+import okhttp3.MultipartBody;
+import okhttp3.RequestBody;
 import retrofit2.Call;
 import retrofit2.http.Field;
 import retrofit2.http.FormUrlEncoded;
+import retrofit2.http.Multipart;
 import retrofit2.http.POST;
+import retrofit2.http.Part;
 
 public interface ApiService {
     @POST("auth/register")
@@ -31,9 +37,16 @@ public interface ApiService {
     @POST("auth/get-user")
     Call<UserModel> get_user();
 
+    @Multipart
     @POST("auth/edit")
-    @FormUrlEncoded
-    Call<ResponseStatus> update_user(@Field("id") int id,@Field("fname") String fname,@Field("lname") String lname,@Field("email") String email,@Field("phone") String phone);
+    Call<ResponseStatus> update_user(
+            @Part("id") RequestBody user_id,
+            @Part("fname") RequestBody fname,
+            @Part("lname") RequestBody lname,
+            @Part("email") RequestBody email,
+            @Part("phone") RequestBody phone,
+            @Nullable @Part MultipartBody.Part file
+            );
 
     @POST("messages/get")
     @FormUrlEncoded

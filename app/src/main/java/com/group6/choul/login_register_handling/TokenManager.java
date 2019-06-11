@@ -13,6 +13,11 @@ public class TokenManager {
         this.editor = prefs.edit();
     }
 
+    public boolean isLogin(TokenManager tokenManager){
+        if(tokenManager.getToken().getAccessToken() != null)return true;
+        return false;
+    }
+
    public static synchronized TokenManager getInstance(SharedPreferences prefs){
         if(INSTANCE == null ){
             INSTANCE = new TokenManager(prefs);
@@ -30,19 +35,23 @@ public class TokenManager {
         editor.remove("REFRESH_TOKEN");
         editor.remove("USER_ID");
         editor.remove("USERNAME");
+        editor.remove("EMAIL");
         editor.apply();
     }
 
-    public void saveUserId(int id){
-        editor.putInt("USER_ID",id).commit();
+    public void saveUserInfo(int user_id, String username, String email){
+        editor.putInt("USER_ID",user_id);
+        editor.putString("USERNAME",username);
+        editor.putString("EMAIL",email);
+        editor.apply();
     }
+
 
     public int getUserId(){
         return prefs.getInt("USER_ID",0);
     }
-
-    public void saveUserName(String username){
-        editor.putString("USERNAME",username).commit();
+    public String getEmail(){
+        return prefs.getString("EMAIL",null);
     }
 
     public String getUserName(){

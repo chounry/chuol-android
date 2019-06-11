@@ -74,7 +74,6 @@
             android:id="@+id/room_description"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginTop="15sp"
             android:textStyle="bold"
             android:textSize="15sp"
             android:layout_marginLeft="20dp"
@@ -94,8 +93,7 @@
         <LinearLayout
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:orientation="vertical"
-            android:layout_marginTop="15dp">
+            android:orientation="vertical">
             <LinearLayout
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
@@ -148,30 +146,25 @@
             android:text="Service"
             android:textColor="#000"
             android:textSize="15sp"
-            android:layout_marginBottom="10dp"
             android:textStyle="bold" />
         <TableLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:layout_marginLeft="20dp"
-            android:orientation="vertical"
-            >
+            android:orientation="vertical">
             <TableRow>
                 <TextView
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:text="AC:"
-                    android:textSize="15sp"
-                    />
+                    android:textSize="15sp" />
                 <ImageView
                     android:id="@+id/img_AC"
                     android:layout_width="0dp"
                     android:layout_height="15dp"
                     android:layout_weight="0.7"
                     android:src="@drawable/ic_check"
-                    android:textAlignment="center"
-
-                    />
+                    android:textAlignment="center" />
             </TableRow>
             <TableRow>
                 <TextView
@@ -215,13 +208,11 @@
             android:textSize="15sp"
             android:layout_marginLeft="20dp"
             android:textColor="#000"
-            android:text="Contact"
-            />
+            android:text="Contact" />
         <LinearLayout
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:orientation="vertical"
-            android:layout_marginTop="10dp">
+            android:orientation="vertical">
             <LinearLayout
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
@@ -232,8 +223,7 @@
                     android:text="Email:"
                     android:layout_marginLeft="20dp"
                     android:textSize="15sp"
-                    android:textColor="#000"
-                    />
+                    android:textColor="#000" />
 
                 <TextView
                     android:id="@+id/room_email"
@@ -254,8 +244,7 @@
                     android:text="Phone:"
                     android:layout_marginLeft="20dp"
                     android:textSize="15sp"
-                    android:textColor="#000"
-                    />
+                    android:textColor="#000" />
                 <TextView
                     android:id="@+id/room_phone"
                     android:layout_width="wrap_content"
@@ -270,8 +259,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="horizontal"
-            android:layout_marginTop="10dp"
-            >
+            android:layout_marginTop="10dp">
             <TableRow>
 
                 <Button
@@ -315,7 +303,6 @@
 
             </TableRow>
 
-
         </TableLayout>
         <TextView
             android:layout_width="wrap_content"
@@ -325,8 +312,7 @@
             android:textSize="15sp"
             android:layout_marginLeft="20dp"
             android:textColor="#000"
-            android:text="Location"
-            />
+            android:text="Location" />
         <fragment
             xmlns:android="http://schemas.android.com/apk/res/android"
             xmlns:tools="http://schemas.android.com/tools"

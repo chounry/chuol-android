@@ -1,5 +1,7 @@
 package com.group6.choul.login_register_handling;
 
+import android.content.Context;
+
 import java.io.IOException;
 
 import javax.annotation.Nullable;
@@ -14,14 +16,16 @@ public class CustomAuthenticator implements Authenticator {
 
     private TokenManager tokenManager;
     private static CustomAuthenticator INSTANCE;
+    public static Context context;
 
-    private CustomAuthenticator(TokenManager tokenManager){
+    private CustomAuthenticator(TokenManager tokenManager,Context context){
         this.tokenManager = tokenManager;
+        this.context = context;
     }
 
     static synchronized CustomAuthenticator getInstance(TokenManager tokenManager){
         if(INSTANCE == null){
-            INSTANCE = new CustomAuthenticator(tokenManager);
+            INSTANCE = new CustomAuthenticator(tokenManager, context);
         }
 
         return INSTANCE;

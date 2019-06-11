@@ -108,6 +108,9 @@ public class SignupFragement extends Fragment {
                 confirm_password_til.setError(null);
                 phone_til.setError(null);
 
+                fname = fname.substring(0,1).toUpperCase() + fname.substring(1).toLowerCase();
+                lname = lname.substring(0,1).toUpperCase() + lname.substring(1).toLowerCase();
+
                 call = service.register(fname,lname,email,password,con_password,phone);
                 call.enqueue(new Callback<AccessToken>() {
                     @Override

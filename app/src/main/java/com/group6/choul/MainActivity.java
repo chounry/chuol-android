@@ -1,50 +1,37 @@
 package com.group6.choul;
 
-import android.app.Activity;
 import android.app.Dialog;
-import android.content.Context;
 import android.content.Intent;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
 
 import android.os.Bundle;
+import android.util.Log;
 
-import android.text.SpannableString;
-import android.text.style.UnderlineSpan;
-import android.util.Log;
-import android.util.Log;
 import android.view.Gravity;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
-import android.widget.ImageButton;
-import android.widget.ImageView;
+
 import android.widget.LinearLayout;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.ActionBarDrawerToggle;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
-import androidx.coordinatorlayout.widget.CoordinatorLayout;
 import androidx.core.view.GravityCompat;
 import androidx.drawerlayout.widget.DrawerLayout;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
-
-
-import com.google.android.gms.common.ConnectionResult;
-import com.google.android.gms.common.GoogleApiAvailability;
 import com.google.android.material.navigation.NavigationView;
 import com.group6.choul.fragments.ChatOutFragment;
 import com.group6.choul.fragments.HomeFragment;
 import com.group6.choul.fragments.SavedPostFragment;
 import com.group6.choul.fragments.SettingFragment;
-import com.group6.choul.login_register_handling.AccessToken;
 import com.group6.choul.login_register_handling.ApiService;
 import com.group6.choul.login_register_handling.RetrofitBuilder;
 import com.group6.choul.login_register_handling.TokenManager;
@@ -62,13 +49,15 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     private ActionBarDrawerToggle toggle;
     private Dialog formSelectDialog,loginDialog;
     private Button btnHouseForm, btnRoomForm;
+    private TextView login_signup_btn;
     private Toolbar toolBar;
-    public TokenManager tokenManager;
+    private View login_signup_view,nav_header;
+    private TokenManager tokenManager;
+
+    private final int LOGOUT_CODE = 401;
 
     public ApiService service;
     public Call<UserModel> call;
-
-
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -83,19 +72,27 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         drawerLayoutHome = findViewById(R.id.drawer_home);
         navigationViewHome = findViewById(R.id.nav_home);
         toolBar = findViewById(R.id.toolbar);
-
         setSupportActionBar(toolBar);
         getSupportActionBar().setElevation(0);
+
         toggle = new ActionBarDrawerToggle(this,drawerLayoutHome,toolBar,R.string.opened_menu,R.string.closed_menu);
         drawerLayoutHome.addDrawerListener(toggle);
         toggle.syncState();
         navigationViewHome.setNavigationItemSelectedListener(this);
 
-        getUserInfo(); // get user id and save it to sharedPrefs
 
+        getUserInfo(); // get user id and save it to sharedPrefs
+        checkLogin();
         loadFragment(new HomeFragment()); // init fragment
     }
 
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if (resultCode == LOGOUT_CODE) {
+            checkLogin();
+        }
+    }
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
@@ -138,7 +135,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
             return true;
         } else if (id == R.id.item_chat) {
             drawerLayoutHome.closeDrawers();
-            if(tokenManager.getToken().getAccessToken() == null){
+            if(!tokenManager.isLogin(tokenManager)){
                 showLoginPopUp();
             }else {
                 loadFragment(new ChatOutFragment());
@@ -146,7 +143,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
             return true;
         } else if (id == R.id.item_saved) {
             drawerLayoutHome.closeDrawers();
-            if(tokenManager.getToken().getAccessToken() == null){
+            if(!tokenManager.isLogin(tokenManager)){
                 showLoginPopUp();
             }else {
                 loadFragment(new SavedPostFragment());
@@ -154,7 +151,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
             return true;
         } else if (id == R.id.item_setting) {
             drawerLayoutHome.closeDrawers();
-            if(tokenManager.getToken().getAccessToken() == null){
+            if(!tokenManager.isLogin(tokenManager)){
                 showLoginPopUp();
             }else {
                 loadFragment(new SettingFragment());
@@ -177,8 +174,18 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
      */
     private void loadFragment(Fragment fragment){
         FragmentManager fm = getSupportFragmentManager();
+        fm.registerFragmentLifecycleCallbacks(new FragmentManager.FragmentLifecycleCallbacks() {
+            @Override
+            public void onFragmentCreated(@NonNull FragmentManager fm, @NonNull Fragment f, @Nullable Bundle savedInstanceState) {
+                super.onFragmentCreated(fm, f, savedInstanceState);
+                if(f instanceof HomeFragment){
+                    // if user logout we check change the view in the nav head;
+                    checkLogin();
+                }
+            }
+        },true);
+
         FragmentTransaction tr = fm.beginTransaction();
-//        tr.setCustomAnimations(R.anim.enter_from_right,R.anim.exit_to_right);
         tr.replace(R.id.container_home,fragment);
         tr.commit();
     }
@@ -235,16 +242,44 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         loginDialog.show();
     }
 
+    public void checkLogin(){
+        // if user not login we put login register dialog to the nav header
+        // else we put the name to the nav header
+        nav_header = navigationViewHome.getHeaderView(0);
+        LinearLayout user_info_lin = nav_header.findViewById(R.id.user_info_lin);
+        login_signup_view = nav_header.findViewById(R.id.login_dialog_include);
+        TextView username_tv = nav_header.findViewById(R.id.user_name_tv);
+        TextView email_tv = nav_header.findViewById(R.id.email_tv);
+
+        username_tv.setText(tokenManager.getUserName());
+        email_tv.setText(tokenManager.getEmail());
+        login_signup_view.setVisibility(View.GONE);
+        user_info_lin.setVisibility(View.VISIBLE);
+
+        if(!tokenManager.isLogin(tokenManager)) {
+            user_info_lin.setVisibility(View.GONE);
+            login_signup_view.setVisibility(View.VISIBLE);
+            login_signup_btn = login_signup_view.findViewById(R.id.login_sign_up_btn);
+            login_signup_btn.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    Intent intent = new Intent(getApplicationContext(), LoginRegisterActivity.class);
+                    startActivity(intent);
+                    finish();
+                }
+            });
+        }
+    }
 
     public void getUserInfo(){
+        // get the user info from the server and save them
         service = RetrofitBuilder.createServiceWithAuth(ApiService.class, tokenManager);
         call = service.get_user();
         call.enqueue(new Callback<UserModel>() {
             @Override
             public void onResponse(Call<UserModel> call, Response<UserModel> response) {
                 if(response.isSuccessful()){
-                    tokenManager.saveUserId(response.body().getId());
-                    tokenManager.saveUserName(response.body().getUsername());
+                    tokenManager.saveUserInfo(response.body().getId(),response.body().getUsername(),response.body().getEmail());
                 }
             }
 
@@ -254,7 +289,6 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
             }
         });
     }
-
 
 }
 
