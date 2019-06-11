@@ -88,7 +88,7 @@ public class RoomListAdapter extends RecyclerView.Adapter<RoomListAdapter.MyRoom
         return this.modeList.size();
     }
 
-    class MyRoomRecyClerView extends RecyclerView.ViewHolder{
+    class MyRoomRecyClerView extends RecyclerView.ViewHolder {
 
         TextView textviewTitle;
         TextView textviewPrice;
@@ -99,7 +99,7 @@ public class RoomListAdapter extends RecyclerView.Adapter<RoomListAdapter.MyRoom
         String text = "Save";
         Context context;
         TokenManager tokenManager;
-        int user_id,estate_id;
+        int user_id, estate_id;
 
         public MyRoomRecyClerView(@NonNull View itemView, Context context) {
             super(itemView);
@@ -108,36 +108,26 @@ public class RoomListAdapter extends RecyclerView.Adapter<RoomListAdapter.MyRoom
             textviewAddress = itemView.findViewById(R.id.address_room);
             textviewPrice = itemView.findViewById(R.id.price_room);
             textviewTitle = itemView.findViewById(R.id.title_room);
-            txtSave = itemView.findViewById(R.id.RoomSave);
+            txtSave = itemView.findViewById(R.id.room_save_tv);
             this.context = context;
 
-            tokenManager = TokenManager.getInstance(context.getSharedPreferences("prefs",context.MODE_PRIVATE));
-            user_id  = tokenManager.getUserId();
+            tokenManager = TokenManager.getInstance(context.getSharedPreferences("prefs", context.MODE_PRIVATE));
+            user_id = tokenManager.getUserId();
 
             txtSave.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    if (text == "Save"){
-                        int pos = getAdapterPosition();
-                        estate_id = modeList.get(pos).getEstate_id();
-                        addToSave();
-
-                        text = "unsave";
-                        txtSave.setText(text);
-                    }
-                    else{
-                        text = "Save";
-                        txtSave.setText(text);
-                    }
-
+                    int pos = getAdapterPosition();
+                    estate_id = modeList.get(pos).getEstate_id();
+                    addToSave();
                 }
             });
         }
 
-        public void addToSave(){
+        public void addToSave() {
             try {
                 RequestQueue requestQueue = Volley.newRequestQueue(context);
-                String URL = "http://192.168.100.208:8000/api/estates/add_to_saved";
+                String URL = "http://172.23.12.108:8000/api/estates/add_to_saved";
                 JSONObject jsonBody = new JSONObject();
                 jsonBody.put("user_id", user_id);
                 jsonBody.put("estate_id", estate_id);
@@ -146,7 +136,13 @@ public class RoomListAdapter extends RecyclerView.Adapter<RoomListAdapter.MyRoom
                 StringRequest stringRequest = new StringRequest(Request.Method.POST, URL, new Response.Listener<String>() {
                     @Override
                     public void onResponse(String response) {
-                        Log.i("VOLLEY", response);
+                        try {
+                            JSONObject responeJson = new JSONObject(response);
+                            txtSave.setText(responeJson.getString("status"));
+                        } catch (Exception e) {
+                            Log.e("HOUSE LIST JSON ", e.toString());
+                        }
+
                     }
                 }, new Response.ErrorListener() {
                     @Override
@@ -176,19 +172,16 @@ public class RoomListAdapter extends RecyclerView.Adapter<RoomListAdapter.MyRoom
                             responseString = String.valueOf(response.statusCode);
                             // can get more details such as response.headers
                         }
-                        return Response.success(responseString, HttpHeaderParser.parseCacheHeaders(response));
+                        return super.parseNetworkResponse(response);
                     }
                 };
 
                 requestQueue.add(stringRequest);
-            }
-
-            catch (JSONException e) {
+            } catch (JSONException e) {
                 e.printStackTrace();
             }
         }
     }
-
 }
 
 

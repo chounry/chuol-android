@@ -48,6 +48,7 @@ import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.GoogleApiAvailability;
 import com.google.android.gms.maps.model.LatLng;
 import com.group6.choul.adapters.ImgFormAdapter;
+import com.group6.choul.login_register_handling.TokenManager;
 import com.group6.choul.models.ImgFormModel;
 
 import net.gotev.uploadservice.MultipartUploadRequest;
@@ -86,6 +87,9 @@ public class RoomFormActivity extends AppCompatActivity implements BSImagePicker
 
     private static final int ERROR_DIALOG_REQUEST = 9001;
 
+    private TokenManager tokenManager;
+    private int user_id;
+
     private final String UPLOAD_URL = "http://172.23.12.108:8000/api/rooms/create";
 
     @Override
@@ -98,7 +102,6 @@ public class RoomFormActivity extends AppCompatActivity implements BSImagePicker
         submit_btn = findViewById(R.id.submit_btn);
         service_btn = findViewById(R.id.select_service_btn);
         upload_img_btn = findViewById(R.id.upload_img_btn);
-        myToolbar = findViewById(R.id.my_toolbar);
         contact_swtich = findViewById(R.id.contact_switch);
         price_et = findViewById(R.id.price_et);
         currency_spinner = findViewById(R.id.currency_sp);
@@ -115,6 +118,8 @@ public class RoomFormActivity extends AppCompatActivity implements BSImagePicker
         cityspinner = findViewById(R.id.city_spinner);
         checkBoxTerm = findViewById(R.id.ckboxTerm);
 
+        tokenManager = TokenManager.getInstance(getSharedPreferences("prefs",MODE_PRIVATE));
+        user_id = tokenManager.getUserId();
 
         checkBoxTerm.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener(){
 
@@ -131,6 +136,7 @@ public class RoomFormActivity extends AppCompatActivity implements BSImagePicker
             }
         });
         // <------- handle toolbar
+        myToolbar = findViewById(R.id.my_toolbar);
         setSupportActionBar(myToolbar);
         showActionBar();
         // <------- handle toolbar
@@ -195,8 +201,6 @@ public class RoomFormActivity extends AppCompatActivity implements BSImagePicker
                 }
 
             }
-
-
         });
 
 
@@ -355,8 +359,7 @@ public class RoomFormActivity extends AppCompatActivity implements BSImagePicker
                     .addParameter("lng",lng+"")
                     .addParameter("currency",currency)
                     .addParameter("duration",duration)
-
-
+                    .addParameter("user_id",user_id+"")
                     .setNotificationConfig(new UploadNotificationConfig())
                     .setMaxRetries(2); // try request at least 2 time before give up
 

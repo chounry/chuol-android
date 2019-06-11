@@ -116,7 +116,7 @@ public class HouseListAdapter extends RecyclerView.Adapter<HouseListAdapter.MyHo
         textviewAddress = itemView.findViewById(R.id.address_home);
         textviewPrice = itemView.findViewById(R.id.price_home);
         textviewTitle = itemView.findViewById(R.id.title_home);
-        txtSave = itemView.findViewById(R.id.HouseSave);
+        txtSave = itemView.findViewById(R.id.house_save_tv);
         this.context = context;
 
         tokenManager = TokenManager.getInstance(context.getSharedPreferences("prefs",context.MODE_PRIVATE));
@@ -125,19 +125,9 @@ public class HouseListAdapter extends RecyclerView.Adapter<HouseListAdapter.MyHo
         txtSave.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if (text == "Save"){
-                    int pos = getAdapterPosition();
-                    estate_id = modelList.get(pos).getEstate_id();
-                    addToSave();
-
-                    text = "unsave";
-                    txtSave.setText(text);
-                }
-                else{
-                    text = "Save";
-                    txtSave.setText(text);
-                }
-
+                int pos = getAdapterPosition();
+                estate_id = modelList.get(pos).getEstate_id();
+                addToSave();
             }
         });
     }
@@ -145,7 +135,7 @@ public class HouseListAdapter extends RecyclerView.Adapter<HouseListAdapter.MyHo
     public void addToSave(){
         try {
             RequestQueue requestQueue = Volley.newRequestQueue(context);
-            String URL = "http://192.168.100.208:8000/api/estates/add_to_saved";
+            String URL = "http://172.23.12.108:8000/api/estates/add_to_saved";
             JSONObject jsonBody = new JSONObject();
             jsonBody.put("user_id", user_id);
             jsonBody.put("estate_id", estate_id);
@@ -154,7 +144,13 @@ public class HouseListAdapter extends RecyclerView.Adapter<HouseListAdapter.MyHo
             StringRequest stringRequest = new StringRequest(Request.Method.POST, URL, new Response.Listener<String>() {
                 @Override
                 public void onResponse(String response) {
-                    Log.i("VOLLEY", response);
+                    try{
+                        JSONObject responeJson = new JSONObject(response);
+                        txtSave.setText(responeJson.getString("status"));
+                    }catch (Exception e){
+                        Log.e("HOUSE LIST JSON ",e.toString());
+                    }
+
                 }
             }, new Response.ErrorListener() {
                 @Override
@@ -184,7 +180,7 @@ public class HouseListAdapter extends RecyclerView.Adapter<HouseListAdapter.MyHo
                         responseString = String.valueOf(response.statusCode);
                         // can get more details such as response.headers
                     }
-                    return Response.success(responseString, HttpHeaderParser.parseCacheHeaders(response));
+                    return super.parseNetworkResponse(response);
                 }
             };
 

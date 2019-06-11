@@ -1,17 +1,23 @@
 package com.group6.choul;
 
+import android.content.Context;
 import android.os.Build;
 import android.os.Bundle;
 
 import android.util.Log;
+import android.view.LayoutInflater;
+import android.view.View;
 import android.view.WindowManager;
 import android.widget.FrameLayout;
+import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.TextView;
 
 
 import androidx.annotation.RequiresApi;
+import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.Toolbar;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import androidx.viewpager.widget.ViewPager;
@@ -67,6 +73,12 @@ public class RoomDetailActivity extends AppCompatActivity implements OnMapReadyC
         recyclerViewHome = findViewById(R.id.related_recycler_home);
         estate_id = getIntent().getStringExtra("ESTATE_ID");
 
+        // <------- handle toolbar
+        Toolbar myToolbar = findViewById(R.id.my_toolbar);
+        setSupportActionBar(myToolbar);
+        showActionBar();
+        // <------- handle toolbar
+
         SupportMapFragment mapFragment = (SupportMapFragment) getSupportFragmentManager()
                 .findFragmentById(R.id.map);
         mapFragment.getMapAsync(this);
@@ -74,7 +86,7 @@ public class RoomDetailActivity extends AppCompatActivity implements OnMapReadyC
 
         map = findViewById(R.id.map);
 
-        modelList = new ArrayList<>();
+        modelList = new ArrayList<RelatedModel>();
 
         LinearLayoutManager layoutManager = new LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false);
 
@@ -82,7 +94,12 @@ public class RoomDetailActivity extends AppCompatActivity implements OnMapReadyC
         recyclerViewHome.setLayoutManager(layoutManager);
 
 
+        for(int i = 0;i <2 ;i++){
+            modelList.add(new RelatedModel("Room 1 bed","$50","https://s-ec.bstatic.com/images/hotel/max1024x768/731/73118462.jpg" ));
+            modelList.add(new RelatedModel("Room 2 bed","$60","https://secure.cdn1.wdpromedia.com/resize/mwImage/1/560/216/75/dam/wdpro-assets/aulani/room-offers/resort-room/nbr-standard-view-1-16x9.jpg?1540508656347" ));
+            modelList.add(new RelatedModel("Room 2 bed","$100","https://d2ile4x3f22snf.cloudfront.net/wp-content/uploads/sites/161/2017/10/01091859/chateau-tongariro-our-rooms-heritage-3-bed-family-style-image.jpg" ));
 
+        }
         adapter = new RelatedAdapter(modelList);
         recyclerViewHome.setAdapter(adapter);
 
@@ -134,7 +151,7 @@ public class RoomDetailActivity extends AppCompatActivity implements OnMapReadyC
     }
     private void getData(String url) {
         try {
-            String url_for_img = "http://192.168.100.208:8000";
+            String url_for_img = "http://172.23.12.108:8000";
             RequestQueue requestQueue = Volley.newRequestQueue(this);
             JSONObject jsonBody = new JSONObject();
             jsonBody.put("estate_id", estate_id);
@@ -215,5 +232,24 @@ public class RoomDetailActivity extends AppCompatActivity implements OnMapReadyC
         mMap.moveCamera(CameraUpdateFactory.newLatLng(sydney));
     }
 
+    private void showActionBar() {
+        LayoutInflater inflator = (LayoutInflater) this.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+        View v = inflator.inflate(R.layout.custom_action_bar, null);
+        ImageButton backBtn = v.findViewById(R.id.nav_back_btn);
+
+        backBtn.setOnClickListener(new View.OnClickListener(){
+            @Override
+            public void onClick(View v) {
+                finish();
+            }
+        });
+
+        ActionBar actionBar = getSupportActionBar();
+        actionBar.setDisplayHomeAsUpEnabled(false);
+        actionBar.setDisplayShowHomeEnabled (false);
+        actionBar.setDisplayShowCustomEnabled(true);
+        actionBar.setDisplayShowTitleEnabled(false);
+        actionBar.setCustomView(v);
+    }
 }
 

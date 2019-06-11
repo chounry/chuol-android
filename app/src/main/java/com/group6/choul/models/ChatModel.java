@@ -21,8 +21,8 @@ public class ChatModel {
 
 
     public ChatModel() {
-        this.imgProfile = R.drawable.rick;
-        this.img_id = R.drawable.house;
+        this.imgProfile = R.drawable.house;
+        this.img_id = R.drawable.user;
     }
 
 

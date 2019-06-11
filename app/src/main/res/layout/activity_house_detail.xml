@@ -1,9 +1,17 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout
-    android:layout_width="match_parent"
+<LinearLayout android:layout_width="match_parent"
     android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:orientation="vertical"
     xmlns:android="http://schemas.android.com/apk/res/android">
+    <androidx.appcompat.widget.Toolbar
+        android:id="@+id/my_toolbar"
+        android:layout_width="match_parent"
+        android:layout_height="?attr/actionBarSize"
+        android:background="?attr/colorPrimary"
+        android:elevation="4dp"
+        android:theme="@style/ThemeOverlay.AppCompat.ActionBar"
+        app:popupTheme="@style/ThemeOverlay.AppCompat.Light"/>
 
     <ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
         android:layout_width="match_parent"
@@ -78,9 +86,7 @@
                 android:layout_marginTop="7sp"
                 android:textSize="15sp"
                 android:layout_marginLeft="20dp"
-
-                android:text="This House is 100 m length and 200 m wide and it a betiful house and it new."
-                />
+                android:text="This House is 100 m length and 200 m wide and it a betiful house and it new." />
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
@@ -165,7 +171,7 @@
                         android:textSize="15sp" />
 
                     <TextView
-                        android:id="@+id/bathroom"
+                        android:id="@+id/bathroom_tv"
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
                         android:layout_weight="0.7"
@@ -184,7 +190,7 @@
                         android:textSize="15sp" />
 
                     <TextView
-                        android:id="@+id/bedroom"
+                        android:id="@+id/bedroom_tv"
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
                         android:layout_weight="0.7"
@@ -202,7 +208,7 @@
                         android:textSize="15sp" />
 
                     <TextView
-                        android:id="@+id/floor"
+                        android:id="@+id/floor_tv"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_weight="0.7"
@@ -219,7 +225,7 @@
                         android:textSize="15sp" />
 
                     <TextView
-                        android:id="@+id/house_size"
+                        android:id="@+id/house_size_tv"
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
                         android:layout_weight="0.7"

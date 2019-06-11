@@ -37,6 +37,7 @@ import com.google.android.flexbox.FlexboxLayoutManager;
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.GoogleApiAvailability;
 import com.group6.choul.adapters.ImgFormAdapter;
+import com.group6.choul.login_register_handling.TokenManager;
 import com.group6.choul.models.ImgFormModel;
 import com.squareup.haha.perflib.Main;
 
@@ -70,6 +71,9 @@ public class HouseFormActivity extends AppCompatActivity implements BSImagePicke
     private static final String TAG = "HouseFromActivity";
     private double lat,lng;
 
+    private TokenManager tokenManager;
+    private int user_id;
+
     private static final int ERROR_DIALOG_REQUEST = 9001;
     private final String UPLOAD_URL = "http://172.23.12.108:8000/api/houses/create";
 
@@ -102,7 +106,8 @@ public class HouseFormActivity extends AppCompatActivity implements BSImagePicke
         currency_spinner = findViewById(R.id.currency_sp);
         duration_spinner = findViewById(R.id.duration_spinner);
 
-
+        tokenManager = TokenManager.getInstance(getSharedPreferences("prefs",MODE_PRIVATE));
+        user_id = tokenManager.getUserId();
 
         // <------- handle toolbar
         setSupportActionBar(myToolbar);
@@ -160,10 +165,10 @@ public class HouseFormActivity extends AppCompatActivity implements BSImagePicke
                 city_id = city.getSelectedItem().toString();
                 currency = currency_spinner.getSelectedItem().toString();
                 duration = duration_spinner.getSelectedItem().toString();
-                if(!title.isEmpty() && !price.isEmpty() && !phone.isEmpty() && !address.isEmpty() && !bedroom.isEmpty() &&
-                        !bathroom.isEmpty() && !floor.isEmpty() && !house_size.isEmpty() && forSale_status.isEmpty()) {
+//                if(!title.isEmpty() && !price.isEmpty() && !phone.isEmpty() && !address.isEmpty() && !bedroom.isEmpty() &&
+//                        !bathroom.isEmpty() && !floor.isEmpty() && !house_size.isEmpty() && forSale_status.isEmpty()) {
                     uploadMultipart(imgs_uri);
-                }
+//                }
               }
 
         });
@@ -272,6 +277,7 @@ public class HouseFormActivity extends AppCompatActivity implements BSImagePicke
                     .addParameter("phone_option",phone_opt)
                     .addParameter("currency",currency)
                     .addParameter("duration",duration)
+                    .addParameter("user_id",user_id+"")
                     .setNotificationConfig(new UploadNotificationConfig())
                     .setMaxRetries(2); // try request at least 2 time before give up
 
@@ -282,8 +288,8 @@ public class HouseFormActivity extends AppCompatActivity implements BSImagePicke
             }
 
             mUploadRequest.startUpload();
-            startActivity(new Intent(HouseFormActivity.this, MainActivity.class));
-            finish();
+//            startActivity(new Intent(HouseFormActivity.this, MainActivity.class));
+//            finish();
             Toast.makeText(this,"Upload successful", Toast.LENGTH_SHORT).show();
         } catch (Exception exc) {
             Toast.makeText(this,"Multipart Error" + exc.getMessage(), Toast.LENGTH_SHORT).show();
