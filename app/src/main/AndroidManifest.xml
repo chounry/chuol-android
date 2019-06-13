@@ -39,8 +39,8 @@
             android:name="com.google.android.geo.API_KEY"
             android:value="AIzaSyB1dbxszCAqSCrePrLOveBD1XWaBHIM8PU" />
 
-        <activity android:screenOrientation="portrait" android:name=".HouseDetailActivity" android:launchMode="singleTop"/>
-        <activity android:screenOrientation="portrait" android:name=".RoomDetailActivity" android:launchMode="singleTop"/>
+        <activity android:screenOrientation="portrait" android:name=".HouseDetailActivity"/>
+        <activity android:screenOrientation="portrait" android:name=".RoomDetailActivity"/>
         <activity android:screenOrientation="portrait" android:name=".PostHistoryActivity" android:launchMode="singleTop"/>
         <activity android:screenOrientation="portrait" android:name=".ChatInActivity" android:launchMode="singleTop"/>
         <activity android:screenOrientation="portrait" android:name=".HouseFormActivity" android:launchMode="singleTop"/>

@@ -42,6 +42,7 @@ import com.group6.choul.models.ImageModel;
 import com.group6.choul.models.RelatedModel;
 
 import org.json.JSONArray;
+import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.io.UnsupportedEncodingException;
@@ -58,7 +59,8 @@ public class RoomDetailActivity extends AppCompatActivity implements OnMapReadyC
     private List<RelatedModel> modelList;
     private RecyclerView recyclerViewHome;
 
-    private String baseUrl,estate_id,dataUrl;
+    private String baseUrl,estate_id,dataUrl,realtedUrl;
+    private int city_id;
     private ArrayList<ImageModel> images;
     private double lat,lng;
 
@@ -69,6 +71,7 @@ public class RoomDetailActivity extends AppCompatActivity implements OnMapReadyC
         setContentView(R.layout.activity_room_detail);
         baseUrl = getResources().getString(R.string.server_address);
         dataUrl = baseUrl +"/api/rooms/get_detail";
+        realtedUrl = baseUrl +"/api/estates/get_room_related";
 
         this.getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_ALWAYS_HIDDEN);
         images = new ArrayList<>();
@@ -98,7 +101,7 @@ public class RoomDetailActivity extends AppCompatActivity implements OnMapReadyC
 
 
 
-        adapter = new RelatedAdapter(modelList);
+        adapter = new RelatedAdapter(modelList, recyclerViewHome, getApplicationContext());
         recyclerViewHome.setAdapter(adapter);
 
         getData(dataUrl);
@@ -147,6 +150,73 @@ public class RoomDetailActivity extends AppCompatActivity implements OnMapReadyC
 
 
     }
+    private void realted(String url) {
+        try {
+            RequestQueue requestQueue = Volley.newRequestQueue(this);
+            JSONObject jsonBody = new JSONObject();
+            jsonBody.put("estate_id",estate_id);
+            jsonBody.put("city_id", city_id);
+
+            final String requestBody = jsonBody.toString();
+            StringRequest request = new StringRequest(Request.Method.POST, url, new Response.Listener<String>() {
+                @Override
+                public void onResponse(String response) {
+
+                    try {
+                        JSONArray jsonResponse = new JSONArray(response);
+                        final String baseImgUrl = getResources().getString(R.string.server_address);
+                        for(int i = 0 ;i < jsonResponse.length();i++){
+                            JSONObject each = jsonResponse.getJSONObject(i);
+                            RelatedModel tmp = new RelatedModel();
+                            tmp.setEstate_id(each.getString("estate_id"));
+                            tmp.setTitle(each.getString("title"));
+                            tmp.setDescriptino(each.getString("price") + each.getString("currency") );
+
+                            tmp.setImg(baseImgUrl + each.getString("img"));
+                            tmp.setRoom(true);
+
+                            modelList.add(tmp);
+
+                        }
+
+
+                        adapter = new RelatedAdapter(modelList, recyclerViewHome, getApplicationContext());
+                        recyclerViewHome.setAdapter(adapter);
+
+
+                    } catch (JSONException e) {
+                        e.printStackTrace();
+                    }
+
+                }
+            },
+                    new Response.ErrorListener() {
+                        @Override
+                        public void onErrorResponse(VolleyError error) {
+                            Log.e("MYError", error.toString());
+                        }
+                    }) {
+                @Override
+                public String getBodyContentType() {
+                    return "application/json; charset=utf-8";
+                }
+
+
+                @Override
+                public byte[] getBody() throws AuthFailureError {
+                    try {
+                        return requestBody == null ? null : requestBody.getBytes("utf-8");
+                    } catch (UnsupportedEncodingException uee) {
+                        VolleyLog.wtf("Unsupported Encoding while trying to get the bytes of %s using %s", requestBody, "utf-8");
+                        return null;
+                    }
+                }
+            };
+            requestQueue.add(request);
+        } catch (Exception e) {
+
+        }
+    }
     private void getData(String url) {
         try {
             RequestQueue requestQueue = Volley.newRequestQueue(this);
@@ -159,7 +229,7 @@ public class RoomDetailActivity extends AppCompatActivity implements OnMapReadyC
                 public void onResponse(String response) {
                     try {
                         JSONObject responeJson = new JSONObject(response);
-                        String estate_id,title,description,street,city,email,phone,price,AC,parking,Wifi,phone_option,currency;
+                        String title,description,street,city,email,phone,price,AC,parking,Wifi,phone_option,currency;
                         Log.e("onResponse: ",responeJson.getJSONArray("img") + "");
                         JSONArray img_arr = responeJson.getJSONArray("img");
                         for (int i = 0; i< img_arr.length();i++){
@@ -167,7 +237,6 @@ public class RoomDetailActivity extends AppCompatActivity implements OnMapReadyC
                             ImageModel img = new ImageModel(baseUrl +img_arr.get(i).toString());
                             images.add(img);
                         }
-                        estate_id = responeJson.getString("estate_id");
                         title = responeJson.getString("title");
                         description = responeJson.getString("description");
                         street = responeJson.getString("address");
@@ -182,6 +251,9 @@ public class RoomDetailActivity extends AppCompatActivity implements OnMapReadyC
                         currency = responeJson.getString("currency");
                         lat = responeJson.getDouble("lat");
                         lng = responeJson.getDouble("lng");
+                        city_id = responeJson.getInt("city_id");
+
+                        realted(realtedUrl);
 
                         setInfo(title,price,description,street,city,AC,parking,Wifi,email,phone,phone_option,currency);
                     } catch (Exception e) {

@@ -49,6 +49,7 @@ import com.group6.choul.models.RelatedModel;
 import com.group6.choul.models.ResponseStatus;
 
 import org.json.JSONArray;
+import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.io.UnsupportedEncodingException;
@@ -67,14 +68,14 @@ public class HouseDetailActivity extends AppCompatActivity implements OnMapReady
     private List<RelatedModel> modelList;
     private RecyclerView recyclerViewHome;
     private ArrayList<ImageModel> images;
-    private String estate_id,dataUrl,baseUrl;
+    private String estate_id,dataUrl,baseUrl,realtedUrl;
 
     private double lat,lng;
 
     private ImageButton send_btn;
     private EditText msg_et;
 
-    private int estate_user_id;
+    private int estate_user_id,city_id;
 
     @RequiresApi(api = Build.VERSION_CODES.M)
     @Override
@@ -83,6 +84,7 @@ public class HouseDetailActivity extends AppCompatActivity implements OnMapReady
         setContentView(R.layout.activity_house_detail);
         baseUrl = getResources().getString(R.string.server_address);
         dataUrl = baseUrl + "/api/houses/get_detail";
+        realtedUrl= baseUrl + "/api/estates/getRelated";
 
         this.getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_ALWAYS_HIDDEN);
         images = new ArrayList<>();
@@ -114,10 +116,10 @@ public class HouseDetailActivity extends AppCompatActivity implements OnMapReady
         recyclerViewHome.setHasFixedSize(true);
         recyclerViewHome.setLayoutManager(layoutManager);
 
-        adapter = new RelatedAdapter(modelList);
-        recyclerViewHome.setAdapter(adapter);
+
 
         getData(dataUrl);
+
 
         send_btn.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -172,6 +174,72 @@ public class HouseDetailActivity extends AppCompatActivity implements OnMapReady
         }
 
     }
+
+    private void realted(String url) {
+        try {
+            RequestQueue requestQueue = Volley.newRequestQueue(this);
+            JSONObject jsonBody = new JSONObject();
+            jsonBody.put("city_id", city_id);
+            jsonBody.put("estate_id",estate_id);
+            final String requestBody = jsonBody.toString();
+            StringRequest request = new StringRequest(Request.Method.POST, url, new Response.Listener<String>() {
+                @Override
+                public void onResponse(String response) {
+
+                    try {
+                        JSONArray jsonResponse = new JSONArray(response);
+                        final String baseImgUrl = getResources().getString(R.string.server_address);
+                        for(int i = 0 ;i < jsonResponse.length();i++){
+                            JSONObject each = jsonResponse.getJSONObject(i);
+                            RelatedModel tmp = new RelatedModel();
+                            tmp.setEstate_id(each.getString("estate_id"));
+                            tmp.setTitle(each.getString("title"));
+                            tmp.setDescriptino(each.getString("price") + each.getString("currency"));
+                            tmp.setRoom(false);
+
+                            tmp.setImg(baseImgUrl + each.getString("img"));
+                            modelList.add(tmp);
+
+                        }
+
+
+                        adapter = new RelatedAdapter(modelList, recyclerViewHome, getApplicationContext());
+                        recyclerViewHome.setAdapter(adapter);
+
+
+                    } catch (JSONException e) {
+                        e.printStackTrace();
+                    }
+
+                }
+            },
+                new Response.ErrorListener() {
+                    @Override
+                    public void onErrorResponse(VolleyError error) {
+                        Log.e("MYError", error.toString());
+                    }
+                    }) {
+                @Override
+                public String getBodyContentType() {
+                    return "application/json; charset=utf-8";
+                }
+
+
+                @Override
+                public byte[] getBody() throws AuthFailureError {
+                    try {
+                        return requestBody == null ? null : requestBody.getBytes("utf-8");
+                    } catch (UnsupportedEncodingException uee) {
+                        VolleyLog.wtf("Unsupported Encoding while trying to get the bytes of %s using %s", requestBody, "utf-8");
+                        return null;
+                    }
+                }
+            };
+            requestQueue.add(request);
+        } catch (Exception e) {
+
+        }
+    }
     private void getData(String url) {
         try {
             RequestQueue requestQueue = Volley.newRequestQueue(this);
@@ -185,7 +253,6 @@ public class HouseDetailActivity extends AppCompatActivity implements OnMapReady
                     try {
                         JSONObject responeJson = new JSONObject(response);
                         String title,for_sale_status,description,street,city,bathroom,bedroom,floor,size,email,phone,price,phone_option,currency;
-                        Log.e("onResponse: ",responeJson.getJSONArray("img") + "");
                         JSONArray img_arr = responeJson.getJSONArray("img");
                         for (int i = 0; i< img_arr.length();i++){
 
@@ -210,8 +277,11 @@ public class HouseDetailActivity extends AppCompatActivity implements OnMapReady
                         floor =responeJson.getString("floor");
                         size = responeJson.getString("house_size");
                         estate_user_id = responeJson.getInt("estate_user_id");
+                        city_id = responeJson.getInt("city_id");
 
                         setInfo(title,for_sale_status,price,description,street,city,bathroom,bedroom,floor,size,email,phone,phone_option,currency);
+
+                        realted(realtedUrl);
                     } catch (Exception e) {
                         Log.e("Json Error", e.toString());
                     }
