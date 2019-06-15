@@ -26,6 +26,7 @@ import com.group6.choul.login_register_handling.ApiService;
 import com.group6.choul.login_register_handling.RetrofitBuilder;
 import com.group6.choul.login_register_handling.TokenManager;
 import com.group6.choul.login_register_handling.Utils;
+import com.victor.loading.rotate.RotateLoading;
 
 import java.util.List;
 import java.util.Map;
@@ -42,6 +43,7 @@ public class SigninFragement extends Fragment {
 
     private Button loginBtn;
     private TextInputLayout email_til,password_til;
+    private RotateLoading rotateLoading;
 
     ApiService service;
     TokenManager tokenManager;
@@ -56,6 +58,7 @@ public class SigninFragement extends Fragment {
         loginBtn = v.findViewById(R.id.login_btn);
         email_til = v.findViewById(R.id.email_til);
         password_til = v.findViewById(R.id.password_til);
+        rotateLoading = v.findViewById(R.id.rotateloading);
 
         ButterKnife.bind(getActivity());
         service = RetrofitBuilder.createService(ApiService.class);
@@ -65,6 +68,8 @@ public class SigninFragement extends Fragment {
         loginBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                rotateLoading.start();
+                loginBtn.setVisibility(View.GONE);
                 String email = email_til.getEditText().getText().toString();
                 String password = password_til.getEditText().getText().toString();
 
@@ -75,6 +80,8 @@ public class SigninFragement extends Fragment {
                 call.enqueue(new Callback<AccessToken>() {
                     @Override
                     public void onResponse(Call<AccessToken> call, Response<AccessToken> response) {
+                        rotateLoading.stop();
+                        loginBtn.setVisibility(View.VISIBLE);
                         if(response.isSuccessful()) {
                             tokenManager.saveToken(response.body());
 
@@ -84,6 +91,7 @@ public class SigninFragement extends Fragment {
                         }else if(response.code() == 422){
                             handleErrors(response.errorBody());
                         }else if(response.code() ==  401){
+                            // unauthorize
                             ApiError apiError = Utils.convertErrors(response.errorBody());
                             Toast.makeText(getActivity(), apiError.getMessage(),Toast.LENGTH_LONG).show();
                         }
@@ -91,7 +99,8 @@ public class SigninFragement extends Fragment {
 
                     @Override
                     public void onFailure(Call<AccessToken> call, Throwable t) {
-
+                        rotateLoading.stop();
+                        loginBtn.setVisibility(View.VISIBLE);
                     }
                 });
             }

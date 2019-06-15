@@ -24,23 +24,26 @@ public class LoginRegisterActivity extends AppCompatActivity {
     private TabLayout tabLayout;
     private AppBarLayout myAppBar;
     private ViewPager tabPageView;
+    private View app_bar_view;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login_register);
 
-
 //         <------- handle toolbar
-        Toolbar myToolbar = findViewById(R.id.my_toolbar);
-//        setSupportActionBar(myToolbar);
-//        getSupportActionBar().setElevation(0);
-//        showActionBar();
-        Log.e("Action bar ", myToolbar+"");
+        app_bar_view = findViewById(R.id.app_bar_include);
+        Toolbar myToolbar = findViewById(R.id.toolbar_login_resgister);
+        setSupportActionBar(myToolbar);
+        getSupportActionBar().setElevation(0);
+        showActionBar();
+
         // <------- handle toolbar
 
         tabPageView = findViewById(R.id.viewPage_home);
         tabLayout = findViewById(R.id.login_signup_tab_layout);
+
+
         tab_adapter = new SignupAdapter(getSupportFragmentManager(),tabLayout.getTabCount());
         tabPageView.setAdapter(tab_adapter);
         tabPageView.setOffscreenPageLimit(0);
@@ -61,6 +64,7 @@ public class LoginRegisterActivity extends AppCompatActivity {
         });
         tabPageView.addOnPageChangeListener(new TabLayout.TabLayoutOnPageChangeListener(tabLayout));
     }
+
 
     private void showActionBar() {
         LayoutInflater inflator = (LayoutInflater) this.getSystemService(Context.LAYOUT_INFLATER_SERVICE);

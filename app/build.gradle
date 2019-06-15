@@ -82,6 +82,7 @@ dependencies {
     releaseImplementation 'com.squareup.leakcanary:leakcanary-android-no-op:1.5.1'
     // auth libs
 
+    implementation 'com.victor:lib:1.0.4' // loading anima
 
     implementation 'com.scaledrone:scaledrone-java:0.6.0' // realtime messaging
 

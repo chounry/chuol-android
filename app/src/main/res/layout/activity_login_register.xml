@@ -8,6 +8,7 @@
     android:fitsSystemWindows="true">
 
     <include
+        android:id="@+id/app_bar_include"
         layout="@layout/app_bar_for_login_regi"
         android:layout_width="match_parent"
         android:layout_height="wrap_content" />

@@ -13,6 +13,7 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -35,6 +36,7 @@ import com.group6.choul.login_register_handling.TokenManager;
 import com.group6.choul.login_register_handling.Utils;
 import com.group6.choul.models.HouseModel;
 import com.group6.choul.models.SignupModel;
+import com.victor.loading.rotate.RotateLoading;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -74,6 +76,8 @@ public class SignupFragement extends Fragment {
     AwesomeValidation validation;
     TokenManager tokenManager;
 
+    RotateLoading rotateLoading;
+
     @RequiresApi(api = Build.VERSION_CODES.M)
     @Nullable
     @Override
@@ -86,12 +90,16 @@ public class SignupFragement extends Fragment {
         password_til = v.findViewById(R.id.password_til);
         confirm_password_til = v.findViewById(R.id.confirm_password_til);
         createBtn = v.findViewById(R.id.create_btn);
+        rotateLoading = v.findViewById(R.id.rotateloading);
+
         ButterKnife.bind(getActivity());
         tokenManager = TokenManager.getInstance(getActivity().getSharedPreferences("prefs", MODE_PRIVATE));
 
         createBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                rotateLoading.start();
+                createBtn.setVisibility(View.GONE);
                 String fname = fname_til.getEditText().getText().toString();
                 String lname = lname_til.getEditText().getText().toString();
                 String email = email_til.getEditText().getText().toString();
@@ -108,18 +116,20 @@ public class SignupFragement extends Fragment {
                 confirm_password_til.setError(null);
                 phone_til.setError(null);
 
-                fname = fname.substring(0,1).toUpperCase() + fname.substring(1).toLowerCase();
-                lname = lname.substring(0,1).toUpperCase() + lname.substring(1).toLowerCase();
+                if(!(fname.isEmpty() && lname.isEmpty())) {
+                    fname = fname.substring(0, 1).toUpperCase() + fname.substring(1).toLowerCase();
+                    lname = lname.substring(0, 1).toUpperCase() + lname.substring(1).toLowerCase();
+                }
 
                 call = service.register(fname,lname,email,password,con_password,phone);
                 call.enqueue(new Callback<AccessToken>() {
                     @Override
                     public void onResponse(Call<AccessToken> call, Response<AccessToken> response) {
-                        Log.e("onResponse : ", response+"");
+                        rotateLoading.stop();
+                        createBtn.setVisibility(View.VISIBLE);
                         if(response.isSuccessful()){
                             tokenManager.saveToken(response.body());
                             getActivity().startActivity(new Intent(getActivity(), MainActivity.class));
-
                             getActivity().finish();
                         }else{
                             handleErrors(response.errorBody());
@@ -128,7 +138,8 @@ public class SignupFragement extends Fragment {
 
                     @Override
                     public void onFailure(Call<AccessToken> call, Throwable t) {
-                        Log.e("something",t.getMessage());
+                        rotateLoading.stop();
+                        createBtn.setVisibility(View.VISIBLE);
                     }
                 });
             }

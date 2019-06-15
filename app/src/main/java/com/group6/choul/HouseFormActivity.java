@@ -40,7 +40,7 @@ import com.google.android.material.textfield.TextInputLayout;
 import com.group6.choul.adapters.ImgFormAdapter;
 import com.group6.choul.login_register_handling.TokenManager;
 import com.group6.choul.models.ImgFormModel;
-import com.squareup.haha.perflib.Main;
+//import com.squareup.haha.perflib.Main;
 
 import net.gotev.uploadservice.MultipartUploadRequest;
 import net.gotev.uploadservice.UploadNotificationConfig;

@@ -1,6 +1,7 @@
 package com.group6.choul.fragments;
 
 import android.content.Context;
+import android.content.Intent;
 import android.media.session.MediaSession;
 import android.os.Build;
 import android.os.Bundle;
@@ -9,6 +10,7 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.LinearLayout;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -32,6 +34,7 @@ import com.android.volley.RetryPolicy;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
+import com.group6.choul.FilterActivity;
 import com.group6.choul.HouseDetailActivity;
 import com.group6.choul.R;
 import com.group6.choul.login_register_handling.TokenManager;
@@ -52,6 +55,7 @@ public class HouseListFragment extends Fragment {
     private HouseListAdapter adapter;
     private String url;
     private int user_id;
+    private LinearLayout filterBtn;
 
     private TokenManager tokenManager;
 
@@ -60,6 +64,8 @@ public class HouseListFragment extends Fragment {
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View v = inflater.inflate(R.layout.fragment_post_list,container,false);
+        filterBtn = v.findViewById(R.id.filter_btn);
+
         url = getActivity().getResources().getString(R.string.server_address) + "/api/houses/get";
         houseRecyclerView = v.findViewById(R.id.post_recyclerView);
         homeModelist = new ArrayList<>();
@@ -75,8 +81,15 @@ public class HouseListFragment extends Fragment {
         houseRecyclerView.setLayoutManager(new LinearLayoutManager((getContext())));
         houseRecyclerView.setAdapter(adapter);
 
-
         getData(url);
+
+        filterBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                startActivity(new Intent(getActivity(), FilterActivity.class));
+            }
+        });
+
         return v;
     }
 
@@ -114,7 +127,6 @@ public class HouseListFragment extends Fragment {
                 Log.e("MYError", error.toString());
             }
         });
-
         requestQueue.add(request);
     }
 

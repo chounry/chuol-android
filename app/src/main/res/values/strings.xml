@@ -4,7 +4,7 @@
     <string name="closed_menu">Closed</string>
 
 
-    <string name="server_address">http://192.168.100.124:8000</string>
+    <string name="server_address">http://192.168.100.254:8000</string>
 
     <string name="house_type_promt">Choose House Type</string>
     <string-array name="house_type">

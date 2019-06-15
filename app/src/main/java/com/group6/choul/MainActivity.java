@@ -72,6 +72,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         drawerLayoutHome = findViewById(R.id.drawer_home);
         navigationViewHome = findViewById(R.id.nav_home);
         toolBar = findViewById(R.id.toolbar);
+//        Log.e("My Toolbar ",);
         setSupportActionBar(toolBar);
         getSupportActionBar().setElevation(0);
 
