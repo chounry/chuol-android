@@ -92,14 +92,12 @@ public class RoomListFragment extends Fragment {
 
             }
         },
-                new Response.ErrorListener() {
-                    @Override
-                    public void onErrorResponse(VolleyError error) {
-                        Log.e("MYError", error.toString());
-                    }
-                });
+        new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                Log.e("MYError", error.toString());
+            }
+        });
         requestQueue.add(request);
-
-
     }
 }

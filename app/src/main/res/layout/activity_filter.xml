@@ -219,29 +219,12 @@
                 android:text="House Type"
                 android:textSize="18sp"
                 android:textStyle="bold" />
-            <TableLayout
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/house_type_rcv"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="10dp"
-                android:layout_marginBottom="30dp">
-                <TableRow>
-                    <CheckBox android:id="@+id/checkbox_villa"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="VIlla"
-                        android:layout_weight="0.3" />
-                    <CheckBox android:id="@+id/checkbox_Bugalow"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="Bugalow"
-                        android:layout_weight="0.3" />
-                    <CheckBox android:id="@+id/checkbox_simpleHouse"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="Simple House"
-                        android:layout_weight="0.3" />
-                </TableRow>
-            </TableLayout>
+                android:layout_height="wrap_content">
+
+            </androidx.recyclerview.widget.RecyclerView>
             <TextView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"

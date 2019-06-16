@@ -101,7 +101,6 @@ public class HouseListAdapter extends RecyclerView.Adapter<HouseListAdapter.MyHo
     TextView textviewType;
     ImageView imageView;
     TextView txtSave;
-    String text = "Save";
     Context context;
     TokenManager tokenManager;
     int user_id,estate_id;
