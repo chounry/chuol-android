@@ -106,9 +106,7 @@ public class ChatInActivity extends AppCompatActivity implements RoomListener {
         String username = tokenManager.getUserName();
         MemberDataForChat data = new MemberDataForChat(username,"https://wowsciencecamp.org/wp-content/uploads/2018/07/dummy-user-img-1-400x400_x_acf_cropped.png",user_id);
 //
-//        messageAdapter = new MessageListAdapter(ChatInActivity.this, messageModelList);
-//        listView.setDivider(null);
-//        listView.setAdapter(messageAdapter);
+
         service = RetrofitBuilder.createService(ApiService.class);
         callGetMessages = service.get_messages(Integer.parseInt(estate_id), user_id);
         callGetMessages.enqueue(new Callback<List<MessageModel>>() {
@@ -167,12 +165,12 @@ public class ChatInActivity extends AppCompatActivity implements RoomListener {
 
     @Override
     public void onOpen(Room room) {
-        Log.e("Scale Drom onOpen Status : ", room.getName());
+        Log.e("Scale Drom onOpen", room.getName());
     }
 
     @Override
     public void onOpenFailure(Room room, Exception ex) {
-        Log.e("Scale Drom onOpen Status : ", "Faild");
+        Log.e("Scale Drom onOpen", "Faild");
     }
 
     @Override

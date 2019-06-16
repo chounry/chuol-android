@@ -49,7 +49,7 @@
         <activity android:screenOrientation="portrait" android:name=".PersonalInfoActivity" android:launchMode="singleTop"/>
         <activity android:screenOrientation="portrait" android:name=".MainActivity"/>
         <activity android:screenOrientation="portrait" android:name=".AboutusActivity"/>
-        <activity android:screenOrientation="portrait" android:name=".Termofuse"/>
+        <activity android:screenOrientation="portrait" android:name=".TermofUseActivity"/>
         <activity android:screenOrientation="portrait" android:name=".FilterActivity" android:launchMode="singleTop"/>
         <activity android:screenOrientation="portrait" android:name=".SplashScreen">
             <intent-filter>

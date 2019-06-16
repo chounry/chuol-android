@@ -59,6 +59,10 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     public ApiService service;
     public Call<UserModel> call;
 
+    /* Things to do
+    * - Change token time expired duration
+    * */
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);

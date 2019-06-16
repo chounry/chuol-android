@@ -5,13 +5,13 @@ import android.os.Bundle;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 
-public class Termofuse extends AppCompatActivity {
+public class TermofUseActivity extends AppCompatActivity {
 
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.term_of_use);
+        setContentView(R.layout.activity_term_of_use);
 
     }
 }

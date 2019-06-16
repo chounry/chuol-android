@@ -1,9 +1,6 @@
 package com.group6.choul.fragments;
 
-import android.app.Person;
-import android.content.Context;
 import android.content.Intent;
-import android.media.session.MediaSession;
 import android.os.Bundle;
 
 import android.util.Log;
@@ -19,11 +16,10 @@ import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentTransaction;
 
-import com.basgeekball.awesomevalidation.AwesomeValidation;
 import com.group6.choul.AboutusActivity;
 import com.group6.choul.PersonalInfoActivity;
 import com.group6.choul.R;
-import com.group6.choul.Termofuse;
+import com.group6.choul.TermofUseActivity;
 import com.group6.choul.login_register_handling.AccessToken;
 import com.group6.choul.login_register_handling.ApiService;
 import com.group6.choul.login_register_handling.RetrofitBuilder;
@@ -99,7 +95,7 @@ public class SettingFragment extends Fragment{
         termOfUse.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent(getActivity(), Termofuse.class);
+                Intent intent = new Intent(getActivity(), TermofUseActivity.class);
                 startActivity(intent);
             }
         });
