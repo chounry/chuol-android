@@ -6,6 +6,7 @@ import android.content.Context;
 import com.facebook.stetho.okhttp3.StethoInterceptor;
 import com.group6.choul.BuildConfig;
 import com.group6.choul.R;
+import com.group6.choul.shares.MyConfig;
 
 import java.io.IOException;
 
@@ -18,7 +19,8 @@ import retrofit2.converter.moshi.MoshiConverterFactory;
 
 public class RetrofitBuilder {
 
-    public static String BASE_URL = "http://192.168.100.254:8000/api/";
+//    public static String BASE_URL = "http://192.168.100.174:8000/api/";
+    public static String BASE_URL = MyConfig.SERVE_ADDRESS + "/api/";
     private static OkHttpClient client = buildClient();
     private static Retrofit retrofit  = buildRetrofit(client);
 

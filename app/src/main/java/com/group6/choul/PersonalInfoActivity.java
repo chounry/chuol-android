@@ -12,6 +12,8 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.ImageView;
+import android.widget.ProgressBar;
+import android.widget.Toast;
 
 import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AppCompatActivity;
@@ -27,6 +29,7 @@ import com.group6.choul.login_register_handling.RetrofitBuilder;
 import com.group6.choul.login_register_handling.TokenManager;
 import com.group6.choul.models.ResponseStatus;
 import com.group6.choul.models.UserModel;
+import com.group6.choul.shares.MyConfig;
 import com.squareup.picasso.Picasso;
 
 import org.apache.commons.io.FileUtils;
@@ -46,6 +49,7 @@ public class PersonalInfoActivity extends AppCompatActivity implements BSImagePi
     private EditText et_fname,et_lname,et_email,et_phone;
     private Button submit_btn,select_img_btn,cancel_img_btn;
     private ImageView profile_imgV;
+    private ProgressBar mProgressbar;
 
     private ApiService service;
     private TokenManager tokenManager;
@@ -59,6 +63,7 @@ public class PersonalInfoActivity extends AppCompatActivity implements BSImagePi
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_personal_info);
+        mProgressbar = findViewById(R.id.activity_personal_progressbar);
         et_fname = findViewById(R.id.et_fname);
         et_lname = findViewById(R.id.et_lname);
         et_email = findViewById(R.id.et_email);
@@ -75,7 +80,7 @@ public class PersonalInfoActivity extends AppCompatActivity implements BSImagePi
         cancel_img_btn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Picasso.get().load(getResources().getString(R.string.server_address) + userModel.getUser_profile_img()).into(profile_imgV);
+                Picasso.get().load(MyConfig.SERVE_ADDRESS + userModel.getUser_profile_img()).into(profile_imgV);
                 cancel_img_btn.setVisibility(View.GONE);
                 selected_uri = null;
             }
@@ -85,15 +90,19 @@ public class PersonalInfoActivity extends AppCompatActivity implements BSImagePi
         call.enqueue(new Callback<UserModel>() {
             @Override
             public void onResponse(Call<UserModel> call, Response<UserModel> response) {
+                mProgressbar.setVisibility(View.GONE);
                 if(response.isSuccessful()){
                     userModel = response.body();
                     loadData(userModel);
+                }else{
+                    Toast.makeText(PersonalInfoActivity.this, "Cannot get the data", Toast.LENGTH_SHORT).show();
                 }
             }
 
             @Override
             public void onFailure(Call<UserModel> call, Throwable t) {
-
+                mProgressbar.setVisibility(View.GONE);
+                Toast.makeText(PersonalInfoActivity.this, "Cannot connect to the server", Toast.LENGTH_SHORT).show();
             }
         });
 
@@ -161,7 +170,6 @@ public class PersonalInfoActivity extends AppCompatActivity implements BSImagePi
                     @Override
                     public void onResponse(Call<ResponseStatus> call, Response<ResponseStatus> response) {
                         if(response.isSuccessful()){
-                            Log.e("Update Personal info : ", response.body().getStatus() );
                             String responseStatus = response.body().getStatus();
                             if(responseStatus.equals("success")){
                                 finish();
@@ -185,7 +193,7 @@ public class PersonalInfoActivity extends AppCompatActivity implements BSImagePi
         et_lname.setText(responseBody.getLname());
         et_email.setText(responseBody.getEmail());
         et_phone.setText(responseBody.getPhone());
-        Picasso.get().load(getResources().getString(R.string.server_address) + responseBody.getUser_profile_img()).into(profile_imgV);
+        Picasso.get().load(MyConfig.SERVE_ADDRESS + responseBody.getUser_profile_img()).into(profile_imgV);
     }
 
     private void showActionBar() {

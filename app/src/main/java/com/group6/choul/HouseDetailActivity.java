@@ -1,7 +1,9 @@
 package com.group6.choul;
 
+import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.Intent;
+import android.os.AsyncTask;
 import android.os.Build;
 import android.os.Bundle;
 
@@ -13,7 +15,6 @@ import android.view.WindowManager;
 import android.widget.EditText;
 import android.widget.FrameLayout;
 import android.widget.ImageButton;
-import android.widget.ImageView;
 import android.widget.TextView;
 
 
@@ -47,6 +48,8 @@ import com.group6.choul.login_register_handling.TokenManager;
 import com.group6.choul.models.ImageModel;
 import com.group6.choul.models.RelatedModel;
 import com.group6.choul.models.ResponseStatus;
+import com.group6.choul.shares.MyConfig;
+import com.group6.choul.shares.MyUtilFunctions;
 
 import org.json.JSONArray;
 import org.json.JSONObject;
@@ -59,15 +62,17 @@ import retrofit2.Call;
 import retrofit2.Callback;
 
 public class HouseDetailActivity extends AppCompatActivity implements OnMapReadyCallback {
-    ViewPager viewPager;
+    private ViewPager viewPager;
     private FrameLayout map;
+    private ProgressDialog mProgessDialog;
 
     private GoogleMap mMap;
     private RelatedAdapter adapter;
     private List<RelatedModel> modelList;
     private RecyclerView recyclerViewHome;
     private ArrayList<ImageModel> images;
-    private String estate_id,dataUrl,baseUrl;
+    private String estate_id;
+    private String dataUrl = MyConfig.SERVE_ADDRESS + "/api/houses/get_detail";
 
     private double lat,lng;
 
@@ -81,9 +86,8 @@ public class HouseDetailActivity extends AppCompatActivity implements OnMapReady
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_house_detail);
-        baseUrl = getResources().getString(R.string.server_address);
-        dataUrl = baseUrl + "/api/houses/get_detail";
 
+        mProgessDialog = MyUtilFunctions.createProgressDialog(this);
         this.getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_ALWAYS_HIDDEN);
         images = new ArrayList<>();
         viewPager = findViewById(R.id.slide);
@@ -117,7 +121,7 @@ public class HouseDetailActivity extends AppCompatActivity implements OnMapReady
         adapter = new RelatedAdapter(modelList);
         recyclerViewHome.setAdapter(adapter);
 
-        getData(dataUrl);
+        getDataAsyn();
 
         send_btn.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -172,24 +176,26 @@ public class HouseDetailActivity extends AppCompatActivity implements OnMapReady
         }
 
     }
-    private void getData(String url) {
-        try {
-            RequestQueue requestQueue = Volley.newRequestQueue(this);
+    private void getData( ) {
+
+        try{
+            RequestQueue requestQueue = Volley.newRequestQueue(HouseDetailActivity.this);
             JSONObject jsonBody = new JSONObject();
             jsonBody.put("estate_id", estate_id);
 
             final String requestBody = jsonBody.toString();
-            StringRequest request = new StringRequest(Request.Method.POST, url, new Response.Listener<String>() {
+            StringRequest request = new StringRequest(Request.Method.POST, dataUrl, new Response.Listener<String>() {
                 @Override
                 public void onResponse(String response) {
+                    mProgessDialog.cancel();
                     try {
                         JSONObject responeJson = new JSONObject(response);
-                        String title,for_sale_status,description,street,city,bathroom,bedroom,floor,size,email,phone,price,phone_option,currency;
-                        Log.e("onResponse: ",responeJson.getJSONArray("img") + "");
+                        String title, for_sale_status, description, street, city, bathroom, bedroom, floor, size, email, phone, price, phone_option, currency;
+                        Log.e("onResponse: ", responeJson.getJSONArray("img") + "");
                         JSONArray img_arr = responeJson.getJSONArray("img");
-                        for (int i = 0; i< img_arr.length();i++){
+                        for (int i = 0; i < img_arr.length(); i++) {
 
-                            ImageModel img = new ImageModel(baseUrl +img_arr.get(i).toString());
+                            ImageModel img = new ImageModel(MyConfig.SERVE_ADDRESS + img_arr.get(i).toString());
                             images.add(img);
                         }
                         estate_id = responeJson.getString("estate_id");
@@ -201,18 +207,19 @@ public class HouseDetailActivity extends AppCompatActivity implements OnMapReady
                         email = responeJson.getString("email");
                         phone = responeJson.getString("phone");
                         price = responeJson.getString("price");
-                        phone_option = responeJson.getString ("phone_option");
+                        phone_option = responeJson.getString("phone_option");
                         currency = responeJson.getString("currency");
                         lat = responeJson.getDouble("lat");
                         lng = responeJson.getDouble("lng");
                         bathroom = responeJson.getString("bathroom");
-                        bedroom =responeJson.getString("bedroom");
-                        floor =responeJson.getString("floor");
+                        bedroom = responeJson.getString("bedroom");
+                        floor = responeJson.getString("floor");
                         size = responeJson.getString("house_size");
                         estate_user_id = responeJson.getInt("estate_user_id");
 
-                        setInfo(title,for_sale_status,price,description,street,city,bathroom,bedroom,floor,size,email,phone,phone_option,currency);
+                        setInfo(title, for_sale_status, price, description, street, city, bathroom, bedroom, floor, size, email, phone, phone_option, currency);
                     } catch (Exception e) {
+                        finish();
                         Log.e("Json Error", e.toString());
                     }
 
@@ -241,9 +248,21 @@ public class HouseDetailActivity extends AppCompatActivity implements OnMapReady
                 }
             };
             requestQueue.add(request);
-        }catch (Exception e){
-
+        }catch(Exception e){
+            finish();
         }
+
+    }
+
+    private void getDataAsyn(){
+        mProgessDialog.show();
+        new AsyncTask<String, Void, String>() {
+            @Override
+            protected String doInBackground(String... strings) {
+                getData();
+                return null;
+            }
+        }.execute();
     }
 
     private void sendMessage(String content){

@@ -1,10 +1,12 @@
 package com.group6.choul;
 
 import android.app.Dialog;
+import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.net.Uri;
+import android.os.AsyncTask;
 import android.os.Build;
 import android.os.Bundle;
 import android.provider.MediaStore;
@@ -40,6 +42,7 @@ import com.google.android.material.textfield.TextInputLayout;
 import com.group6.choul.adapters.ImgFormAdapter;
 import com.group6.choul.login_register_handling.TokenManager;
 import com.group6.choul.models.ImgFormModel;
+import com.group6.choul.shares.MyConfig;
 //import com.squareup.haha.perflib.Main;
 
 import net.gotev.uploadservice.MultipartUploadRequest;
@@ -76,13 +79,13 @@ public class HouseFormActivity extends AppCompatActivity implements BSImagePicke
     private int user_id;
 
     private static final int ERROR_DIALOG_REQUEST = 9001;
-    private String upload_url;
+    private String upload_url = MyConfig.SERVE_ADDRESS + "/api/houses/create";
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_house_form);
-        upload_url = getResources().getString(R.string.server_address) + "/api/houses/create";
+
 
         recyclerView = findViewById(R.id.img_recyler_view);
         myToolbar = findViewById(R.id.my_toolbar);
@@ -167,10 +170,10 @@ public class HouseFormActivity extends AppCompatActivity implements BSImagePicke
                 city_id = city.getSelectedItem().toString();
                 currency = currency_spinner.getSelectedItem().toString();
                 duration = duration_spinner.getSelectedItem().toString();
-//                if(!title.isEmpty() && !price.isEmpty() && !phone.isEmpty() && !address.isEmpty() && !bedroom.isEmpty() &&
-//                        !bathroom.isEmpty() && !floor.isEmpty() && !house_size.isEmpty() && forSale_status.isEmpty()) {
+                if(!title.isEmpty() && !price.isEmpty() && !phone.isEmpty() && !address.isEmpty() && !bedroom.isEmpty() &&
+                        !bathroom.isEmpty() && !floor.isEmpty() && !house_size.isEmpty() && !forSale_status.isEmpty()) {
                     uploadMultipart(imgs_uri);
-//                }
+                }
               }
 
         });
@@ -276,48 +279,67 @@ public class HouseFormActivity extends AppCompatActivity implements BSImagePicke
         /* *********************************************************************
          * **********************  place to upload data to server ******************
          ******************************************************************* */
-
+        ProgressDialog dialog = ProgressDialog.show(this, "",
+                "Uploading. Please wait...", true);
         //Uploading code
-        try {
-            String uploadId = UUID.randomUUID().toString();
+        new AsyncTask<String, Void, String>() {
 
-            //Creating a multi part request
-            MultipartUploadRequest mUploadRequest = new MultipartUploadRequest(this, uploadId, upload_url)
-                    .addParameter("title", title)
-                    .addParameter("price", price)
-                    .addParameter("description", description)
-                    .addParameter("phone", phone)
-                    .addParameter("address", address)
-                    .addParameter("bathroom",bathroom)
-                    .addParameter("bedroom", bedroom)
-                    .addParameter("floor", floor)
-                    .addParameter("house_size", house_size)
-                    .addParameter("yard_size", yard_size)
-                    .addParameter("for_sale_status", forSale_status)
-                    .addParameter("type", type_house)
-                    .addParameter("city_id",city_id)
-                    .addParameter("lat",lat+"")
-                    .addParameter("lng",lng+"")
-                    .addParameter("phone_option",phone_opt)
-                    .addParameter("currency",currency)
-                    .addParameter("duration",duration)
-                    .addParameter("user_id",user_id+"")
-                    .setNotificationConfig(new UploadNotificationConfig())
-                    .setMaxRetries(2); // try request at least 2 time before give up
+            @Override
+            protected String doInBackground(String... strings) {
+                try {
 
-            for(int i = 0;i < filePath.size();i++){
-                // add many imgs to the request
-                String path = filePath.get(i).getPath();
-                mUploadRequest.addFileToUpload(path, "imgs"+"["+i+"]");
+                    String uploadId = UUID.randomUUID().toString();
+
+                    //Creating a multi part request
+                    MultipartUploadRequest mUploadRequest = new MultipartUploadRequest(HouseFormActivity.this, uploadId, upload_url)
+                            .addParameter("title", title)
+                            .addParameter("price", price)
+                            .addParameter("description", description)
+                            .addParameter("phone", phone)
+                            .addParameter("address", address)
+                            .addParameter("bathroom", bathroom)
+                            .addParameter("bedroom", bedroom)
+                            .addParameter("floor", floor)
+                            .addParameter("house_size", house_size)
+                            .addParameter("yard_size", yard_size)
+                            .addParameter("for_sale_status", forSale_status)
+                            .addParameter("type", type_house)
+                            .addParameter("city_id", city_id)
+                            .addParameter("lat", lat + "")
+                            .addParameter("lng", lng + "")
+                            .addParameter("phone_option", phone_opt)
+                            .addParameter("currency", currency)
+                            .addParameter("duration", duration)
+                            .addParameter("user_id", user_id + "")
+                            .setNotificationConfig(new UploadNotificationConfig())
+                            .setMaxRetries(2); // try request at least 2 time before give up
+
+                    for (int i = 0; i < filePath.size(); i++) {
+                        // add many imgs to the request
+                        String path = filePath.get(i).getPath();
+                        mUploadRequest.addFileToUpload(path, "imgs" + "[" + i + "]");
+                    }
+
+                    mUploadRequest.startUpload();
+
+                    startActivity(new Intent(HouseFormActivity.this, MainActivity.class));
+                    finish();
+//                    Toast.makeText(HouseFormActivity.this, "Upload successful", Toast.LENGTH_SHORT).show();
+                } catch (Exception exc) {
+//                    Toast.makeText(HouseFormActivity.this, "Multipart Error" + exc.getMessage(), Toast.LENGTH_SHORT).show();
+                }
+                return null;
             }
 
-            mUploadRequest.startUpload();
-//            startActivity(new Intent(HouseFormActivity.this, MainActivity.class));
-//            finish();
-            Toast.makeText(this,"Upload successful", Toast.LENGTH_SHORT).show();
-        } catch (Exception exc) {
-            Toast.makeText(this,"Multipart Error" + exc.getMessage(), Toast.LENGTH_SHORT).show();
-        }
+            @Override
+            protected void onPostExecute(String s) {
+                try {
+                    Thread.sleep(2000);
+                }catch (Exception e){
+
+                }
+            }
+        }.execute();
     }
 
     // image selection handling

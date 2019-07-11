@@ -49,7 +49,6 @@ public class SettingFragment extends Fragment{
         aboutUs = v.findViewById(R.id.aboutUs);
         termOfUse = v.findViewById(R.id.termofUse);
 
-
         ButterKnife.bind(getActivity());
         tokenManager = TokenManager.getInstance(getActivity().getSharedPreferences("prefs",MODE_PRIVATE));
         service = RetrofitBuilder.createServiceWithAuth(ApiService.class, tokenManager);
@@ -62,7 +61,7 @@ public class SettingFragment extends Fragment{
                     @Override
                     public void onResponse(Call<AccessToken> call, Response<AccessToken> response) {
                         tokenManager.deleteToken();
-                        FragmentTransaction fragmentTransaction =  getChildFragmentManager().beginTransaction();
+                        FragmentTransaction fragmentTransaction =  getFragmentManager().beginTransaction();
                         Fragment homeFragment = new HomeFragment();
                         fragmentTransaction.replace(R.id.container_home, homeFragment);
                         fragmentTransaction.commit();

@@ -40,7 +40,6 @@ public class HomeFragment extends Fragment {
         View v = inflater.inflate(R.layout.fragment_home, container, false);
         tabPageView = v.findViewById(R.id.viewPage_home);
         tabLayout = v.findViewById(R.id.tab_h);
-
         return v;
     }
 

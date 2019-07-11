@@ -11,12 +11,15 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ListView;
+import android.widget.ProgressBar;
+import android.widget.Toast;
 
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.annotation.RequiresApi;
 import androidx.fragment.app.Fragment;
+import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
 import com.basgeekball.awesomevalidation.AwesomeValidation;
 import com.group6.choul.ChatInActivity;
@@ -38,8 +41,9 @@ import retrofit2.Response;
 
 import static android.content.Context.MODE_PRIVATE;
 
-public class ChatOutFragment extends Fragment {
+public class ChatOutFragment extends Fragment implements SwipeRefreshLayout.OnRefreshListener {
 
+    private SwipeRefreshLayout mSwipeRefreshLayout;
     private ListView listView ;
     private List<ChatModel> chatModelist;
     private ListChatAdapter adapter;
@@ -54,30 +58,19 @@ public class ChatOutFragment extends Fragment {
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View v = inflater.inflate(R.layout.fragment_chat_out,container,false);
         listView = v.findViewById(R.id.item_chat_id);
+        // SwipeRefreshLayout
+        mSwipeRefreshLayout = (SwipeRefreshLayout) v.findViewById(R.id.fragment_chat_swipe_container);
+        mSwipeRefreshLayout.setOnRefreshListener(this);
+        mSwipeRefreshLayout.setColorSchemeResources(R.color.colorPrimary,
+                android.R.color.holo_green_dark,
+                android.R.color.holo_orange_dark,
+                android.R.color.holo_blue_dark);
 
         chatModelist = new ArrayList<>();
-
-        ButterKnife.bind(getActivity());
+        adapter = new ListChatAdapter(getContext(),chatModelist);
+        listView.setAdapter(adapter);
         tokenManager = TokenManager.getInstance(getActivity().getSharedPreferences("prefs",MODE_PRIVATE));
         service = RetrofitBuilder.createService(ApiService.class);
-
-        call = service.get_chat_room(tokenManager.getUserId());
-        call.enqueue(new Callback<List<ChatModel>>() {
-            @Override
-            public void onResponse(Call<List<ChatModel>> call, Response<List<ChatModel>> response) {
-                if(response.isSuccessful()){
-                    chatModelist = response.body();
-
-                    adapter = new ListChatAdapter(getContext(),chatModelist);
-                    listView.setAdapter(adapter);
-                }
-            }
-
-            @Override
-            public void onFailure(Call<List<ChatModel>> call, Throwable t) {
-                Log.e("Chat Out Fragment : ", t.toString());
-            }
-        });
 
         listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
@@ -89,6 +82,39 @@ public class ChatOutFragment extends Fragment {
                 startActivity(intent);
             }
         });
+
+        getData();
         return v;
+    }
+
+    private void getData(){
+        mSwipeRefreshLayout.setRefreshing(true);
+        chatModelist.clear();
+        call = service.get_chat_room(tokenManager.getUserId());
+        call.enqueue(new Callback<List<ChatModel>>() {
+            @Override
+            public void onResponse(Call<List<ChatModel>> call, Response<List<ChatModel>> response) {
+                mSwipeRefreshLayout.setRefreshing(false);
+                if(response.isSuccessful()){
+                    chatModelist.addAll(response.body());
+                    adapter.notifyDataSetChanged();
+                }else{
+                    Toast.makeText(getActivity(), "Cannot get the data", Toast.LENGTH_SHORT).show();
+                }
+            }
+
+            @Override
+            public void onFailure(Call<List<ChatModel>> call, Throwable t) {
+                mSwipeRefreshLayout.setRefreshing(false);
+
+                Toast.makeText(getActivity(), "Cannot connect to the server", Toast.LENGTH_SHORT).show();
+                Log.e("Chat Out Fragment : ", t.toString());
+            }
+        });
+    }
+
+    @Override
+    public void onRefresh() {
+        getData();
     }
 }

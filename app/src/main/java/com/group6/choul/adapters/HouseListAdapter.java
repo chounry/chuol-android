@@ -51,6 +51,12 @@ public class HouseListAdapter extends RecyclerView.Adapter<HouseListAdapter.MyHo
         this.recyclerViewHome = recyclerViewHome;
     }
 
+    @Override
+    public int getItemViewType(int position) {
+        return position;
+    }
+
+
     @NonNull
     @Override
     public MyHomeRecyClerView onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {

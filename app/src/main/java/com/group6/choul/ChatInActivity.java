@@ -12,6 +12,7 @@ import android.view.View;
 import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.ListView;
+import android.widget.ProgressBar;
 import android.widget.Toast;
 
 
@@ -19,6 +20,7 @@ import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
+import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -42,15 +44,17 @@ import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 
-public class ChatInActivity extends AppCompatActivity implements RoomListener {
+public class ChatInActivity extends AppCompatActivity implements RoomListener,SwipeRefreshLayout.OnRefreshListener {
 
     private String channelID = "DGIuZ5gOpwXwUfB1",roomID,estate_id;
     private Scaledrone scaledrone;
 
+    private SwipeRefreshLayout mSwipeRefreshLayout;
     private EditText mstEt;
     private ImageButton sendBtn;
     private ListView listView;
     private List<MessageModel> messageModelList;
+    private ProgressBar mProgressbar;
     private MessageListAdapter messageAdapter;
 
     private ApiService service;
@@ -69,6 +73,13 @@ public class ChatInActivity extends AppCompatActivity implements RoomListener {
         setContentView(R.layout.activity_chat_in);
         mstEt = findViewById(R.id.msg_et);
         sendBtn = findViewById(R.id.send_btn);
+        // SwipeRefreshLayout
+        mSwipeRefreshLayout = (SwipeRefreshLayout) findViewById(R.id.activity_chat_swipe_container);
+        mSwipeRefreshLayout.setOnRefreshListener(this);
+        mSwipeRefreshLayout.setColorSchemeResources(R.color.colorPrimary,
+                android.R.color.holo_green_dark,
+                android.R.color.holo_orange_dark,
+                android.R.color.holo_blue_dark);
 
         fromChatOutFragment = getIntent();
         estate_id = fromChatOutFragment.getStringExtra("ESTATE_ID");
@@ -103,15 +114,18 @@ public class ChatInActivity extends AppCompatActivity implements RoomListener {
 
     private void initMessage(){
         // get the associated message to display
+        mSwipeRefreshLayout.setRefreshing(true);
         String username = tokenManager.getUserName();
         MemberDataForChat data = new MemberDataForChat(username,"https://wowsciencecamp.org/wp-content/uploads/2018/07/dummy-user-img-1-400x400_x_acf_cropped.png",user_id);
-//
 
         service = RetrofitBuilder.createService(ApiService.class);
         callGetMessages = service.get_messages(Integer.parseInt(estate_id), user_id);
         callGetMessages.enqueue(new Callback<List<MessageModel>>() {
             @Override
             public void onResponse(Call<List<MessageModel>> call, Response<List<MessageModel>> response) {
+//                mProgressbar.setVisibility(View.GONE);
+                mSwipeRefreshLayout.setRefreshing(false);
+
                 if(response.isSuccessful()) {
                     messageModelList = response.body();
                     for (int i = 0; i < messageModelList.size(); i++) {
@@ -122,12 +136,17 @@ public class ChatInActivity extends AppCompatActivity implements RoomListener {
                         listView.setAdapter(messageAdapter);
                         listView.setSelection(listView.getCount() - 1);
                     }
+                }else{
+                    Toast.makeText(ChatInActivity.this, "Cannot get the data...", Toast.LENGTH_SHORT).show();
                 }
             }
 
             @Override
             public void onFailure(Call<List<MessageModel>> call, Throwable t) {
+//                mProgressbar.setVisibility(View.GONE);
+                mSwipeRefreshLayout.setRefreshing(false);
 
+                Toast.makeText(ChatInActivity.this, "Cannot connect to the server", Toast.LENGTH_SHORT).show();
             }
         });
 
@@ -148,7 +167,6 @@ public class ChatInActivity extends AppCompatActivity implements RoomListener {
             @Override
             public void onFailure(Exception ex) {
                 Log.e("Scale Drone ","Connection Lost");
-                initMessage();
                 System.err.println(ex);
             }
 
@@ -157,10 +175,6 @@ public class ChatInActivity extends AppCompatActivity implements RoomListener {
                 System.err.println(reason);
             }
         });
-    }
-
-    public void toastMessage(String message){
-        Toast.makeText(this, message, Toast.LENGTH_SHORT).show();
     }
 
     @Override
@@ -257,5 +271,10 @@ public class ChatInActivity extends AppCompatActivity implements RoomListener {
         actionBar.setDisplayShowCustomEnabled(true);
         actionBar.setDisplayShowTitleEnabled(false);
         actionBar.setCustomView(v);
+    }
+
+    @Override
+    public void onRefresh() {
+        initMessage();
     }
 }

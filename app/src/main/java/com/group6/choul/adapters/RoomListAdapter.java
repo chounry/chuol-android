@@ -68,6 +68,10 @@ public class RoomListAdapter extends RecyclerView.Adapter<RoomListAdapter.MyRoom
         return new MyRoomRecyClerView(myView,context);
     }
 
+    @Override
+    public int getItemViewType(int position) {
+        return position;
+    }
 
     @Override
     public void onBindViewHolder(@NonNull MyRoomRecyClerView holder, int position) {

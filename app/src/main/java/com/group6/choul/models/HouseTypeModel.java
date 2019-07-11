@@ -4,6 +4,10 @@ public class HouseTypeModel {
 
     private String name;
 
+    public HouseTypeModel(String name) {
+        this.name = name;
+    }
+
     public void setName(String name) {
         this.name = name;
     }

@@ -32,6 +32,7 @@ import com.group6.choul.R;
 import com.group6.choul.adapters.SavePostAdapter;
 import com.group6.choul.login_register_handling.TokenManager;
 import com.group6.choul.models.HouseModel;
+import com.group6.choul.shares.MyConfig;
 
 
 import org.json.JSONArray;
@@ -45,7 +46,7 @@ public class SavedPostFragment extends Fragment {
     private ListView listView;
     private List<HouseModel> saveModelList;
     private SavePostAdapter adapter;
-    private String url;
+    private String url = MyConfig.SERVE_ADDRESS + "/api/estates/get_saved_post";
     private TokenManager tokenManager;
     private int user_id;
 
@@ -54,7 +55,6 @@ public class SavedPostFragment extends Fragment {
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View v = inflater.inflate(R.layout.fragment_saved_post,container,false);
-        url = getResources().getString(R.string.server_address) + "/api/estates/get_saved_post";
         listView = v.findViewById(R.id.save_listview);
         saveModelList = new ArrayList<>();
         adapter = new SavePostAdapter(getContext(),saveModelList);
@@ -68,7 +68,7 @@ public class SavedPostFragment extends Fragment {
     private void getData(String url) {
         try {
 
-            final String ImgUrl = getResources().getString(R.string.server_address);
+            final String ImgUrl = MyConfig.SERVE_ADDRESS;
             RequestQueue requestQueue = Volley.newRequestQueue(getActivity());
             JSONObject jsonBody = new JSONObject();
             jsonBody.put("user_id", user_id);

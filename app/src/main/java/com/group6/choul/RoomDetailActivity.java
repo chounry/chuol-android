@@ -1,6 +1,8 @@
 package com.group6.choul;
 
+import android.app.ProgressDialog;
 import android.content.Context;
+import android.os.AsyncTask;
 import android.os.Build;
 import android.os.Bundle;
 
@@ -40,6 +42,8 @@ import com.group6.choul.adapters.SlideAdapter;
 import com.group6.choul.adapters.RelatedAdapter;
 import com.group6.choul.models.ImageModel;
 import com.group6.choul.models.RelatedModel;
+import com.group6.choul.shares.MyConfig;
+import com.group6.choul.shares.MyUtilFunctions;
 
 import org.json.JSONArray;
 import org.json.JSONObject;
@@ -50,15 +54,17 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class RoomDetailActivity extends AppCompatActivity implements OnMapReadyCallback {
-    ViewPager viewPager;
+    private ViewPager viewPager;
     private FrameLayout map;
+    private ProgressDialog mProgressbar;
 
     private GoogleMap mMap;
     private RelatedAdapter adapter;
     private List<RelatedModel> modelList;
     private RecyclerView recyclerViewHome;
 
-    private String baseUrl,estate_id,dataUrl;
+    private String estate_id;
+    private String dataUrl = MyConfig.SERVE_ADDRESS + "/api/rooms/get_detail";
     private ArrayList<ImageModel> images;
     private double lat,lng;
 
@@ -67,9 +73,8 @@ public class RoomDetailActivity extends AppCompatActivity implements OnMapReadyC
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_room_detail);
-        baseUrl = getResources().getString(R.string.server_address);
-        dataUrl = baseUrl +"/api/rooms/get_detail";
 
+        mProgressbar = MyUtilFunctions.createProgressDialog(this);
         this.getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_ALWAYS_HIDDEN);
         images = new ArrayList<>();
         viewPager = findViewById(R.id.slide);
@@ -101,7 +106,7 @@ public class RoomDetailActivity extends AppCompatActivity implements OnMapReadyC
         adapter = new RelatedAdapter(modelList);
         recyclerViewHome.setAdapter(adapter);
 
-        getData(dataUrl);
+        getDataAsyn();
 
     }
     private  void setInfo(String title,String price,String description,String street,String city,String AC,String parking,String wifi,String email,String phone,String phone_option,String currency){
@@ -147,16 +152,17 @@ public class RoomDetailActivity extends AppCompatActivity implements OnMapReadyC
 
 
     }
-    private void getData(String url) {
+    private void getData() {
         try {
             RequestQueue requestQueue = Volley.newRequestQueue(this);
             JSONObject jsonBody = new JSONObject();
             jsonBody.put("estate_id", estate_id);
 
             final String requestBody = jsonBody.toString();
-            StringRequest request = new StringRequest(Request.Method.POST, url, new Response.Listener<String>() {
+            StringRequest request = new StringRequest(Request.Method.POST, dataUrl, new Response.Listener<String>() {
                 @Override
                 public void onResponse(String response) {
+                    mProgressbar.cancel();
                     try {
                         JSONObject responeJson = new JSONObject(response);
                         String estate_id,title,description,street,city,email,phone,price,AC,parking,Wifi,phone_option,currency;
@@ -164,7 +170,7 @@ public class RoomDetailActivity extends AppCompatActivity implements OnMapReadyC
                         JSONArray img_arr = responeJson.getJSONArray("img");
                         for (int i = 0; i< img_arr.length();i++){
 
-                            ImageModel img = new ImageModel(baseUrl +img_arr.get(i).toString());
+                            ImageModel img = new ImageModel(MyConfig.SERVE_ADDRESS +img_arr.get(i).toString());
                             images.add(img);
                         }
                         estate_id = responeJson.getString("estate_id");
@@ -185,6 +191,7 @@ public class RoomDetailActivity extends AppCompatActivity implements OnMapReadyC
 
                         setInfo(title,price,description,street,city,AC,parking,Wifi,email,phone,phone_option,currency);
                     } catch (Exception e) {
+                        finish();
                         Log.e("Json Error", e.toString());
                     }
 
@@ -214,9 +221,25 @@ public class RoomDetailActivity extends AppCompatActivity implements OnMapReadyC
             };
             requestQueue.add(request);
         }catch (Exception e){
-
+            finish();
         }
 
+    }
+
+    private void getDataAsyn(){
+        mProgressbar.show();
+        new AsyncTask<String, Void, String>() {
+            @Override
+            protected String doInBackground(String... strings) {
+                getData();
+                return null;
+            }
+
+            @Override
+            protected void onPostExecute(String s) {
+                super.onPostExecute(s);
+            }
+        }.execute();
     }
 
     @Override

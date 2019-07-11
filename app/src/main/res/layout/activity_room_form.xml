@@ -172,6 +172,7 @@
                     android:layout_height="wrap_content"
                     android:hint="Price">
                     <EditText
+                        android:inputType="numberDecimal"
                         android:id="@+id/price_et"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"

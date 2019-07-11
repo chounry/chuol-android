@@ -3,6 +3,7 @@ package com.group6.choul;
 import android.Manifest;
 import android.app.AlertDialog;
 import android.app.Dialog;
+import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
@@ -51,6 +52,7 @@ import com.google.android.material.textfield.TextInputLayout;
 import com.group6.choul.adapters.ImgFormAdapter;
 import com.group6.choul.login_register_handling.TokenManager;
 import com.group6.choul.models.ImgFormModel;
+import com.group6.choul.shares.MyConfig;
 
 import net.gotev.uploadservice.MultipartUploadRequest;
 import net.gotev.uploadservice.UploadNotificationConfig;
@@ -91,13 +93,12 @@ public class RoomFormActivity extends AppCompatActivity implements BSImagePicker
     private int user_id;
     private TextInputLayout priceTil;
 
-    private String upload_url;
+    private String upload_url = MyConfig.SERVE_ADDRESS + "/api/rooms/create";
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_room_form);
-        upload_url = getResources().getString(R.string.server_address) + "/api/rooms/create";
 
         map_imgBtn = findViewById(R.id.map_imgBtn);
         recyclerView = findViewById(R.id.img_recyler_view);
@@ -351,7 +352,8 @@ public class RoomFormActivity extends AppCompatActivity implements BSImagePicker
         /* *********************************************************************
          * **********************  place to upload data to server ******************
          ******************************************************************* */
-
+        ProgressDialog dialog = ProgressDialog.show(this, "",
+                "Uploading. Please wait...", true);
         //Uploading code
         try {
             String uploadId = UUID.randomUUID().toString();
@@ -387,7 +389,8 @@ public class RoomFormActivity extends AppCompatActivity implements BSImagePicker
             }
 
             mUploadRequest.startUpload();
-            Toast.makeText(this,"Upload successful", Toast.LENGTH_SHORT).show();
+
+            Thread.sleep(2000);
             startActivity(new Intent(this,MainActivity.class));
             finish();
         } catch (Exception exc) {

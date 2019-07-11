@@ -21,34 +21,35 @@ import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
+import com.group6.choul.adapters.HouseTypeAdapter;
 import com.group6.choul.models.HouseTypeModel;
 import com.group6.choul.models.RoomModel;
+import com.group6.choul.shares.MyConfig;
 
 import org.json.JSONArray;
 import org.json.JSONObject;
 
+import java.util.ArrayList;
 import java.util.List;
 
 
 public class FilterActivity extends AppCompatActivity {
     private RecyclerView house_type_recyclerView;
     private List<HouseTypeModel> houseTypeModelList;
-    private String url;
+    private String url = MyConfig.SERVE_ADDRESS + "/api/house_type/index";
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_filter);
-        url = getResources().getString(R.string.server_address) + "/house_type/index";
 
         house_type_recyclerView = findViewById(R.id.house_type_rcv);
         Toolbar myToolbar = findViewById(R.id.toolbar);
         setSupportActionBar(myToolbar);
         showActionBar();
-
+        getHouseType();
         house_type_recyclerView.setLayoutManager(new GridLayoutManager(this, 3));
     }
-
 
     private void getHouseType(){
         RequestQueue requestQueue = Volley.newRequestQueue(this);
@@ -57,10 +58,13 @@ public class FilterActivity extends AppCompatActivity {
             public void onResponse(String response) {
                 try {
                     JSONArray jsonResponse = new JSONArray(response);
+                    houseTypeModelList = new ArrayList<>();
                     for (int i = 0; i < jsonResponse.length(); i++) {
-                        JSONObject each = jsonResponse.getJSONObject(i);
 
+                        houseTypeModelList.add(new HouseTypeModel(jsonResponse.get(i).toString()));
                     }
+                    HouseTypeAdapter adapter = new HouseTypeAdapter(FilterActivity.this, houseTypeModelList);
+                    house_type_recyclerView.setAdapter(adapter);
                 } catch (Exception e) {
                     Log.e("Json Error", e.toString());
                 }
